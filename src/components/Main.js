@@ -6,7 +6,7 @@ import FeaturedMovies from "./FeaturedMovies";
 const Main = () => {
   return (
     <Container fluid>
-      <Row className="no-gutters">
+      <Row className="no-gutters justify-content-center align-content-center m-4">
         <FeaturedMovies />
       </Row>
     </Container>
