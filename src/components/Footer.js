@@ -1,15 +1,15 @@
 import React from "react";
-
-
+import { Row, Col, Container } from "react-bootstrap";
 
 const Footer = () => {
-
   return (
-    <div className="row">
-      <div className="col-4">
-        <p>This is a footer placeholder</p>
-      </div>
-    </div>
+    <Container fluid>
+      <Row>
+        <Col xs={4}>
+          <p>This is a footer placeholder</p>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
