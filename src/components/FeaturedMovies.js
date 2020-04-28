@@ -5,25 +5,10 @@ import "../css/FeaturedMovies.css";
 import "../../node_modules/slick-carousel/slick/slick.css";
 import "../../node_modules/slick-carousel/slick/slick-theme.css";
 
-// class ReactSlickDemo extends React.Component {
-//   render() {
-
-//     return (
-//       <div className="container">
-//         <Slider {...settings}>
-//           <div>
-//             <img src="http://placekitten.com/g/400/200" />
-//           </div>
-
-//         </Slider>
-//       </div>
-//     );
-//   }
-// }
 
 const MovieCard = (props) => {
   //Was here last time, the plots array returns undefined when referenced by index
-  console.log("PLOT from INSIDE moviecard: ", props.plot);
+  // console.log("PLOT from INSIDE moviecard: ", props.plot);
   return (
     <>
       <img src={props.movie.image} alt={props.movie.title} />
@@ -43,7 +28,6 @@ const MovieCard = (props) => {
 };
 
 class FeaturedMovies extends React.Component {
-  //I was here last time, no movies database to use so I used OMDB api, to be implemented next time
   constructor() {
     super();
     this.state = {
@@ -54,20 +38,23 @@ class FeaturedMovies extends React.Component {
 
   componentDidMount() {
     //Used imdb-api to retrieve top movies list, and omdbapi for the plots of each movie
+    const imdbAPI = "https://imdb-api.com/en/API/Top250Movies/k_39DL92RX";
+    const omdbAPI = `http://www.omdbapi.com/?apikey=c9b9da6f&plot=short`;
     let plots = [];
-    fetch("https://imdb-api.com/en/API/Top250Movies/k_39DL92RX")
+
+    fetch(imdbAPI)
       .then((response) => response.json())
       .then((response) => response.items.slice(0, 10))
       .then((res) => this.setState({ movies: res }))
-      .then(() => console.log(this.state))
+      // .then(() => console.log(this.state))
       .then(() => {
         this.state.movies.forEach((movie) => {
-          fetch(`http://www.omdbapi.com/?apikey=c9b9da6f&i=${movie.id}&plot=short`)
+          fetch(`${omdbAPI}&i=${movie.id}`)
             .then((res) => res.json())
             .then((res) => plots.push(res.Plot))
             .catch((err) => console.error(err));
         });
-        console.log("PLOTS: ", plots);
+        // console.log("PLOTS: ", plots);
       })
       .catch((err) => console.error("FIRST fetch failed!"));
     this.setState((prevState) => ({ ...prevState, plots: plots }));
@@ -109,16 +96,12 @@ class FeaturedMovies extends React.Component {
     let topTen = this.state.movies.map((movie, index) => {
       return (
         <MovieCard key={movie.id} movie={movie} />
-        // <Col lg={4} key={movie.id} className="movie-card">
-        //   <MovieCard movie={movie} plot={this.state.plots.index}/>
-        //   {/* {console.log("INDEX IS: ", index)} */}
-        // </Col>
       );
     });
 
     return (
       <Col>
-        <h1 className="display-4 text-center">Top 10 of all time</h1>
+        <h1 className="display-4 text-center m-4">Top 10 of all time</h1>
         <Slider {...settings}>{topTen}</Slider>
       </Col>
     );
