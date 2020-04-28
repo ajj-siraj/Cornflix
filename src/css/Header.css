@@ -1,0 +1,13 @@
+jumbotron {
+  background-color: rgb(72, 75, 255);
+  padding: 0;
+  margin: 0;
+  border: none;
+  
+}
+
+jumbotron img {
+  width:100%;
+  margin:0;
+  padding:0;
+}

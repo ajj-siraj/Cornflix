@@ -23,14 +23,14 @@ class News extends React.Component {
       .catch((err) => console.error(err));
   }
   render() {
-    console.log("NEWS articles: ", this.state.news);
-    let articles = this.state.news.map((article) => {
+    // console.log("NEWS articles: ", this.state.news);
+    let articles = this.state.news.map((article, index) => {
       return (
-        <Card className="bg-dark text-white">
+        <Card key={`${article.source.id}/${index}`}className="bg-dark text-white">
           <Card.Body>
             <Row>
               <Col lg="4">
-                <Card.Img variant="left" src={article.urlToImage} />
+                <Card.Img className="slider-movie-img" variant="left" src={article.urlToImage} />
               </Col>
               <Col>
                 <Card.Title>{article.title}</Card.Title>

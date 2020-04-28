@@ -11,18 +11,7 @@ const MovieCard = (props) => {
   // console.log("PLOT from INSIDE moviecard: ", props.plot);
   return (
     <>
-      <img src={props.movie.image} alt={props.movie.title} />
-      {/* <Row className="no-gutters">
-        <h4 className="text-center p-4">{props.movie.title}</h4>
-      </Row>
-      <Row className="no-gutters">
-        <Col lg={6} className="p-3">
-          <img src={props.movie.image} alt={props.movie.title} />
-        </Col>
-        <Col lg={6} className="p-3">
-          <p>{props.plot}</p>
-        </Col>
-      </Row> */}
+      <img className="slider-movie-img" src={props.movie.image} alt={props.movie.title} />
     </>
   );
 };
