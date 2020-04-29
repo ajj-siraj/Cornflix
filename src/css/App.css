@@ -2,3 +2,7 @@ body{
   background-color: #424242;
   color:#ddd;
 }
+
+.movie-modal.img{
+  height:500px;
+}

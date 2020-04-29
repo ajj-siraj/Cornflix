@@ -1,17 +1,20 @@
 import React from "react";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Modal, Button } from "react-bootstrap";
 import Slider from "react-slick";
 import "../css/FeaturedMovies.css";
 import "../../node_modules/slick-carousel/slick/slick.css";
 import "../../node_modules/slick-carousel/slick/slick-theme.css";
 
-
 const MovieCard = (props) => {
-  //Was here last time, the plots array returns undefined when referenced by index
-  // console.log("PLOT from INSIDE moviecard: ", props.plot);
   return (
     <>
-      <img className="slider-movie-img" src={props.movie.image} alt={props.movie.title} />
+      <img
+        onClick={() => props.toggleModal(props.movie, props.poster)}
+        className="slider-movie-img"
+        src={props.movie.image}
+        alt={props.movie.title}
+        style={{ height: 200 }}
+      />
     </>
   );
 };
@@ -21,42 +24,57 @@ class FeaturedMovies extends React.Component {
     super();
     this.state = {
       movies: [],
-      plots: [],
+      moviePosters: [],
     };
   }
 
   componentDidMount() {
-    //Used imdb-api to retrieve top movies list, and omdbapi for the plots of each movie
+    //Used imdb-api to retrieve top movies list
     const imdbAPI = "https://imdb-api.com/en/API/Top250Movies/k_39DL92RX";
-    const omdbAPI = `http://www.omdbapi.com/?apikey=c9b9da6f&plot=short`;
-    let plots = [];
 
     fetch(imdbAPI)
       .then((response) => response.json())
       .then((response) => response.items.slice(0, 10))
       .then((res) => this.setState({ movies: res }))
-      // .then(() => console.log(this.state))
       .then(() => {
-        this.state.movies.forEach((movie) => {
-          fetch(`${omdbAPI}&i=${movie.id}`)
+        //fetch new poster data
+        //I was here last time trying to fetch the right posters for the modal
+
+        this.state.movies.map((movie) => {
+          let imdbAPI_Poster = `https://imdb-api.com/en/API/Posters/k_39DL92RX/${movie.id}`;
+          fetch(imdbAPI_Poster)
             .then((res) => res.json())
-            .then((res) => plots.push(res.Plot))
+            .then((res) => res.posters.find((poster) => poster.language === "en"))
+            .then( res => console.log("THIS IS RES: ", res.id))
+            .then((res) =>
+              this.setState((prevState) => {
+                let moviePosters = prevState.moviePosters;
+                console.log("LAST movieposters: ", moviePosters)
+                // console.log("WTF ", res.id)
+                if(moviePosters == undefined || moviePosters[moviePosters.length-1].id !== res.id) {
+                  moviePosters.push(res);
+                }
+                
+                return { ...prevState, moviePosters: moviePosters };
+              })
+            )
+            .then((res) => console.log(this.state))
             .catch((err) => console.error(err));
         });
-        // console.log("PLOTS: ", plots);
       })
+      // .then(() => console.log(this.state))
       .catch((err) => console.error("FIRST fetch failed!"));
-    this.setState((prevState) => ({ ...prevState, plots: plots }));
   }
 
   render() {
     let settings = {
       dots: true,
-      slidesToShow: 5,
+      slidesToShow: 7,
       draggable: true,
       centerMode: true,
       autoplay: true,
       autoplaySpeed: 2000,
+
       responsive: [
         {
           breakpoint: 992,
@@ -84,7 +102,10 @@ class FeaturedMovies extends React.Component {
     };
     let topTen = this.state.movies.map((movie, index) => {
       return (
-        <MovieCard key={movie.id} movie={movie} />
+        <>
+          <MovieCard key={movie.id} movie={movie} toggleModal={this.props.toggleMovieModal} 
+          poster={this.state.moviePosters.find(poster => poster.id == movie.id)}/>
+        </>
       );
     });
 

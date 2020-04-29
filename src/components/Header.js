@@ -15,6 +15,7 @@ const Header = () => {
     autoplay: true,
     arrows: false,
     swipe: false,
+    pauseOnHover: false,
     fade: true
   };
 
