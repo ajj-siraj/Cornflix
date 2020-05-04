@@ -5,7 +5,7 @@ import FeaturedMovies from "./FeaturedMovies";
 import News from "./News";
 import MovieModal from "./MovieModal";
 
-class Main extends React.PureComponent {
+class Main extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -19,11 +19,10 @@ class Main extends React.PureComponent {
     this.toggleMovieModal = this.toggleMovieModal.bind(this);
   }
 
-  toggleMovieModal(movie, poster) {
+  toggleMovieModal(movie) {
     this.setState((prevState) => ({
       modal: { isOpen: !prevState.modal.isOpen },
       movie: movie,
-      poster: poster
     }));
    
   }
@@ -35,7 +34,6 @@ class Main extends React.PureComponent {
         <MovieModal
           isOpen={this.state.modal.isOpen}
           movie={this.state.movie}
-          poster={this.state.poster}
           toggleMovieModal={this.toggleMovieModal}
         />
         <Container fluid>

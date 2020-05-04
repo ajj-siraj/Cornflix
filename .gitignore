@@ -21,3 +21,11 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# for local testing purposes
+importposters.js
+m.txt
+imdb_data_formatted.json
+imdb_data.json
+newDB_formatted.json
+newDBForTesting.json

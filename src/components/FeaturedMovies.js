@@ -9,10 +9,10 @@ const MovieCard = (props) => {
   return (
     <>
       <img
-        onClick={() => props.toggleModal(props.movie, props.poster)}
+        onClick={() => props.toggleModal(props.movie)}
         className="slider-movie-img"
-        src={props.movie.image}
-        alt={props.movie.title}
+        src={props.movie.Poster}
+        alt={props.movie.Title}
         style={{ height: 200 }}
       />
     </>
@@ -24,45 +24,18 @@ class FeaturedMovies extends React.Component {
     super();
     this.state = {
       movies: [],
-      moviePosters: [],
     };
   }
 
   componentDidMount() {
     //Used imdb-api to retrieve top movies list
-    const imdbAPI = "https://imdb-api.com/en/API/Top250Movies/k_39DL92RX";
+    // const imdbAPI = "https://imdb-api.com/en/API/Top250Movies/k_39DL92RX";
+    const apiServer = "http://localhost:4000/movies?_limit=10";
 
-    fetch(imdbAPI)
+    fetch(apiServer)
       .then((response) => response.json())
-      .then((response) => response.items.slice(0, 10))
       .then((res) => this.setState({ movies: res }))
-      .then(() => {
-        //fetch new poster data
-        //I was here last time trying to fetch the right posters for the modal
-
-        this.state.movies.map((movie) => {
-          let imdbAPI_Poster = `https://imdb-api.com/en/API/Posters/k_39DL92RX/${movie.id}`;
-          fetch(imdbAPI_Poster)
-            .then((res) => res.json())
-            .then((res) => res.posters.find((poster) => poster.language === "en"))
-            .then( res => console.log("THIS IS RES: ", res.id))
-            .then((res) =>
-              this.setState((prevState) => {
-                let moviePosters = prevState.moviePosters;
-                console.log("LAST movieposters: ", moviePosters)
-                // console.log("WTF ", res.id)
-                if(moviePosters == undefined || moviePosters[moviePosters.length-1].id !== res.id) {
-                  moviePosters.push(res);
-                }
-                
-                return { ...prevState, moviePosters: moviePosters };
-              })
-            )
-            .then((res) => console.log(this.state))
-            .catch((err) => console.error(err));
-        });
-      })
-      // .then(() => console.log(this.state))
+      .then((res) => console.log(this.state.movies))
       .catch((err) => console.error("FIRST fetch failed!"));
   }
 
@@ -103,11 +76,11 @@ class FeaturedMovies extends React.Component {
     let topTen = this.state.movies.map((movie, index) => {
       return (
         <>
-          <MovieCard key={movie.id} movie={movie} toggleModal={this.props.toggleMovieModal} 
-          poster={this.state.moviePosters.find(poster => poster.id == movie.id)}/>
+          <MovieCard key={movie.id} movie={movie} toggleModal={this.props.toggleMovieModal} />
         </>
       );
     });
+    // let topTen = <div></div>;
 
     return (
       <Col>

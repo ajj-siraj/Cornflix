@@ -2,18 +2,16 @@ import React from "react";
 import { Modal, Button, Container, Row, Col } from "react-bootstrap";
 import "../css/FeaturedMovies.css";
 
-class MovieModal extends React.PureComponent {
+class MovieModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       movie: [],
-      moviePoster: []
     };
   }
 
-
   render() {
-    console.log(this.props.poster);
+    // console.log(this.props.poster);
     return (
       <Modal
         size="lg"
@@ -26,16 +24,16 @@ class MovieModal extends React.PureComponent {
           <Container>
             <Row>
               <Col>
-                <h4>{this.props.movie.title}</h4>
+                <h4>{this.props.movie.Title}</h4>
               </Col>
             </Row>
             <Row>
               <Col lg={6}>
                 <img
                   className="movie-modal-img"
-                  src={this.props.poster}
-                  alt={this.props.movie.title}
-                  style={{height: '70vh'}}
+                  src={this.props.movie.Poster}
+                  alt={this.props.movie.Title}
+                  style={{ width: "30vh" }}
                 />
               </Col>
               <Col>
