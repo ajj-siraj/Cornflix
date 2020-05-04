@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, Button, Container, Row, Col } from "react-bootstrap";
-import "../css/FeaturedMovies.css";
+// import css from "../css/FeaturedMovies.css";
 
 class MovieModal extends React.Component {
   constructor(props) {
@@ -19,28 +19,29 @@ class MovieModal extends React.Component {
         centered
         show={this.props.isOpen}
         onHide={() => this.props.toggleMovieModal(this.props.movie)}
+        dialogClassName="modal-90w"
+        
       >
-        <Modal.Body className="bg-dark">
+        
+          <Modal.Body className="bg-dark">
           <Container>
-            <Row>
+            <Row className="justify-content-center text-center">
               <Col>
-                <h4>{this.props.movie.Title}</h4>
+                <h4 style={{padding:'1%', border: 'solid 1px'}}>{this.props.movie.Title}</h4>
               </Col>
             </Row>
-            <Row>
+            <Row className="justify-content-center text-center">
               <Col lg={6}>
                 <img
-                  className="movie-modal-img"
+                  className="movie-modal-img img-fluid"
                   src={this.props.movie.Poster}
                   alt={this.props.movie.Title}
-                  style={{ width: "30vh" }}
+                  style={{ margin: 'auto' }}
                 />
               </Col>
-              <Col>
+              <Col lg={6}>
                 <p>
-                  Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac
-                  facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac,
-                  vestibulum at eros.
+                  {this.props.movie.Plot}
                 </p>
               </Col>
             </Row>
@@ -49,6 +50,8 @@ class MovieModal extends React.Component {
         <Modal.Footer className="bg-dark">
           <Button onClick={this.props.toggleMovieModal}>Close</Button>
         </Modal.Footer>
+        
+        
       </Modal>
     );
   }

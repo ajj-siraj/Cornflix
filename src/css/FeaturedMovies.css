@@ -13,3 +13,7 @@
   padding:20px;
 }
 
+.modal-90w{
+  min-width: 90%;
+  /* height: 100vh; */
+}

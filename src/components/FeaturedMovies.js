@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, Row, Modal, Button } from "react-bootstrap";
 import Slider from "react-slick";
-import "../css/FeaturedMovies.css";
+// import "../css/FeaturedMovies.css";
 import "../../node_modules/slick-carousel/slick/slick.css";
 import "../../node_modules/slick-carousel/slick/slick-theme.css";
 
@@ -13,7 +13,7 @@ const MovieCard = (props) => {
         className="slider-movie-img"
         src={props.movie.Poster}
         alt={props.movie.Title}
-        style={{ height: 200 }}
+        
       />
     </>
   );
@@ -50,6 +50,28 @@ class FeaturedMovies extends React.Component {
 
       responsive: [
         {
+          breakpoint: 1600,
+          settings: {
+            dots: true,
+            slidesToShow: 5,
+            draggable: true,
+            centerMode: true,
+            autoplay: true,
+            autoplaySpeed: 2000,
+          },
+        },
+        {
+          breakpoint: 1200,
+          settings: {
+            dots: true,
+            slidesToShow: 4,
+            draggable: true,
+            centerMode: true,
+            autoplay: true,
+            autoplaySpeed: 2000,
+          },
+        },
+        {
           breakpoint: 992,
           settings: {
             dots: true,
@@ -61,10 +83,32 @@ class FeaturedMovies extends React.Component {
           },
         },
         {
-          breakpoint: 576,
+          breakpoint: 797,
           settings: {
             dots: true,
-            slidesToShow: 1,
+            slidesToShow: 2.5,
+            draggable: true,
+            centerMode: true,
+            autoplay: true,
+            autoplaySpeed: 2000,
+          },
+        },
+        {
+          breakpoint: 680,
+          settings: {
+            dots: true,
+            slidesToShow: 2,
+            draggable: true,
+            centerMode: true,
+            autoplay: true,
+            autoplaySpeed: 2000,
+          },
+        },
+        {
+          breakpoint: 576,
+          settings: {
+            dots: false,
+            slidesToShow: 1.5,
             draggable: true,
             centerMode: true,
             autoplay: true,
@@ -75,16 +119,16 @@ class FeaturedMovies extends React.Component {
     };
     let topTen = this.state.movies.map((movie, index) => {
       return (
-        <>
+        
           <MovieCard key={movie.id} movie={movie} toggleModal={this.props.toggleMovieModal} />
-        </>
+        
       );
     });
     // let topTen = <div></div>;
 
     return (
       <Col>
-        <h1 className="display-4 text-center m-4">Top 10 of all time</h1>
+        <h1 className="display-4 text-center m-4 border">Top 10 of all time</h1>
         <Slider {...settings}>{topTen}</Slider>
       </Col>
     );

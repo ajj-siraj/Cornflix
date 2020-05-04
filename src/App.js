@@ -5,6 +5,7 @@ import Main from './components/Main';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './css/App.css';
 import './css/Footer.css';
+import './css/FeaturedMovies.css';
 
 function App() {
   return (
