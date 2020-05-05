@@ -13,8 +13,17 @@ import "../../node_modules/slick-carousel/slick/slick-theme.css";
 class Header extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      // clicked: true
+    };
+    // this.myRef = React.createRef();
   }
 
+  // handleClick(node){
+  //   node.current.click();
+  //   console.log(node.current);
+  //   console.log("click triggered");
+  // }
   render() {
     let jumboTitles = ["Pulp Fiction", "The Godfather", "Inception"];
     let jumboPlots = [
@@ -65,13 +74,14 @@ class Header extends React.Component {
             src={img}
             alt={`img-${index}`}
             className="img-fluid"
-            style={{ width: "100%", objectFit: "cover" }}
+            style={{ width: "100%", objectFit: "cover", pointerEvents: "none" }}
+            // onClick={() => this.handleClick(this.myRef)}
           />
-          <h1 className="display-1 jumbo-title">
-            {jumboTitles[index]}
-          </h1>
-            <p className="jumbo-plot">{jumboPlots[index]}</p>
-            <div className="btn jumbo-button">Watch <span className="fa fa-play-circle"></span></div>
+          <h1 className="display-1 jumbo-title">{jumboTitles[index]}</h1>
+          <p className="jumbo-plot">{jumboPlots[index]}</p>
+          <div className="btn jumbo-button">
+            Watch <span className="fa fa-play-circle"></span>
+          </div>
         </div>
       );
     });
@@ -117,6 +127,7 @@ class Header extends React.Component {
         {/* <Jumbotron fluid style={{ padding: 0, height: "100vh" }}> */}
         <Slider {...settings}>{jumboImgsRendered}</Slider>
         {/* </Jumbotron> */}
+        {/* <div ref={this.myRef}></div> */}
       </>
     );
   }

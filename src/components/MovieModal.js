@@ -40,15 +40,20 @@ class MovieModal extends React.Component {
                 />
               </Col>
               <Col lg={6}>
-                <p>
+                <p className="mt-4">
                   {this.props.movie.Plot}
                 </p>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+
               </Col>
             </Row>
           </Container>
         </Modal.Body>
         <Modal.Footer className="bg-dark">
-          <Button onClick={this.props.toggleMovieModal}>Close</Button>
+          <Button className="btn-success" onClick={this.props.toggleMovieModal}>Close</Button>
         </Modal.Footer>
         
         

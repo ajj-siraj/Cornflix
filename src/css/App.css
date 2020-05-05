@@ -22,6 +22,7 @@ body{
   font-size: 5rem;
   color: #14ac14;
   margin-left: 20px;
+  pointer-events: none;
 }
 
 .jumbo-plot{
@@ -36,6 +37,7 @@ body{
   margin-right: 20px;
   width:70%;
   text-align: justify;
+  pointer-events: none;
 }
 
 .jumbo-button{
@@ -52,4 +54,11 @@ body{
   text-align: center;
   border: solid 1px;
   border-radius: 20px;
+}
+
+.cover-div{
+  width:100%;
+  height:100%;
+  background-color:red;
+  z-index: 99999;
 }
