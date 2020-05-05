@@ -20,24 +20,24 @@ const MovieCard = (props) => {
 };
 
 class FeaturedMovies extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      movies: [],
-    };
+  constructor(props) {
+    super(props);
+    // this.state = {
+    //   movies: [],
+    // };
   }
 
-  componentDidMount() {
-    //Used imdb-api to retrieve top movies list
-    // const imdbAPI = "https://imdb-api.com/en/API/Top250Movies/k_39DL92RX";
-    const apiServer = "http://localhost:4000/movies?_limit=10";
+  // componentDidMount() {
+  //   //Used imdb-api to retrieve top movies list
+  //   // const imdbAPI = "https://imdb-api.com/en/API/Top250Movies/k_39DL92RX";
+  //   const apiServer = "http://localhost:4000/movies?_limit=10";
 
-    fetch(apiServer)
-      .then((response) => response.json())
-      .then((res) => this.setState({ movies: res }))
-      .then((res) => console.log(this.state.movies))
-      .catch((err) => console.error("FIRST fetch failed!"));
-  }
+  //   fetch(apiServer)
+  //     .then((response) => response.json())
+  //     .then((res) => this.setState({ movies: res }))
+  //     .then((res) => console.log(this.state.movies))
+  //     .catch((err) => console.error("FIRST fetch failed!"));
+  // }
 
   render() {
     let settings = {
@@ -45,6 +45,7 @@ class FeaturedMovies extends React.Component {
       slidesToShow: 7,
       draggable: true,
       centerMode: true,
+      centerPadding: '0px',
       autoplay: true,
       autoplaySpeed: 2000,
 
@@ -117,7 +118,7 @@ class FeaturedMovies extends React.Component {
         },
       ],
     };
-    let topTen = this.state.movies.map((movie, index) => {
+    let topTen = this.props.movies.map((movie, index) => {
       return (
         
           <MovieCard key={movie.id} movie={movie} toggleModal={this.props.toggleMovieModal} />
@@ -128,7 +129,7 @@ class FeaturedMovies extends React.Component {
 
     return (
       <Col>
-        <h1 className="display-4 text-center m-4 border">Top 10 of all time</h1>
+        <h1 className="display-4 text-center m-4 heading">Top 10 of all time</h1>
         <Slider {...settings}>{topTen}</Slider>
       </Col>
     );

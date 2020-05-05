@@ -38,10 +38,16 @@ class Main extends React.Component {
         />
         <Container fluid>
           <Row className="no-gutters justify-content-center align-content-center m-4">
-            <FeaturedMovies toggleMovieModal={this.toggleMovieModal} />
+            <FeaturedMovies movies={this.props.movies} toggleMovieModal={this.toggleMovieModal} />
           </Row>
           <Row>
-            <Col lg={6}>
+            <Col lg={8}>
+              
+              <div>
+                Latest Movies
+              </div>
+            </Col>
+            <Col lg={4}>
               <News />
               <div>
                 News data retrieved from <a href="https://newsapi.org/">NewsAPI.org</a>

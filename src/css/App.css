@@ -1,9 +1,55 @@
 body{
   background-color: #424242;
   color:#ddd;
+  /* overflow-wrap: normal; */
 }
 
 .movie-modal.img{
   height:500px;
 }
 
+.heading{
+  border-radius: 30px;
+  background: linear-gradient(143deg, #454851 19%, #1b950c 100%);
+  padding:10px;
+}
+
+.jumbo-title{
+  position:absolute;
+  z-index:999;
+  top:40%;
+  text-shadow: 2px -2px 4px black;
+  font-size: 5rem;
+  color: #14ac14;
+  margin-left: 20px;
+}
+
+.jumbo-plot{
+  position:absolute;
+  z-index:999;
+  top:60%;
+  text-shadow: 2px -2px 4px black;
+  /* overflow: wrap; */
+  font-size: 1rem;
+  color: #b7d1b7;
+  margin-left: 20px;
+  margin-right: 20px;
+  width:70%;
+  text-align: justify;
+}
+
+.jumbo-button{
+  position:absolute;
+  z-index:999;
+  top:85%;
+  right:5%;
+  text-shadow: 2px -2px 4px black;
+  /* overflow: wrap; */
+  font-size: 2rem;
+  color: #b7d1b7;
+  /* margin:auto; */
+  width:30%;
+  text-align: center;
+  border: solid 1px;
+  border-radius: 20px;
+}
