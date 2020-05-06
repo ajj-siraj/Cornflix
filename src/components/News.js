@@ -16,7 +16,7 @@ class News extends React.Component {
       "https://newsapi.org/v2/everything?q=boxoffice&apiKey=0a95e66f29f94a6b8e72cb581d05d184&language=en";
     fetch(newsAPI)
       .then((res) => res.json())
-      .then((res) => res.articles.slice(0, 10))
+      .then((res) => res.articles.slice(0, 5))
       .then((res) => {
         this.setState((prevState) => ({ ...prevState, news: res }));
       })
@@ -30,13 +30,13 @@ class News extends React.Component {
           <Card.Body>
             <Row>
               <Col lg="4">
-                <Card.Img className="slider-movie-img" variant="left" src={article.urlToImage} />
+                <Card.Img className="news-img img-fluid m-0" variant="left" src={article.urlToImage} />
               </Col>
-              <Col>
+              <Col className="m-0 p-0">
                 <Card.Title>{article.title}</Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">{article.source.name}</Card.Subtitle>
                 <Card.Text>{article.description}</Card.Text>
-                <Card.Link href={article.url}>Read More</Card.Link>
+                <Card.Link href={article.url} target="_blank">Read More</Card.Link>
               </Col>
             </Row>
           </Card.Body>

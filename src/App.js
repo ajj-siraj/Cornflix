@@ -1,4 +1,4 @@
-//Main modules
+//Main modules or 3rd party
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
@@ -6,8 +6,9 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Main from "./components/Main";
+import MovieDetails from "./components/MovieDetails";
 
-//Links & other
+//other
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "../node_modules/font-awesome/css/font-awesome.min.css";
 import "../node_modules/slick-carousel/slick/slick.css";
@@ -15,6 +16,7 @@ import "../node_modules/slick-carousel/slick/slick-theme.css";
 import "./css/App.css";
 import "./css/Footer.css";
 import "./css/FeaturedMovies.css";
+import "./css/LatestMovies.css";
 
 class App extends React.Component {
   constructor(props) {
@@ -53,7 +55,8 @@ class App extends React.Component {
           <Switch>
             {/* <Main movies={this.state.movies} /> */}
             <Route exact path="/" component={() => <Main movies={this.state.movies}/>}/>
-            <Route path="/movies" component={Movies} />
+            <Route exact path="/movies" component={Movies} />
+            <Route path="/movies/:movieid" render={(match) => <MovieDetails match={match} movies={this.state.movies} />} />
           </Switch>
           <Footer />
         </div>

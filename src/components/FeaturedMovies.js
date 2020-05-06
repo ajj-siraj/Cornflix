@@ -22,22 +22,7 @@ const MovieCard = (props) => {
 class FeaturedMovies extends React.Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   movies: [],
-    // };
   }
-
-  // componentDidMount() {
-  //   //Used imdb-api to retrieve top movies list
-  //   // const imdbAPI = "https://imdb-api.com/en/API/Top250Movies/k_39DL92RX";
-  //   const apiServer = "http://localhost:4000/movies?_limit=10";
-
-  //   fetch(apiServer)
-  //     .then((response) => response.json())
-  //     .then((res) => this.setState({ movies: res }))
-  //     .then((res) => console.log(this.state.movies))
-  //     .catch((err) => console.error("FIRST fetch failed!"));
-  // }
 
   render() {
     let settings = {
@@ -129,7 +114,7 @@ class FeaturedMovies extends React.Component {
 
     return (
       <Col>
-        <h1 className="display-4 text-center m-4 heading">Top 10 of all time</h1>
+        <h1 className="display-4 text-center m-4 heading">Top Rated</h1>
         <Slider {...settings}>{topTen}</Slider>
       </Col>
     );

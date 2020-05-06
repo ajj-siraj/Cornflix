@@ -4,6 +4,14 @@ body{
   /* overflow-wrap: normal; */
 }
 
+a{
+  color:unset;
+}
+a:hover{
+  text-decoration: none;
+  color:unset;
+}
+
 
 .movie-modal.img{
   height:500px;
@@ -22,7 +30,7 @@ body{
   text-shadow: 2px -2px 4px black;
   font-size: 5rem;
   color: #14ac14;
-  margin-left: 20px;
+  margin-left: 5%;
   pointer-events: none;
 }
 
@@ -34,8 +42,8 @@ body{
   overflow: wrap;
   font-size: 1rem;
   color: #b7d1b7;
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-left: 5%;
+  margin-right: 5%;
   width:70%;
   text-align: justify;
   pointer-events: none;
@@ -55,4 +63,8 @@ body{
   text-align: center;
   border: solid 1px;
   border-radius: 20px;
+}
+
+.jumbo-button:hover{
+  color: #b7d1b7;
 }

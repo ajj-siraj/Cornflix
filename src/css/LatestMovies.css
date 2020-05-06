@@ -1,0 +1,21 @@
+.dark-list{
+  background-color: #313131;
+}
+.light-list{
+  background-color: #ddd;
+  color: #3d3d3d;
+}
+
+.dark-list:hover{
+  background-color: #585858;
+  cursor:pointer;
+}
+.light-list:hover{
+  background-color: #8a8a8a;
+  color: #3d3d3d;
+  cursor:pointer;
+}
+
+.latest-movie-title{
+  color:rgb(7, 155, 2);
+}

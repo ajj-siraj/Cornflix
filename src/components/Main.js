@@ -1,10 +1,12 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Slider from "react-slick";
+import { Link } from "react-router-dom";
 
 import FeaturedMovies from "./FeaturedMovies";
 import News from "./News";
 import MovieModal from "./MovieModal";
+import LatestMovies from "./LatestMovies";
 
 import jumboImg1 from "../assets/img/pulp-fiction-526d500988cb1.jpg";
 import jumboImg2 from "../assets/img/the-godfather-5b246f3c573fa.jpg";
@@ -80,9 +82,11 @@ class Main extends React.Component {
           />
           <h1 className="display-1 jumbo-title">{jumboTitles[index]}</h1>
           <p className="jumbo-plot">{jumboPlots[index]}</p>
-          <div className="btn jumbo-button">
-            Watch <span className="fa fa-play-circle"></span>
-          </div>
+          <Link to={`/movies/${jumboIDs[index]}`}>
+            <div className="btn jumbo-button">
+              Watch {jumboIDs[index]}<span className="fa fa-play-circle"></span>
+            </div>
+          </Link>
         </div>
       );
     });
@@ -118,7 +122,7 @@ class Main extends React.Component {
           </Row>
           <Row>
             <Col lg={8}>
-              <div>Latest Movies</div>
+              <LatestMovies movies={this.props.movies} />
             </Col>
             <Col lg={4}>
               <News />
