@@ -24,26 +24,27 @@ a:hover{
 }
 
 .jumbo-title{
-  position:absolute;
+  /* position:absolute; */
   z-index:999;
-  top:40%;
+  /* top:40%; */
   text-shadow: 2px -2px 4px black;
   font-size: 5rem;
   color: #14ac14;
-  margin-left: 5%;
+  /* margin-left: 5%; */
+  text-align:left;
   pointer-events: none;
 }
 
 .jumbo-plot{
-  position:absolute;
+  /* position:absolute; */
   /* z-index:999; */
-  top:60%;
+  /* top:60%; */
   text-shadow: 2px -2px 4px black;
   overflow: wrap;
   font-size: 1rem;
   color: #b7d1b7;
-  margin-left: 5%;
-  margin-right: 5%;
+  /* margin-left: 5%; */
+  /* margin-right: 5%; */
   width:70%;
   text-align: justify;
   pointer-events: none;
@@ -51,11 +52,11 @@ a:hover{
 
 .jumbo-button{
   position:absolute;
-  /* z-index:999; */
+  z-index:10;
   top:85%;
   right:5%;
   text-shadow: 2px -2px 4px black;
-  /* overflow: wrap; */
+  overflow: wrap;
   font-size: 2rem;
   color: #b7d1b7;
   /* margin:auto; */
@@ -68,3 +69,71 @@ a:hover{
 .jumbo-button:hover{
   color: #b7d1b7;
 }
+
+.mycustom-carousel-title{
+  position: absolute;
+  z-index: 10;
+
+    top:40%;
+    left:5%;
+    text-shadow: 2px -2px 4px black;
+    font-size: 5rem;
+    color: #14ac14;
+    text-align:left;
+    pointer-events: none;
+}
+
+.mycustom-carousel-caption{
+  position: absolute;
+  z-index: 10;
+  position:absolute;
+  top:60%;
+  left:5%;
+  text-shadow: 2px -2px 4px black;
+  overflow: wrap;
+  font-size: 1rem;
+  color: #b7d1b7;
+  width:70%;
+  text-align: justify;
+  pointer-events: none;
+}
+/* 
+.wrapper {
+  position: relative;
+  display: flex;
+  min-width: 100px;
+}
+
+
+.search-icon {
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  width: 14px;
+}
+
+.clear-icon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 10px;
+  cursor: pointer;
+}
+
+
+.search {
+  border: 1px solid grey;
+  border-radius: 5px;
+  height: 20px;
+  width: 100%;
+  padding: 10%;
+  outline: 0;
+  background-color: #f5f5f5;
+}
+
+
+.search:hover, .search:focus {
+  border: 1.5px solid #009688;
+  background-color: white;
+  padding:15%;
+} */

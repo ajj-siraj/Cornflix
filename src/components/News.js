@@ -9,19 +9,30 @@ class News extends React.Component {
     this.state = {
       news: [],
     };
+
+    this._isMounted = false;
+
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     const newsAPI =
       "https://newsapi.org/v2/everything?q=boxoffice&apiKey=0a95e66f29f94a6b8e72cb581d05d184&language=en";
-    fetch(newsAPI)
+      this._isMounted && fetch(newsAPI)
       .then((res) => res.json())
       .then((res) => res.articles.slice(0, 5))
       .then((res) => {
-        this.setState((prevState) => ({ ...prevState, news: res }));
+        this._isMounted && this.setState((prevState) => ({ ...prevState, news: res }));
       })
       .catch((err) => console.error(err));
   }
+
+  componentWillUnmount() {
+    //fix memory leak warning
+    this._isMounted = false;
+  }
+
   render() {
     // console.log("NEWS articles: ", this.state.news);
     let articles = this.state.news.map((article, index) => {

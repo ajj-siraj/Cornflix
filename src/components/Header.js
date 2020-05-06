@@ -1,28 +1,41 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Nav, Navbar, Form, FormControl, Button, Jumbotron } from "react-bootstrap";
+
+import SearchBox from './SearchBox';
+
 import logo from "../assets/img/logo.png";
 
 class Header extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      searchSuggested: ["1", "2"],
+    };
+    this.fetchSearch = this.fetchSearch.bind(this);
   }
 
+  fetchSearch(value) {
+    this.setState({ searchSuggested: ["option1", "option2"] });
+  }
   render() {
     // console.log("PROPS INSIDE Header: ", this.props);
     return (
       <>
-        <Navbar bg="dark" variant="dark" expand="lg">
-          <Navbar.Brand href="#home" className="align-middle">
-            <img
-              src={logo}
-              width="50"
-              height="50"
-              className="d-inline-block align-middle"
-              alt="logo"
-            />{" "}
-            CornFlix
-          </Navbar.Brand>
+        <Navbar variant="dark" expand="lg" className="navbar-custom">
+          <Link to="/">
+            <Navbar.Brand className="align-middle ml-5">
+              <img
+                src={logo}
+                width="50"
+                height="50"
+                className="d-inline-block align-middle"
+                alt="logo"
+              />{" "}
+              CornFlix
+            </Navbar.Brand>
+          </Link>
+
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
@@ -33,9 +46,8 @@ class Header extends React.Component {
                 <Link to="/movies">Movies</Link>
               </Nav.Link>
             </Nav>
-            <Form inline>
-              <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-              <Button variant="outline-success">Search</Button>
+            <Form inline style={{ width: "50%" }}>
+              <SearchBox />
             </Form>
           </Navbar.Collapse>
         </Navbar>

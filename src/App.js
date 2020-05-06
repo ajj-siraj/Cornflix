@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Main from "./components/Main";
 import MovieDetails from "./components/MovieDetails";
+import Movies from "./components/Movies";
 
 //other
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
@@ -14,6 +15,7 @@ import "../node_modules/font-awesome/css/font-awesome.min.css";
 import "../node_modules/slick-carousel/slick/slick.css";
 import "../node_modules/slick-carousel/slick/slick-theme.css";
 import "./css/App.css";
+import "./css/Header.css";
 import "./css/Footer.css";
 import "./css/FeaturedMovies.css";
 import "./css/LatestMovies.css";
@@ -44,19 +46,18 @@ class App extends React.Component {
   }
 
   render() {
-    const Movies = () => {
-      return <div>This is the Movies page</div>;
-    };
-
     return (
       <Router>
         <div className="App">
           <Header />
           <Switch>
             {/* <Main movies={this.state.movies} /> */}
-            <Route exact path="/" component={() => <Main movies={this.state.movies}/>}/>
-            <Route exact path="/movies" component={Movies} />
-            <Route path="/movies/:movieid" render={(match) => <MovieDetails match={match} movies={this.state.movies} />} />
+            <Route exact path="/" component={() => <Main movies={this.state.movies} />} />
+            <Route exact path="/movies" component={() => <Movies movies={this.state.movies} />} />
+            <Route
+              path="/movies/:movieid"
+              render={(match) => <MovieDetails match={match} movies={this.state.movies} />}
+            />
           </Switch>
           <Footer />
         </div>

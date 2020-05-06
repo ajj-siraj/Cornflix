@@ -106,7 +106,7 @@ class FeaturedMovies extends React.Component {
     let topTen = this.props.movies.map((movie, index) => {
       return (
         
-          <MovieCard key={movie.id} movie={movie} toggleModal={this.props.toggleMovieModal} />
+          <MovieCard key={`featured-${movie.id}`} movie={movie} toggleModal={this.props.toggleMovieModal} />
         
       );
     });

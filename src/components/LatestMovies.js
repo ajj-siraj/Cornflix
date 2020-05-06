@@ -1,6 +1,6 @@
 import React from "react";
 import { Col, Row, Modal, Button, ListGroup } from "react-bootstrap";
-import {Link} from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const MovieListItem = (props) => {
   return (
@@ -30,12 +30,8 @@ class LatestMovies extends React.Component {
   render() {
     let latest = this.props.movies.map((movie, index) => {
       return (
-        <ListGroup>
-          <MovieListItem
-            key={movie.id}
-            movie={movie}
-            color={index % 2 == 0 ? "dark-list" : "light-list"}
-          />
+        <ListGroup key={`${movie.id}-${index}`}>
+          <MovieListItem movie={movie} color={index % 2 == 0 ? "dark-list" : "light-list"} />
         </ListGroup>
       );
     });
