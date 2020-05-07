@@ -1,0 +1,10 @@
+.custom-card{
+  border-radius: 20px;
+  background-color: #4b4a4a;
+}
+
+.custom-card-item{
+  border-radius: 20px;
+  background-color: #5a5a5a;
+  padding:3%;
+}

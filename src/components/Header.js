@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Nav, Navbar, Form, FormControl, Button, Jumbotron } from "react-bootstrap";
 
-import SearchBox from './SearchBox';
+import SearchBox from "./SearchBox";
 
 import logo from "../assets/img/logo.png";
 
@@ -10,7 +10,7 @@ class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchSuggested: ["1", "2"],
+      searchSuggested: ["Searching..."],
     };
     this.fetchSearch = this.fetchSearch.bind(this);
   }
@@ -43,12 +43,29 @@ class Header extends React.Component {
                 <Link to="/">Home</Link>
               </Nav.Link>
               <Nav.Link>
-                <Link to="/movies">Movies</Link>
+                <Link to="/movies">Catalog</Link>
+              </Nav.Link>
+              <Nav.Link>
+                <Link to="/explore">Explore</Link>
               </Nav.Link>
             </Nav>
-            <Form inline style={{ width: "50%" }}>
-              <SearchBox />
-            </Form>
+
+            <Nav className="ml-auto w-50">
+              <Form inline className="d-none d-lg-inline" style={{ width: "50%" }}>
+                <SearchBox />
+              </Form>
+              <Nav.Link className="d-none d-lg-inline">
+                <Link to="/login">Login</Link>
+              </Nav.Link>
+            </Nav>
+            <Nav className="mr-auto">
+              <Nav.Link className="d-block d-lg-none">
+                <Link to="/login">Login</Link>
+              </Nav.Link>
+              <Form inline className="d-block d-lg-none" style={{ width: "100%" }}>
+                <SearchBox />
+              </Form>
+            </Nav>
           </Navbar.Collapse>
         </Navbar>
       </>

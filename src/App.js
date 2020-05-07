@@ -8,6 +8,8 @@ import Footer from "./components/Footer";
 import Main from "./components/Main";
 import MovieDetails from "./components/MovieDetails";
 import Movies from "./components/Movies";
+import ExploreMovies from "./components/ExploreMovies";
+import Login from "./components/Login";
 
 //other
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
@@ -19,17 +21,13 @@ import "./css/Header.css";
 import "./css/Footer.css";
 import "./css/FeaturedMovies.css";
 import "./css/LatestMovies.css";
+import "./css/ExploreMovies.css";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       movies: [],
-      tempMv: [
-        {
-          Title: "Temp Title",
-        },
-      ],
     };
   }
 
@@ -41,8 +39,8 @@ class App extends React.Component {
     fetch(apiServer)
       .then((response) => response.json())
       .then((res) => this.setState({ movies: res }))
-      .then((res) => console.log(this.state.movies))
-      .catch((err) => console.error("FIRST fetch failed!"));
+      .then(() => console.log(this.state.movies))
+      .catch((err) => console.error(err));
   }
 
   render() {
@@ -51,13 +49,14 @@ class App extends React.Component {
         <div className="App">
           <Header />
           <Switch>
-            {/* <Main movies={this.state.movies} /> */}
             <Route exact path="/" component={() => <Main movies={this.state.movies} />} />
             <Route exact path="/movies" component={() => <Movies movies={this.state.movies} />} />
             <Route
               path="/movies/:movieid"
               render={(match) => <MovieDetails match={match} movies={this.state.movies} />}
             />
+            <Route path="/explore" component={() => <ExploreMovies movies={this.state.movies} />} />
+            <Route path="/login" component={Login}/>
           </Switch>
           <Footer />
         </div>

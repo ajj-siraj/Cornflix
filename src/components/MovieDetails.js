@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 function MovieDetails(props) {
   // console.log("PROPS INSIDE MovieDetails: ", props);
   let movie = props.movies.find((movie) => movie.imdbID == props.match.match.params.movieid);
-  console.log("Movie is: ", movie);
+  console.log("Match prop in MovieDetails: ", props.match);
   return (
     <Container>
       <Row className="no-gutters">
