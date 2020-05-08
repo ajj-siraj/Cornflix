@@ -1,6 +1,6 @@
 //Main modules or 3rd party
 import React from "react";
-import { BrowserRouter as Router, Switch, Route, } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 //App components
 import Header from "./components/Header";
@@ -10,6 +10,7 @@ import MovieDetails from "./components/MovieDetails";
 import Movies from "./components/Movies";
 import ExploreMovies from "./components/ExploreMovies";
 import Login from "./components/Login";
+import Signup from "./components/Signup";
 
 //other
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
@@ -29,6 +30,9 @@ class App extends React.Component {
     super(props);
     this.state = {
       movies: [],
+      user: {
+        isLoggedIn: true,
+      },
     };
   }
 
@@ -48,7 +52,7 @@ class App extends React.Component {
     return (
       <Router>
         <div className="App">
-          <Header />
+          <Header user={this.state.user}/>
           <Switch>
             <Route exact path="/" component={() => <Main movies={this.state.movies} />} />
             <Route exact path="/movies" component={() => <Movies movies={this.state.movies} />} />
@@ -57,7 +61,8 @@ class App extends React.Component {
               render={(match) => <MovieDetails match={match} movies={this.state.movies} />}
             />
             <Route path="/explore" component={() => <ExploreMovies movies={this.state.movies} />} />
-            <Route path="/login" component={Login}/>
+            <Route path="/login" component={() => <Login user={this.state.user} />} />
+            <Route path="/signup" component={() => <Signup user={this.state.user} />} />
           </Switch>
           <Footer />
         </div>

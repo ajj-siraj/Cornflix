@@ -57,14 +57,36 @@ class Header extends React.Component {
                 <SearchBox />
               </Form>
 
-              <Link to="/login" className="d-none d-lg-inline nav-link" role="button">
-                Login
-              </Link>
+              {!this.props.user.isLoggedIn ? (
+                <Link to="/login" className="d-none d-lg-inline nav-link" role="button">
+                  Login
+                </Link>
+              ) : (
+                <Link to="/logout" className="d-none d-lg-inline nav-link" role="button">
+                  Logout
+                </Link>
+              )}
+              {!this.props.user.isLoggedIn ? (
+                <Link to="/signup" className="d-none d-lg-inline nav-link" role="button">
+                  Signup
+                </Link>
+              ) : null}
             </Nav>
             <Nav className="mr-auto">
-              <Link to="/login" className="d-block d-lg-none nav-link" role="button">
-                Login
-              </Link>
+              {!this.props.user.isLoggedIn ? (
+                <Link to="/login" className="d-block d-lg-none nav-link" role="button">
+                  Login
+                </Link>
+              ) : (
+                <Link to="/login" className="d-block d-lg-none nav-link" role="button">
+                  Login
+                </Link>
+              )}
+              {!this.props.user.isLoggedIn ? (
+                <Link to="/signup" className="d-block d-lg-none nav-link" role="button">
+                  Signup
+                </Link>
+              ) : null}
 
               <Form inline className="d-block d-lg-none" style={{ width: "100%" }}>
                 <SearchBox />
