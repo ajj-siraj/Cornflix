@@ -22,6 +22,7 @@ import "./css/Footer.css";
 import "./css/FeaturedMovies.css";
 import "./css/LatestMovies.css";
 import "./css/ExploreMovies.css";
+import "./css/Login.css";
 
 class App extends React.Component {
   constructor(props) {

@@ -39,29 +39,33 @@ class Header extends React.Component {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link>
-                <Link to="/">Home</Link>
-              </Nav.Link>
-              <Nav.Link>
-                <Link to="/movies">Catalog</Link>
-              </Nav.Link>
-              <Nav.Link>
-                <Link to="/explore">Explore</Link>
-              </Nav.Link>
+              <Link to="/" className="nav-link" role="button">
+                Home
+              </Link>
+
+              <Link to="/movies" className="nav-link" role="button">
+                Catalog
+              </Link>
+
+              <Link to="/explore" className="nav-link" role="button">
+                Explore
+              </Link>
             </Nav>
 
             <Nav className="ml-auto w-50">
               <Form inline className="d-none d-lg-inline" style={{ width: "50%" }}>
                 <SearchBox />
               </Form>
-              <Nav.Link className="d-none d-lg-inline">
-                <Link to="/login">Login</Link>
-              </Nav.Link>
+
+              <Link to="/login" className="d-none d-lg-inline nav-link" role="button">
+                Login
+              </Link>
             </Nav>
             <Nav className="mr-auto">
-              <Nav.Link className="d-block d-lg-none">
-                <Link to="/login">Login</Link>
-              </Nav.Link>
+              <Link to="/login" className="d-block d-lg-none nav-link" role="button">
+                Login
+              </Link>
+
               <Form inline className="d-block d-lg-none" style={{ width: "100%" }}>
                 <SearchBox />
               </Form>

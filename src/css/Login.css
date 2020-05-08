@@ -1,0 +1,14 @@
+.form-validation-feedback {
+  margin-top:5px;
+  padding:10px;
+  border-radius:20px;
+  color: #ddd;
+}
+
+.validation-ok{
+  background-color:#289b11;
+}
+
+.validation-error{
+  background-color:#9b1123;
+}

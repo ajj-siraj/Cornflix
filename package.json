@@ -5,11 +5,12 @@
   "dependencies": {
     "bootstrap": "^4.4.1",
     "cra-template": "1.0.3",
+    "final-form": "^4.19.1",
     "font-awesome": "^4.7.0",
-    "formik": "^2.1.4",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",
+    "react-final-form": "^6.4.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "react-slick": "^0.25.2",
