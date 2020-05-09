@@ -27,9 +27,17 @@ let countriesList = countries.map((country, index) => {
   );
 });
 
-function handleChange(value){
-  console.log("Captcha value: ", value);
-}
+const Captcha = (props) => {
+  return (
+    <Form.Group>
+      <ReCAPTCHA
+        sitekey="6LcjovQUAAAAAFKvx0SeE-fSQYY4-KwrbwSLAlUk"
+        onChange={props.input.onChange}
+      />
+    </Form.Group>
+  );
+};
+
 const Login = (props) => {
   if (props.user.isLoggedIn) {
     return (
@@ -85,7 +93,6 @@ const Login = (props) => {
                               {meta.error}
                             </div>
                           )}
-                          
                         </Form.Group>
                       )}
                     </Field>
@@ -109,7 +116,6 @@ const Login = (props) => {
                               {meta.error}
                             </div>
                           )}
-                          
                         </Form.Group>
                       )}
                     </Field>
@@ -118,17 +124,7 @@ const Login = (props) => {
 
                 <Form.Row>
                   <Col>
-                    <Field name="recaptcha">
-                      {({ input, meta }) => (
-                        <Form.Group>
-                          <ReCAPTCHA
-                            sitekey="6LcjovQUAAAAAFKvx0SeE-fSQYY4-KwrbwSLAlUk"
-                            onChange={handleChange}
-                          />
-                          
-                        </Form.Group>
-                      )}
-                    </Field>
+                    <Field name="recaptcha" component={Captcha} validate={required} />
                   </Col>
                 </Form.Row>
 

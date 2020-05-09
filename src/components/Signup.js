@@ -27,10 +27,19 @@ let countriesList = countries.map((country, index) => {
   );
 });
 
-function handleChange(value) {
-  console.log("Captcha value: ", value);
-}
-
+const Captcha = (props) => {
+  return (
+    <Form.Group>
+      <ReCAPTCHA
+        sitekey="6LcjovQUAAAAAFKvx0SeE-fSQYY4-KwrbwSLAlUk"
+        onChange={props.input.onChange}
+      />
+      {props.meta.error && props.meta.touched && (
+        <div className="form-validation-feedback validation-error">{props.meta.error}</div>
+      )}
+    </Form.Group>
+  );
+};
 const Signup = (props) => {
   if (props.user.isLoggedIn) {
     return (
@@ -94,11 +103,6 @@ const Signup = (props) => {
                               {meta.error}
                             </div>
                           )}
-                          {!meta.error && meta.touched && (
-                            <div className="form-validation-feedback validation-ok">
-                              {"Everything good!"}
-                            </div>
-                          )}
                         </Form.Group>
                       )}
                     </Field>
@@ -120,11 +124,6 @@ const Signup = (props) => {
                           {meta.error && meta.touched && (
                             <div className="form-validation-feedback validation-error">
                               {meta.error}
-                            </div>
-                          )}
-                          {!meta.error && meta.touched && (
-                            <div className="form-validation-feedback validation-ok">
-                              {"Everything good!"}
                             </div>
                           )}
                         </Form.Group>
@@ -152,7 +151,7 @@ const Signup = (props) => {
                           )}
                           {!meta.error && meta.touched && (
                             <div className="form-validation-feedback validation-ok">
-                              {"Everything good!"}
+                              {"Username valid."}
                             </div>
                           )}
                         </Form.Group>
@@ -176,11 +175,6 @@ const Signup = (props) => {
                           {meta.error && meta.touched && (
                             <div className="form-validation-feedback validation-error">
                               {meta.error}
-                            </div>
-                          )}
-                          {!meta.error && meta.touched && (
-                            <div className="form-validation-feedback validation-ok">
-                              {"Everything good!"}
                             </div>
                           )}
                         </Form.Group>
@@ -208,7 +202,7 @@ const Signup = (props) => {
                           )}
                           {!meta.error && meta.touched && (
                             <div className="form-validation-feedback validation-ok">
-                              {"Everything good!"}
+                              {"Strong password"}
                             </div>
                           )}
                         </Form.Group>
@@ -233,7 +227,7 @@ const Signup = (props) => {
                           )}
                           {!meta.error && meta.touched && (
                             <div className="form-validation-feedback validation-ok">
-                              {"Everything good!"}
+                              {"Passwords match."}
                             </div>
                           )}
                         </Form.Group>
@@ -261,11 +255,6 @@ const Signup = (props) => {
                           {props.meta.error && props.meta.touched && (
                             <div className="form-validation-feedback validation-error">
                               {props.meta.error}
-                            </div>
-                          )}
-                          {!props.meta.error && props.meta.touched && (
-                            <div className="form-validation-feedback validation-ok">
-                              {"Everything good!"}
                             </div>
                           )}
                         </Form.Group>
@@ -301,16 +290,7 @@ const Signup = (props) => {
 
                 <Form.Row>
                   <Col>
-                    <Field name="recaptcha">
-                      {({ input, meta }) => (
-                        <Form.Group>
-                          <ReCAPTCHA
-                            sitekey="6LcjovQUAAAAAFKvx0SeE-fSQYY4-KwrbwSLAlUk"
-                            onChange={handleChange}
-                          />
-                        </Form.Group>
-                      )}
-                    </Field>
+                    <Field name="recaptcha" component={Captcha} validate={required} />
                   </Col>
                 </Form.Row>
 
