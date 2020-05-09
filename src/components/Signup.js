@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, Row, Container, Form, Button } from "react-bootstrap";
-
 import { Form as FinalForm, Field } from "react-final-form";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -27,13 +27,27 @@ let countriesList = countries.map((country, index) => {
   );
 });
 
+function handleChange(value) {
+  console.log("Captcha value: ", value);
+}
+
 const Signup = (props) => {
   if (props.user.isLoggedIn) {
     return (
       <Container>
-        <Row>
-          <Col>
-            <p>You are already logged in.</p>
+        <Row className="justify-content-center align-self-center text-center">
+          <Col lg="6">
+            <p
+              style={{
+                marginTop: "40%",
+                marginBottom: "40%",
+                padding: "20px",
+                borderRadius: "20px",
+                backgroundColor: "#5a5a5a",
+              }}
+            >
+              You are already logged in.
+            </p>
           </Col>
         </Row>
       </Container>
@@ -279,6 +293,21 @@ const Signup = (props) => {
                               {meta.error}
                             </div>
                           )}
+                        </Form.Group>
+                      )}
+                    </Field>
+                  </Col>
+                </Form.Row>
+
+                <Form.Row>
+                  <Col>
+                    <Field name="recaptcha">
+                      {({ input, meta }) => (
+                        <Form.Group>
+                          <ReCAPTCHA
+                            sitekey="6LcjovQUAAAAAFKvx0SeE-fSQYY4-KwrbwSLAlUk"
+                            onChange={handleChange}
+                          />
                         </Form.Group>
                       )}
                     </Field>

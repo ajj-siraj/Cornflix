@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, Row, Container, Form, Button } from "react-bootstrap";
-
 import { Form as FinalForm, Field } from "react-final-form";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -27,6 +27,9 @@ let countriesList = countries.map((country, index) => {
   );
 });
 
+function handleChange(value){
+  console.log("Captcha value: ", value);
+}
 const Login = (props) => {
   if (props.user.isLoggedIn) {
     return (
@@ -82,11 +85,7 @@ const Login = (props) => {
                               {meta.error}
                             </div>
                           )}
-                          {!meta.error && meta.touched && (
-                            <div className="form-validation-feedback validation-ok">
-                              {"Everything good!"}
-                            </div>
-                          )}
+                          
                         </Form.Group>
                       )}
                     </Field>
@@ -110,11 +109,23 @@ const Login = (props) => {
                               {meta.error}
                             </div>
                           )}
-                          {!meta.error && meta.touched && (
-                            <div className="form-validation-feedback validation-ok">
-                              {"Everything good!"}
-                            </div>
-                          )}
+                          
+                        </Form.Group>
+                      )}
+                    </Field>
+                  </Col>
+                </Form.Row>
+
+                <Form.Row>
+                  <Col>
+                    <Field name="recaptcha">
+                      {({ input, meta }) => (
+                        <Form.Group>
+                          <ReCAPTCHA
+                            sitekey="6LcjovQUAAAAAFKvx0SeE-fSQYY4-KwrbwSLAlUk"
+                            onChange={handleChange}
+                          />
+                          
                         </Form.Group>
                       )}
                     </Field>

@@ -31,7 +31,7 @@ class App extends React.Component {
     this.state = {
       movies: [],
       user: {
-        isLoggedIn: true,
+        isLoggedIn: false,
       },
     };
   }
