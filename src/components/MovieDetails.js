@@ -4,8 +4,10 @@ import { Link } from "react-router-dom";
 
 function MovieDetails(props) {
   console.log("PROPS INSIDE MovieDetails: ", props);
-  let movie = props.movies.find((movie) => movie.imdbID == props.match.match.params.movieid);
-  // console.log("Movie is: ", movie);
+
+  let movie = props.topMovies.find((movie) => movie.imdbID == props.match.match.params.movieid) ||
+  props.latestMovies.find((movie) => movie.imdbID == props.match.match.params.movieid)
+  console.log("Movie is: ", movie);
   return (
     <Container>
       <Row className="no-gutters">

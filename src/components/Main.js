@@ -39,15 +39,15 @@ class Main extends React.Component {
         <Container fluid>
           <Row>
             <Col className="m-0 p-0">
-              <CustomCarousel />
+              <CustomCarousel movies={this.props.topMovies}/>
             </Col>
           </Row>
           <Row className="no-gutters justify-content-center align-content-center m-4">
-            <FeaturedMovies movies={this.props.movies} toggleMovieModal={this.toggleMovieModal} />
+            <FeaturedMovies movies={this.props.topMovies} toggleMovieModal={this.toggleMovieModal} />
           </Row>
           <Row>
             <Col lg={8}>
-              <LatestMovies movies={this.props.movies} />
+              <LatestMovies movies={this.props.latestMovies} />
             </Col>
             <Col lg={4}>
               <News />

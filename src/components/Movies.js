@@ -21,7 +21,7 @@ class Movies extends React.Component {
   render() {
     console.log(this.state);
     
-    let movies = this.props.movies;
+    let movies = this.props.topMovies;
     let searchTerm = this.state.searchTerm.trim().toLowerCase();
     if (searchTerm.length > 0) {
       movies = movies.filter(movie => movie.Title.toLowerCase().match(searchTerm));

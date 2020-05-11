@@ -29,7 +29,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      movies: [],
+      topMovies: [],
+      latestMovies: [],
       user: {
         isLoggedIn: false,
       },
@@ -39,12 +40,18 @@ class App extends React.Component {
   componentDidMount() {
     //Used imdb-api to retrieve top movies list
     // const imdbAPI = "https://imdb-api.com/en/API/Top250Movies/k_39DL92RX";
-    const apiServer = "http://localhost:4000/movies?_limit=10";
+    // const apiServer = "http://localhost:4000/movies?_limit=10";
+    const apiServer = "http://localhost:4000/movies";
 
-    fetch(apiServer)
+    fetch(`${apiServer}/top`)
       .then((response) => response.json())
-      .then((res) => this.setState({ movies: res }))
-      .then(() => console.log(this.state.movies))
+      .then((res) => this.setState({ topMovies: res }))
+      .catch((err) => console.error(err));
+
+    fetch(`${apiServer}/latest`)
+      .then((response) => response.json())
+      .then((res) => this.setState({ latestMovies: res }))
+      .then((res) => console.log("Latest movies: ", this.state.latestMovies))
       .catch((err) => console.error(err));
   }
 
@@ -52,15 +59,34 @@ class App extends React.Component {
     return (
       <Router>
         <div className="App">
-          <Header user={this.state.user}/>
+          <Header user={this.state.user} />
           <Switch>
-            <Route exact path="/" component={() => <Main movies={this.state.movies} />} />
-            <Route exact path="/movies" component={() => <Movies movies={this.state.movies} />} />
+            <Route
+              exact
+              path="/"
+              component={() => (
+                <Main topMovies={this.state.topMovies} latestMovies={this.state.latestMovies} />
+              )}
+            />
+            <Route
+              exact
+              path="/movies"
+              component={() => <Movies topMovies={this.state.topMovies} />}
+            />
             <Route
               path="/movies/:movieid"
-              render={(match) => <MovieDetails match={match} movies={this.state.movies} />}
+              render={(match) => (
+                <MovieDetails
+                  match={match}
+                  topMovies={this.state.topMovies}
+                  latestMovies={this.state.latestMovies}
+                />
+              )}
             />
-            <Route path="/explore" component={() => <ExploreMovies movies={this.state.movies} />} />
+            <Route
+              path="/explore"
+              component={() => <ExploreMovies movies={this.state.topMovies} />}
+            />
             <Route path="/login" component={() => <Login user={this.state.user} />} />
             <Route path="/signup" component={() => <Signup user={this.state.user} />} />
           </Switch>

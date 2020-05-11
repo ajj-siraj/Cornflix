@@ -13,7 +13,7 @@ const MovieCard = (props) => {
         className="slider-movie-img"
         src={props.movie.Poster}
         alt={props.movie.Title}
-        
+        style={{margin: 'auto'}}
       />
     </>
   );
