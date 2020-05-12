@@ -2,12 +2,18 @@ import React from "react";
 import { Col, Row, Container, Form, Button } from "react-bootstrap";
 import { Form as FinalForm, Field } from "react-final-form";
 import ReCAPTCHA from "react-google-recaptcha";
-
+import * as config from "../config";
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const onSubmit = async (values) => {
-  await sleep(300);
-  window.alert(JSON.stringify(values, 0, 2));
+  let response = await fetch(config.apiServerBaseUrl + "/users/signup", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(values)
+  });
+  let data = response.json();
+
+  alert(response);
 };
 
 //validators
@@ -18,10 +24,10 @@ const minValue = (min) => (value) =>
 const composeValidators = (...validators) => (value) =>
   validators.reduce((error, validator) => error || validator(value), undefined);
 
-let countries = ["Sudan", "USA", "UK", "Egypt"];
+let countries = config.countryList;
 let countriesList = countries.map((country, index) => {
   return (
-    <option value={country} key={`${country}-${index}`}>
+    <option value={config.countryCodes[index]} key={`${country}-${index}`}>
       {country}
     </option>
   );

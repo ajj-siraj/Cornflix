@@ -12,6 +12,9 @@ import ExploreMovies from "./components/ExploreMovies";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 
+//config
+import {apiServerBaseUrl} from "./config";
+
 //other
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "../node_modules/font-awesome/css/font-awesome.min.css";
@@ -37,18 +40,23 @@ class App extends React.Component {
     };
   }
 
+  // static getDerivedStateFromProps(props, state){
+  //   console.log("state: ", state);
+  //   console.log("props: ", props);
+  // }
+
   componentDidMount() {
     //Used imdb-api to retrieve top movies list
     // const imdbAPI = "https://imdb-api.com/en/API/Top250Movies/k_39DL92RX";
     // const apiServer = "http://localhost:4000/movies?_limit=10";
-    const apiServer = "http://localhost:4000/movies";
+    // const apiServer = "http://localhost:4000/movies";
 
-    fetch(`${apiServer}/top`)
+    fetch(`${apiServerBaseUrl}/movies/top`)
       .then((response) => response.json())
       .then((res) => this.setState({ topMovies: res }))
       .catch((err) => console.error(err));
 
-    fetch(`${apiServer}/latest`)
+    fetch(`${apiServerBaseUrl}/movies/latest`)
       .then((response) => response.json())
       .then((res) => this.setState({ latestMovies: res }))
       .then((res) => console.log("Latest movies: ", this.state.latestMovies))
@@ -56,6 +64,7 @@ class App extends React.Component {
   }
 
   render() {
+    console.log("App.js props: ", this.props);
     return (
       <Router>
         <div className="App">
@@ -65,7 +74,7 @@ class App extends React.Component {
               exact
               path="/"
               component={() => (
-                <Main topMovies={this.state.topMovies} latestMovies={this.state.latestMovies} />
+                <Main user={this.state.user} topMovies={this.state.topMovies} latestMovies={this.state.latestMovies} />
               )}
             />
             <Route
