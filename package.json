@@ -17,6 +17,7 @@
     "react-scripts": "3.4.1",
     "react-slick": "^0.25.2",
     "reactstrap": "^8.4.1",
+    "redux": "^4.0.5",
     "slick-carousel": "^1.8.1",
     "yup": "^0.28.5"
   },

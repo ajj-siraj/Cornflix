@@ -1,6 +1,7 @@
 //Main modules or 3rd party
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Switch, Route, withRouter, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
 
 //App components
 import Header from "./components/Header";
@@ -11,9 +12,11 @@ import Movies from "./components/Movies";
 import ExploreMovies from "./components/ExploreMovies";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
+import Logout from "./components/Logout";
 
 //config
-import {apiServerBaseUrl} from "./config";
+import { apiServerBaseUrl } from "./config";
+import * as Actions from "./redux/Actions";
 
 //other
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
@@ -28,22 +31,27 @@ import "./css/LatestMovies.css";
 import "./css/ExploreMovies.css";
 import "./css/Login.css";
 
+const mapStateToProps = (state) => {
+  return {
+    user: state.loginStatus
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loginUser: (user) => dispatch(Actions.loginUser(user)),
+    logoutUser: (user) => dispatch(Actions.logoutUser(user)),
+  };
+};
+
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       topMovies: [],
       latestMovies: [],
-      user: {
-        isLoggedIn: false,
-      },
     };
   }
-
-  // static getDerivedStateFromProps(props, state){
-  //   console.log("state: ", state);
-  //   console.log("props: ", props);
-  // }
 
   componentDidMount() {
     //Used imdb-api to retrieve top movies list
@@ -66,44 +74,61 @@ class App extends React.Component {
   render() {
     console.log("App.js props: ", this.props);
     return (
-      <Router>
-        <div className="App">
-          <Header user={this.state.user} />
-          <Switch>
-            <Route
-              exact
-              path="/"
-              component={() => (
-                <Main user={this.state.user} topMovies={this.state.topMovies} latestMovies={this.state.latestMovies} />
-              )}
-            />
-            <Route
-              exact
-              path="/movies"
-              component={() => <Movies topMovies={this.state.topMovies} />}
-            />
-            <Route
-              path="/movies/:movieid"
-              render={(match) => (
-                <MovieDetails
-                  match={match}
-                  topMovies={this.state.topMovies}
-                  latestMovies={this.state.latestMovies}
-                />
-              )}
-            />
-            <Route
-              path="/explore"
-              component={() => <ExploreMovies movies={this.state.topMovies} />}
-            />
-            <Route path="/login" component={() => <Login user={this.state.user} />} />
-            <Route path="/signup" component={() => <Signup user={this.state.user} />} />
-          </Switch>
-          <Footer />
-        </div>
-      </Router>
+      <div className="App">
+        {this.props.user.isLoggedIn ? <Redirect to="/" /> : null}
+        <Header user={this.props.user} />
+        <Switch>
+          <Route
+            exact
+            path="/"
+            component={() => (
+              <Main
+                user={this.props.user}
+                topMovies={this.state.topMovies}
+                latestMovies={this.state.latestMovies}
+              />
+            )}
+          />
+
+          <Route
+            exact
+            path="/movies"
+            component={() => <Movies topMovies={this.state.topMovies} />}
+          />
+
+          <Route
+            path="/movies/:movieid"
+            render={(match) => (
+              <MovieDetails
+                match={match}
+                topMovies={this.state.topMovies}
+                latestMovies={this.state.latestMovies}
+              />
+            )}
+          />
+
+          <Route
+            path="/explore"
+            component={() => <ExploreMovies movies={this.state.topMovies} />}
+          />
+
+          <Route
+            path="/login"
+            component={() => <Login user={this.props.user} loginUser={this.props.loginUser} />}
+          />
+
+          <Route path="/signup" component={() => <Signup user={this.props.user} />} />
+
+          <Route
+            path="/logout"
+            component={(match) => <Logout match={match} user={this.props.user} logoutUser={this.props.logoutUser} />}
+          />
+          
+        </Switch>
+        <Footer />
+      </div>
     );
   }
 }
 
-export default App;
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

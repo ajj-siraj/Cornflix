@@ -61,7 +61,8 @@ class Login extends React.Component {
       // .then((response) => alert(JSON.stringify(response)))
       .then((response) => {
         if (response.success) {
-          this.setState(prevState => ({...prevState, user: {isLoggedIn: true}}))
+          this.props.loginUser({isLoggedIn: true});
+          // this.setState(prevState => ({...prevState, user: {isLoggedIn: true}}))
         }
       })
       .catch((err) => alert(err));
@@ -92,11 +93,11 @@ class Login extends React.Component {
       );
     }
     
-    if(this.state.user.isLoggedIn){
-      return(
-        <Redirect to={{pathname: '/', state: {user: {isLoggedIn: true}}}} />
-      );
-    }
+    // if(this.props.user.isLoggedIn){
+    //   return(
+    //     <Redirect to={{pathname: '/', state: {user: {isLoggedIn: true}}}} />
+    //   );
+    // }
     return (
       
       <Container>
