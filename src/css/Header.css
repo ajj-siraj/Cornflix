@@ -8,6 +8,7 @@
   width:100%;
 }
 .search-button{
+  margin-left: 10px;
   background-color: transparent;
   border: none;
   outline:none;

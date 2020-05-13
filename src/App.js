@@ -13,6 +13,7 @@ import ExploreMovies from "./components/ExploreMovies";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Logout from "./components/Logout";
+import SearchResults from "./components/SearchResults";
 
 //config
 import { apiServerBaseUrl } from "./config";
@@ -67,7 +68,6 @@ class App extends React.Component {
     fetch(`${apiServerBaseUrl}/movies/latest`)
       .then((response) => response.json())
       .then((res) => this.setState({ latestMovies: res }))
-      .then((res) => console.log("Latest movies: ", this.state.latestMovies))
       .catch((err) => console.error(err));
   }
 
@@ -76,7 +76,7 @@ class App extends React.Component {
     return (
       <div className="App">
         {this.props.user.isLoggedIn ? <Redirect to="/" /> : null}
-        <Header user={this.props.user} />
+        <Route path="/" component={(history) => <Header user={this.props.user} history={history}/>}/>
         <Switch>
           <Route
             exact
@@ -124,6 +124,8 @@ class App extends React.Component {
             component={(match) => <Logout match={match} user={this.props.user} logoutUser={this.props.logoutUser} />}
           />
           
+          <Route exact path="/search" component={() => <SearchResults />}/>
+          <Route path="/search/:query" component={(match) => <SearchResults match={match}/>}/>
         </Switch>
         <Footer />
       </div>

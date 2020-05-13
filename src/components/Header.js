@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { Nav, Navbar, Form, FormControl, Button, Jumbotron } from "react-bootstrap";
 
 import SearchBox from "./SearchBox";
@@ -10,13 +10,22 @@ class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchSuggested: ["Searching..."],
+      query: "",
     };
-    this.fetchSearch = this.fetchSearch.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  fetchSearch(value) {
-    this.setState({ searchSuggested: ["option1", "option2"] });
+  handleSubmit(event) {
+    event.preventDefault();
+    let query = this.state.query;
+    // console.log("PROPS IN HEADER: ", this.state.query);
+    this.props.history.history.push(`/search/${query}`)
+  }
+
+  handleChange(event) {
+    // console.log("HANDLE CHANGE: ", event.target.value);
+    this.setState({ query: event.target.value });
   }
   render() {
     // console.log("PROPS INSIDE Header: ", this.props);
@@ -53,9 +62,24 @@ class Header extends React.Component {
             </Nav>
 
             <Nav className="ml-auto w-50">
-              <Form inline className="d-none d-lg-inline" style={{ width: "50%" }}>
-                <SearchBox />
-              </Form>
+              <div className="search-container">
+                <Form
+                  inline
+                  className="d-none d-lg-inline"
+                  style={{ width: "50%" }}
+                  onSubmit={this.handleSubmit}
+                  
+                >
+                  <input
+                    className="search__input"
+                    type="text"
+                    placeholder="Search"
+                    value={this.state.query}
+                    onChange={this.handleChange}
+                  />
+                  <Button className="fa fa-search search-button" type="submit"></Button>
+                </Form>
+              </div>
 
               {!this.props.user.isLoggedIn ? (
                 <Link to="/login" className="d-none d-lg-inline nav-link" role="button">
