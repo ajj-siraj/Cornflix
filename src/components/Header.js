@@ -19,7 +19,6 @@ class Header extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     let query = this.state.query;
-    // console.log("PROPS IN HEADER: ", this.state.query);
     this.props.history.history.push(`/search/${query}`)
   }
 

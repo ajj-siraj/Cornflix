@@ -63,11 +63,13 @@ a:hover{
   width:30%;
   text-align: center;
   border: solid 1px;
-  border-radius: 20px;
+  border-radius: 2rem;
+  background-color: #4242428e;
 }
 
 .jumbo-button:hover{
   color: #b7d1b7;
+  background-color: #258a2a8e;
 }
 
 .mycustom-carousel-title{
@@ -96,6 +98,9 @@ a:hover{
   width:70%;
   text-align: justify;
   pointer-events: none;
+  background-color: #42424293;
+  border-radius: 2rem;
+  padding:3%;
 }
 /* 
 .wrapper {

@@ -51,14 +51,10 @@ class SearchResults extends React.Component {
     console.log("Search Results: ", this.state.searchResults);
 
     let movies = this.state.searchResults;
-    // let searchTerm = this.state.searchTerm.trim().toLowerCase();
-    // if (searchTerm.length > 0) {
-    //   movies = movies.filter((movie) => movie.Title.toLowerCase().match(searchTerm));
-    // }
 
     let movieList = movies.map((movie, index) => {
       return (
-        <tr key={`movie-list-table-${movie.imdbID}`}>
+        <tr key={`search-result-table-${movie.imdbID}`}>
           {/* <Link to={`/movies/${movie.imdbID}`}> */}
           <td>
             <img
@@ -82,22 +78,7 @@ class SearchResults extends React.Component {
     });
     return (
       <Container>
-        <Row>
-          <Col>
-            <div style={{ marginTop: "20px", marginBottom: "20px" }}>
-              <div className="search-container">
-                <input
-                  className="search__input"
-                  type="text"
-                  placeholder="Search"
-                  onChange={(value) => this.handleChange(value)}
-                  value={this.state.searchTerm}
-                />
-                <a className="btn fa fa-search search-button"></a>
-              </div>
-            </div>
-          </Col>
-        </Row>
+        
         <Row>
           <Col>
             <Table striped bordered variant="light">

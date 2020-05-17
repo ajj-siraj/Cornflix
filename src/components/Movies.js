@@ -1,56 +1,79 @@
 import React from "react";
-import { Col, Row, Container, Table } from "react-bootstrap";
+import { Col, Row, Container, Table, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import SearchBox from "./SearchBox";
+import { apiServerBaseUrl } from "../config";
 
 class Movies extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchTerm: ""
+      searchTerm: "",
+      allMovies: [],
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.loadMore = this.loadMore.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.state.allMovies.length === 0) {
+      this.setState((prevState) => ({ ...prevState, allMovies: this.props.topMovies }));
+    }
   }
 
   handleChange(event) {
     let { value } = event.target;
-    this.setState(prevState => ({...prevState, searchTerm: value}))
-    
+    this.setState((prevState) => ({ ...prevState, searchTerm: value }));
   }
+
+  loadMore() {
+    let page = this.state.allMovies.length / 15;
+    fetch(`${apiServerBaseUrl}/movies/top?p=${page}`)
+      .then((res) => res.json())
+      .then((res) =>
+        this.setState((prevState) => ({
+          ...prevState,
+          allMovies: [...prevState.allMovies, ...res],
+        }))
+      )
+      .catch((err) => console.error(err));
+  }
+
   render() {
-    console.log(this.state);
-    
-    let movies = this.props.topMovies;
+
+    let movies = this.state.allMovies;
     let searchTerm = this.state.searchTerm.trim().toLowerCase();
     if (searchTerm.length > 0) {
-      movies = movies.filter(movie => movie.Title.toLowerCase().match(searchTerm));
+      movies = movies.filter((movie) => movie.Title.toLowerCase().match(searchTerm));
     }
-    
+
     let movieList = movies.map((movie, index) => {
-            return (
-              <tr key={`movie-list-table-${movie.imdbID}`}>
-                {/* <Link to={`/movies/${movie.imdbID}`}> */}
-                <td>
-                  <img
-                    className="img-fluid"
-                    src={movie.Poster}
-                    alt={movie.Title}
-                    style={{ maxHeight: "4rem" }}
-                  />
-                </td>
-                {/* </Link> */}
-                <td>{movie.Year}</td>
-                <td>{movie.Title}</td>
-                <td>{movie.imdbRating}</td>
-                <td>{movie.imdbVotes}</td>
-                <td>{movie.Country}</td>
-                <td>{movie.Genre}</td>
-                <td>{movie.Runtime}</td>
-                <td>{movie.Rated}</td>
-              </tr>
-            );
-          });
+      return (
+        
+        <tr key={`movie-list-table-${movie.imdbID}`}>
+          
+          <td>
+            <img
+              className="img-fluid"
+              src={movie.Poster}
+              alt={movie.Title}
+              style={{ maxHeight: "4rem" }}
+            />
+          </td>
+          
+          <td>{movie.Year}</td>
+          <td>{movie.Title}</td>
+          <td>{movie.imdbRating}</td>
+          <td>{movie.imdbVotes}</td>
+          <td>{movie.Country}</td>
+          <td>{movie.Genre}</td>
+          <td>{movie.Runtime}</td>
+          <td>{movie.Rated}</td>
+        </tr>
+        
+      );
+    });
     return (
       <Container>
         <Row>
@@ -89,10 +112,16 @@ class Movies extends React.Component {
             </Table>
           </Col>
         </Row>
+        <Row>
+          <Col>
+            <Button block rounded variant="success" onClick={this.loadMore}>
+              Load more
+            </Button>
+          </Col>
+        </Row>
       </Container>
     );
   }
 }
 
 export default Movies;
-
