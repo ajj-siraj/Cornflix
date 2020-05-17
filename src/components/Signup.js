@@ -5,17 +5,6 @@ import ReCAPTCHA from "react-google-recaptcha";
 import * as config from "../config";
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const onSubmit = async (values) => {
-  let response = await fetch(config.apiServerBaseUrl + "/users/signup", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(values)
-  });
-  let data = response.json();
-
-  alert(response);
-};
-
 //validators
 const required = (value) => (value ? undefined : "Required");
 const mustBeNumber = (value) => (isNaN(value) ? "Must be a number" : undefined);
@@ -46,7 +35,21 @@ const Captcha = (props) => {
     </Form.Group>
   );
 };
+
 const Signup = (props) => {
+  const onSubmit = async (values) => {
+    let response = await fetch(config.apiServerBaseUrl + "/users/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    });
+    let data = await response.json();
+
+    if (data.success === true) {
+      props.match.history.push("/");
+    }
+  };
+
   if (props.user.isLoggedIn) {
     return (
       <Container>
@@ -68,6 +71,7 @@ const Signup = (props) => {
       </Container>
     );
   }
+
   return (
     <Container>
       <Row className="mt-5 justify-content-center">
@@ -76,15 +80,7 @@ const Signup = (props) => {
             onSubmit={onSubmit}
             validate={(values) => {
               const errors = {};
-              // if (!values.userName) {
-              //   errors.userName = 'Required'
-              // }
-              // if (!values.password) {
-              //   errors.password = 'Required'
-              // }
-              // if (!values.passwordAgain) {
-              //   errors.passwordAgain = 'Required'
-              // } else
+
               if (values.passwordAgain !== values.password) {
                 errors.passwordAgain = "Must match";
               }
