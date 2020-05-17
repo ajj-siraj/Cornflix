@@ -117,7 +117,7 @@ class App extends React.Component {
             component={() => <Login user={this.props.user} loginUser={this.props.loginUser} />}
           />
 
-          <Route path="/signup" component={(match) => <Signup match={match} user={this.props.user} />} />
+          <Route path="/signup" component={(match) => <Signup match={match} user={this.props.user} loginUser={this.props.loginUser}/>} />
 
           <Route
             path="/logout"

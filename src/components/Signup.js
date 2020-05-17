@@ -46,6 +46,7 @@ const Signup = (props) => {
     let data = await response.json();
 
     if (data.success === true) {
+      props.loginUser({user: {isLoggedIn: true}});
       props.match.history.push("/");
     }
   };
