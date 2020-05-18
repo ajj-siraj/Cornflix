@@ -36,7 +36,7 @@ class Main extends React.Component {
           movie={this.state.movie}
           toggleMovieModal={this.toggleMovieModal}
         />
-        <Container fluid>
+        <Container fluid className="mb-5">
           <Row>
             <Col className="m-0 p-0">
               <CustomCarousel movies={this.props.topMovies}/>

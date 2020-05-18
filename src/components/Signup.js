@@ -3,6 +3,7 @@ import { Col, Row, Container, Form, Button } from "react-bootstrap";
 import { Form as FinalForm, Field } from "react-final-form";
 import ReCAPTCHA from "react-google-recaptcha";
 import * as config from "../config";
+import * as data from "../data";
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 //validators
@@ -13,10 +14,10 @@ const minValue = (min) => (value) =>
 const composeValidators = (...validators) => (value) =>
   validators.reduce((error, validator) => error || validator(value), undefined);
 
-let countries = config.countryList;
+let countries = data.countryList;
 let countriesList = countries.map((country, index) => {
   return (
-    <option value={config.countryCodes[index]} key={`${country}-${index}`}>
+    <option value={data.countryCodes[index]} key={`${country}-${index}`}>
       {country}
     </option>
   );
