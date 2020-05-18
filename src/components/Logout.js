@@ -18,12 +18,12 @@ const Logout = (props) => {
 
   return (
     <Container>
-      <Row className="justify-content-center align-self-center text-center">
+      <Row className="justify-content-center align-self-center text-center mb-5">
         <Col lg="6">
           <p
             style={{
-              marginTop: "40%",
-              marginBottom: "40%",
+              marginTop: "20%",
+              marginBottom: "20%",
               padding: "20px",
               borderRadius: "20px",
               backgroundColor: "#5a5a5a",

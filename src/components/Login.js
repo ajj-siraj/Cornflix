@@ -1,43 +1,21 @@
 import React from "react";
-import { Col, Row, Container, Form, Button } from "react-bootstrap";
+import { Col, Row, Container, Form, Button, Alert } from "react-bootstrap";
 import { Form as FinalForm, Field } from "react-final-form";
 import ReCAPTCHA from "react-google-recaptcha";
 import { apiServerBaseUrl, recaptchaSiteKey } from "../config";
-import { Redirect } from "react-router-dom";
 
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-// const onSubmit = async (values) => {
-//   fetch(apiServerBaseUrl + "/users/login", {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify(values),
-//   })
-//     .then((response) => response.json())
-//     // .then((response) => alert(JSON.stringify(response)))
-//     .then((response) => {
-//       if (response.success) {
-//         this.setState(prevState => ({...prevState, user: {isLoggedIn: true}}))
-//       }
-//     })
-//     .catch((err) => alert(err));
-
-//   // await sleep(300);
-//   // window.alert(JSON.stringify(values, 0, 2));
-// };
+// const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 //validators
 const required = (value) => (value ? undefined : "Required");
-// const mustBeNumber = (value) => (isNaN(value) ? "Must be a number" : undefined);
-// const minValue = (min) => (value) =>
-//   isNaN(value) || value >= min ? undefined : `Should be greater than ${min}`;
-// const composeValidators = (...validators) => (value) =>
-//   validators.reduce((error, validator) => error || validator(value), undefined);
 
 const Captcha = (props) => {
   return (
     <Form.Group>
       <ReCAPTCHA sitekey={recaptchaSiteKey} onChange={props.input.onChange} />
+      {props.meta.error && props.meta.touched && (
+        <div className="form-validation-feedback validation-error">{props.meta.error}</div>
+      )}
     </Form.Group>
   );
 };
@@ -47,6 +25,7 @@ class Login extends React.Component {
     super(props);
     this.state = {
       user: { isLoggedIn: false },
+      loginFailed: false,
     };
     this.onSubmit = this.onSubmit.bind(this);
   }
@@ -61,15 +40,14 @@ class Login extends React.Component {
       // .then((response) => alert(JSON.stringify(response)))
       .then((response) => {
         if (response.success) {
-          this.props.loginUser({isLoggedIn: true});
-          // this.setState(prevState => ({...prevState, user: {isLoggedIn: true}}))
+          this.props.loginUser({ isLoggedIn: true });
+        } else {
+          this.setState((prevState) => ({ ...prevState, loginFailed: true }));
         }
       })
       .catch((err) => alert(err));
-  
-    // await sleep(300);
-    // window.alert(JSON.stringify(values, 0, 2));
   };
+
   render() {
     if (this.props.user.isLoggedIn) {
       return (
@@ -92,16 +70,15 @@ class Login extends React.Component {
         </Container>
       );
     }
-    
-    // if(this.props.user.isLoggedIn){
-    //   return(
-    //     <Redirect to={{pathname: '/', state: {user: {isLoggedIn: true}}}} />
-    //   );
-    // }
+
     return (
-      
       <Container>
         <Row className="mt-5 justify-content-center">
+          <Col xs="12" className="text-center">
+            {this.state.loginFailed ? (
+              <Alert variant="danger">Incorrect credentials, please try again!</Alert>
+            ) : null}
+          </Col>
           <Col lg="6" style={{ backgroundColor: "#5a5a5a", borderRadius: "20px", padding: "5%" }}>
             <FinalForm
               onSubmit={this.onSubmit}
@@ -157,11 +134,11 @@ class Login extends React.Component {
                     </Col>
                   </Form.Row>
 
-                  {/* <Form.Row>
-                  <Col>
-                    <Field name="recaptcha" component={Captcha} validate={required} />
-                  </Col>
-                </Form.Row> */}
+                  <Form.Row>
+                    <Col>
+                      <Field name="recaptcha" component={Captcha} validate={required} />
+                    </Col>
+                  </Form.Row>
 
                   <Form.Row>
                     <Col>
