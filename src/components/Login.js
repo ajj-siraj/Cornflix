@@ -3,7 +3,7 @@ import { Col, Row, Container, Form, Button, Alert } from "react-bootstrap";
 import { Form as FinalForm, Field } from "react-final-form";
 import ReCAPTCHA from "react-google-recaptcha";
 import { apiServerBaseUrl, recaptchaSiteKey } from "../config";
-
+import axios from "axios";
 // const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 //validators
@@ -31,21 +31,18 @@ class Login extends React.Component {
   }
 
   onSubmit = async (values) => {
-    fetch(apiServerBaseUrl + "/users/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
-    })
-      .then((response) => response.json())
-      // .then((response) => alert(JSON.stringify(response)))
+
+    //I was here: client still doesn't set cookie even after using axios
+    axios
+      .post(apiServerBaseUrl + "/users/login", values)
       .then((response) => {
-        if (response.success) {
+        if (response.data.success) {
           this.props.loginUser({ isLoggedIn: true });
         } else {
           this.setState((prevState) => ({ ...prevState, loginFailed: true }));
         }
       })
-      .catch((err) => alert(err));
+      .catch((err) => console.error(err));
   };
 
   render() {
@@ -73,7 +70,7 @@ class Login extends React.Component {
 
     return (
       <Container>
-        <Row className="mt-5 justify-content-center">
+        <Row className="mt-5 mb-5 justify-content-center">
           <Col xs="12" className="text-center">
             {this.state.loginFailed ? (
               <Alert variant="danger">Incorrect credentials, please try again!</Alert>

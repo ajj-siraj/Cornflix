@@ -34,7 +34,8 @@ import "./css/Login.css";
 
 const mapStateToProps = (state) => {
   return {
-    user: state.loginStatus
+    user: state.loginStatus,
+    session: state.session
   };
 };
 
@@ -60,15 +61,20 @@ class App extends React.Component {
     // const apiServer = "http://localhost:4000/movies?_limit=10";
     // const apiServer = "http://localhost:4000/movies";
 
-    fetch(`${apiServerBaseUrl}/movies/top`)
-      .then((response) => response.json())
-      .then((res) => this.setState({ topMovies: res }))
-      .catch((err) => console.error(err));
+    // fetch(`${apiServerBaseUrl}/users/validatesession?s=${localStorage.getItem('session-id')}`)
+    if (this.state.topMovies.length === 0) {
+      fetch(`${apiServerBaseUrl}/movies/top`)
+        .then((response) => response.json())
+        .then((res) => this.setState({ topMovies: res }))
+        .catch((err) => console.error(err));
+    }
 
-    fetch(`${apiServerBaseUrl}/movies/latest`)
-      .then((response) => response.json())
-      .then((res) => this.setState({ latestMovies: res }))
-      .catch((err) => console.error(err));
+    if (this.state.latestMovies.length === 0) {
+      fetch(`${apiServerBaseUrl}/movies/latest`)
+        .then((response) => response.json())
+        .then((res) => this.setState({ latestMovies: res }))
+        .catch((err) => console.error(err));
+    }
   }
 
   render() {
@@ -76,7 +82,10 @@ class App extends React.Component {
     return (
       <div className="App">
         {this.props.user.isLoggedIn ? <Redirect to="/" /> : null}
-        <Route path="/" component={(history) => <Header user={this.props.user} history={history}/>}/>
+        <Route
+          path="/"
+          component={(history) => <Header user={this.props.user} history={history} />}
+        />
         <Switch>
           <Route
             exact
@@ -117,15 +126,22 @@ class App extends React.Component {
             component={() => <Login user={this.props.user} loginUser={this.props.loginUser} />}
           />
 
-          <Route path="/signup" component={(match) => <Signup match={match} user={this.props.user} loginUser={this.props.loginUser}/>} />
+          <Route
+            path="/signup"
+            component={(match) => (
+              <Signup match={match} user={this.props.user} loginUser={this.props.loginUser} />
+            )}
+          />
 
           <Route
             path="/logout"
-            component={(match) => <Logout match={match} user={this.props.user} logoutUser={this.props.logoutUser} />}
+            component={(match) => (
+              <Logout match={match} user={this.props.user} logoutUser={this.props.logoutUser} />
+            )}
           />
-          
-          <Route exact path="/search" component={() => <SearchResults />}/>
-          <Route path="/search/:query" component={(match) => <SearchResults match={match}/>}/>
+
+          <Route exact path="/search" component={() => <SearchResults />} />
+          <Route path="/search/:query" component={(match) => <SearchResults match={match} />} />
         </Switch>
         <Footer />
       </div>

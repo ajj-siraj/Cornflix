@@ -1,12 +1,16 @@
 import React from 'react'
 import {Container, Row, Col, Button} from 'react-bootstrap';
-
+import {apiServerBaseUrl} from '../config';
+import axios from 'axios';
 
 const Logout = (props) => {
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     // console.log("PROPS in Logout: ", props);
     
+    let res = await axios.get(`${apiServerBaseUrl}/users/logout`);
+    let data = JSON.stringify(res);
+    alert(data);
     props.logoutUser({isLoggedIn: false});
     props.match.history.push('/');
   }

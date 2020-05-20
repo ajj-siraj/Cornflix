@@ -11,21 +11,22 @@ class News extends React.Component {
     };
 
     this._isMounted = false;
-
   }
 
   componentDidMount() {
     this._isMounted = true;
-
-    const newsAPI =
-      "https://newsapi.org/v2/everything?q=boxoffice&apiKey=0a95e66f29f94a6b8e72cb581d05d184&language=en";
-      this._isMounted && fetch(newsAPI)
-      .then((res) => res.json())
-      .then((res) => res.articles.slice(0, 5))
-      .then((res) => {
-        this._isMounted && this.setState((prevState) => ({ ...prevState, news: res }));
-      })
-      .catch((err) => console.error(err));
+    if (this.state.news.length === 0) {
+      const newsAPI =
+        "https://newsapi.org/v2/everything?q=boxoffice&apiKey=0a95e66f29f94a6b8e72cb581d05d184&language=en";
+      this._isMounted &&
+        fetch(newsAPI)
+          .then((res) => res.json())
+          .then((res) => res.articles.slice(0, 5))
+          .then((res) => {
+            this._isMounted && this.setState((prevState) => ({ ...prevState, news: res }));
+          })
+          .catch((err) => console.error(err));
+    }
   }
 
   componentWillUnmount() {
@@ -37,17 +38,23 @@ class News extends React.Component {
     // console.log("NEWS articles: ", this.state.news);
     let articles = this.state.news.map((article, index) => {
       return (
-        <Card key={`${article.source.id}/${index}`}className="bg-dark text-white">
+        <Card key={`${article.source.id}/${index}`} className="bg-dark text-white">
           <Card.Body>
             <Row>
               <Col lg="4">
-                <Card.Img className="news-img img-fluid m-0" variant="left" src={article.urlToImage} />
+                <Card.Img
+                  className="news-img img-fluid m-0"
+                  variant="left"
+                  src={article.urlToImage}
+                />
               </Col>
               <Col className="m-0 p-0">
                 <Card.Title>{article.title}</Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">{article.source.name}</Card.Subtitle>
                 <Card.Text>{article.description}</Card.Text>
-                <Card.Link href={article.url} target="_blank">Read More</Card.Link>
+                <Card.Link href={article.url} target="_blank">
+                  Read More
+                </Card.Link>
               </Col>
             </Row>
           </Card.Body>

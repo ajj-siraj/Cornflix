@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "cra-template": "1.0.3",
     "final-form": "^4.19.1",
@@ -19,6 +20,8 @@
     "react-slick": "^0.25.2",
     "reactstrap": "^8.4.1",
     "redux": "^4.0.5",
+    "redux-react-session": "^2.6.1",
+    "redux-thunk": "^2.3.0",
     "slick-carousel": "^1.8.1",
     "yup": "^0.28.5"
   },
