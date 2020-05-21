@@ -56,6 +56,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    console.log(document.cookie['connect.sid']);
     //Used imdb-api to retrieve top movies list
     // const imdbAPI = "https://imdb-api.com/en/API/Top250Movies/k_39DL92RX";
     // const apiServer = "http://localhost:4000/movies?_limit=10";
@@ -70,7 +71,7 @@ class App extends React.Component {
     }
 
     if (this.state.latestMovies.length === 0) {
-      fetch(`${apiServerBaseUrl}/movies/latest`)
+      fetch(`${apiServerBaseUrl}/movies/top`)
         .then((response) => response.json())
         .then((res) => this.setState({ latestMovies: res }))
         .catch((err) => console.error(err));

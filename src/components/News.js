@@ -15,7 +15,7 @@ class News extends React.Component {
 
   componentDidMount() {
     this._isMounted = true;
-    if (this.state.news.length === 0) {
+    if (false && this.state.news.length === 0) {
       const newsAPI =
         "https://newsapi.org/v2/everything?q=boxoffice&apiKey=0a95e66f29f94a6b8e72cb581d05d184&language=en";
       this._isMounted &&

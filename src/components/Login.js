@@ -34,7 +34,7 @@ class Login extends React.Component {
 
     //I was here: client still doesn't set cookie even after using axios
     axios
-      .post(apiServerBaseUrl + "/users/login", values)
+      .post(apiServerBaseUrl + "/users/login", values, {withCredentials: true})
       .then((response) => {
         if (response.data.success) {
           this.props.loginUser({ isLoggedIn: true });
@@ -131,11 +131,11 @@ class Login extends React.Component {
                     </Col>
                   </Form.Row>
 
-                  <Form.Row>
+                  {/* <Form.Row>
                     <Col>
                       <Field name="recaptcha" component={Captcha} validate={required} />
                     </Col>
-                  </Form.Row>
+                  </Form.Row> */}
 
                   <Form.Row>
                     <Col>
