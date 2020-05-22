@@ -2,6 +2,7 @@
 import React from "react";
 import { Switch, Route, withRouter, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
+import axios from 'axios';
 
 //App components
 import Header from "./components/Header";
@@ -64,18 +65,21 @@ class App extends React.Component {
 
     // fetch(`${apiServerBaseUrl}/users/validatesession?s=${localStorage.getItem('session-id')}`)
     if (this.state.topMovies.length === 0) {
-      fetch(`${apiServerBaseUrl}/movies/top`)
-        .then((response) => response.json())
-        .then((res) => this.setState({ topMovies: res }))
+      axios.get(`${apiServerBaseUrl}/movies/top`, {withCredentials: true})
+        .then((res) => this.setState({ topMovies: res.data, latestMovies: res.data }))
         .catch((err) => console.error(err));
+      // fetch(`${apiServerBaseUrl}/movies/top`)
+      //   .then((response) => response.json())
+      //   .then((res) => this.setState({ topMovies: res }))
+      //   .catch((err) => console.error(err));
     }
 
-    if (this.state.latestMovies.length === 0) {
-      fetch(`${apiServerBaseUrl}/movies/top`)
-        .then((response) => response.json())
-        .then((res) => this.setState({ latestMovies: res }))
-        .catch((err) => console.error(err));
-    }
+    // if (this.state.latestMovies.length === 0) {
+    //   fetch(`${apiServerBaseUrl}/movies/top`)
+    //     .then((response) => response.json())
+    //     .then((res) => this.setState({ latestMovies: res }))
+    //     .catch((err) => console.error(err));
+    // }
   }
 
   render() {
