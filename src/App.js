@@ -43,7 +43,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     loginUser: (user) => dispatch(Actions.loginUser(user)),
-    logoutUser: (user) => dispatch(Actions.logoutUser(user)),
+    logoutUser: () => dispatch(Actions.logoutUser()),
   };
 };
 
@@ -57,12 +57,20 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    console.log(document.cookie['connect.sid']);
+    
     //Used imdb-api to retrieve top movies list
     // const imdbAPI = "https://imdb-api.com/en/API/Top250Movies/k_39DL92RX";
     // const apiServer = "http://localhost:4000/movies?_limit=10";
     // const apiServer = "http://localhost:4000/movies";
 
+    axios.get(`${apiServerBaseUrl}/users/validatesession`, {withCredentials: true})
+      .then(res => {
+        if(!res.data.success){
+          return;
+        }
+        console.log(res.data.user);
+        this.props.loginUser(res.data.user);
+      })
     // fetch(`${apiServerBaseUrl}/users/validatesession?s=${localStorage.getItem('session-id')}`)
     if (this.state.topMovies.length === 0) {
       axios.get(`${apiServerBaseUrl}/movies/top`, {withCredentials: true})

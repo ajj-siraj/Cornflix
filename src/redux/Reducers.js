@@ -1,11 +1,11 @@
 import * as ActionTypes from './Actions';
 import {combineReducers} from 'redux';
-import { sessionReducer } from 'redux-react-session';
+// import { sessionReducer } from 'redux-react-session';
 
 const loginReducer = (prevState = {isLoggedIn: false}, action) => {
   switch(action.type){
     case ActionTypes.LOGIN_USER:
-      return {...prevState, isLoggedIn: true}
+      return {...prevState, ...action.user, isLoggedIn: true}
     case ActionTypes.LOGOUT_USER:
       return {...prevState, isLoggedIn: false}
     default:
@@ -24,5 +24,5 @@ const loginReducer = (prevState = {isLoggedIn: false}, action) => {
 
 export default combineReducers({
   loginStatus: loginReducer,
-  session: sessionReducer
+  // session: sessionReducer
 })

@@ -19,7 +19,7 @@ class Header extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     let query = this.state.query;
-    this.props.history.history.push(`/search/${query}`)
+    this.props.history.history.push(`/search/${query}`);
   }
 
   handleChange(event) {
@@ -67,7 +67,6 @@ class Header extends React.Component {
                   className="d-none d-lg-inline"
                   style={{ width: "50%" }}
                   onSubmit={this.handleSubmit}
-                  
                 >
                   <input
                     className="search__input"
@@ -79,6 +78,12 @@ class Header extends React.Component {
                   <Button className="fa fa-search search-button" type="submit"></Button>
                 </Form>
               </div>
+
+              {!this.props.user.isLoggedIn ? null : (
+                <Link to={`/account/${this.props.user.username}`}>
+                  Welcome, {this.props.user.firstname}
+                </Link>
+              )}
 
               {!this.props.user.isLoggedIn ? (
                 <Link to="/login" className="d-none d-lg-inline nav-link" role="button">
