@@ -18,7 +18,7 @@ class Header extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    let query = this.state.query;
+    let query = this.state.query.length === 0 ? " " : this.state.query;
     this.props.history.history.push(`/search/${query}`);
   }
 
@@ -27,8 +27,8 @@ class Header extends React.Component {
     this.setState({ query: event.target.value });
   }
 
-  componentDidMount(){
-    if(!this.props.user.firstname){
+  componentDidMount() {
+    if (!this.props.user.firstname) {
       this.props.validateUser();
     }
   }
@@ -66,6 +66,7 @@ class Header extends React.Component {
               </Link>
             </Nav>
 
+            {/* Navlinks for large screens */}
             <Nav className="ml-auto w-50">
               <div className="search-container">
                 <Form
@@ -86,7 +87,11 @@ class Header extends React.Component {
               </div>
 
               {!this.props.user.isLoggedIn ? null : (
-                <Link to={`/account/${this.props.user.username}`}>
+                <Link
+                  to={`/account/${this.props.user.username}`}
+                  className="d-none d-lg-inline nav-link"
+                  role="button"
+                >
                   Welcome, {this.props.user.firstname}
                 </Link>
               )}
@@ -106,14 +111,16 @@ class Header extends React.Component {
                 </Link>
               ) : null}
             </Nav>
+
+            {/* Collapsed Navlinks for smaller screens */}
             <Nav className="mr-auto">
               {!this.props.user.isLoggedIn ? (
                 <Link to="/login" className="d-block d-lg-none nav-link" role="button">
                   Login
                 </Link>
               ) : (
-                <Link to="/login" className="d-block d-lg-none nav-link" role="button">
-                  Login
+                <Link to="/logout" className="d-block d-lg-none nav-link" role="button">
+                  Logout
                 </Link>
               )}
               {!this.props.user.isLoggedIn ? (
@@ -122,9 +129,27 @@ class Header extends React.Component {
                 </Link>
               ) : null}
 
-              <Form inline className="d-block d-lg-none" style={{ width: "100%" }}>
-                <SearchBox />
-              </Form>
+              {!this.props.user.isLoggedIn ? null : (
+                <Link
+                  to={`/account/${this.props.user.username}`}
+                  className="d-block d-lg-none nav-link"
+                  role="button"
+                >
+                  Welcome, {this.props.user.firstname}
+                </Link>
+              )}
+              <div className="d-block d-lg-none search-container">
+                <Form inline style={{ width: "100%" }} onSubmit={this.handleSubmit}>
+                  <input
+                    className="search__input"
+                    type="text"
+                    placeholder="Search"
+                    value={this.state.query}
+                    onChange={this.handleChange}
+                  />
+                  <Button className="fa fa-search search-button" type="submit"></Button>
+                </Form>
+              </div>
             </Nav>
           </Navbar.Collapse>
         </Navbar>

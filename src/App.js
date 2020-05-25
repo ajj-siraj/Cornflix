@@ -17,7 +17,7 @@ import Signup from "./components/Signup";
 import Logout from "./components/Logout";
 import SearchResults from "./components/SearchResults";
 import Loading from "./components/Loading";
-
+import UserAccount from "./components/pages/UserAccount";
 //config
 import { apiServerBaseUrl } from "./config";
 import * as Actions from "./redux/Actions";
@@ -36,6 +36,7 @@ import "./css/FeaturedMovies.css";
 import "./css/LatestMovies.css";
 import "./css/ExploreMovies.css";
 import "./css/Login.css";
+
 
 const mapStateToProps = (state) => {
   return {
@@ -63,23 +64,9 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    //Used imdb-api to retrieve top movies list
-    // const imdbAPI = "https://imdb-api.com/en/API/Top250Movies/k_39DL92RX";
-    // const apiServer = "http://localhost:4000/movies?_limit=10";
-    // const apiServer = "http://localhost:4000/movies";
 
-    // axios
-    //   .get(`${apiServerBaseUrl}/users/validatesession`, { withCredentials: true })
-    //   .then((res) => {
-    //     if (!res.data.success) {
-    //       return;
-    //     }
-    //     console.log(res.data.user);
-    //     this.props.loginUser(res.data.user);
-    //   });
     this.props.validateUser();
 
-    // fetch(`${apiServerBaseUrl}/users/validatesession?s=${localStorage.getItem('session-id')}`)
     if (this.state.topMovies.length === 0) {
       axios
         .get(`${apiServerBaseUrl}/movies/top`, { withCredentials: true })
@@ -176,6 +163,7 @@ class App extends React.Component {
 
           <Route exact path="/search" component={() => <SearchResults />} />
           <Route path="/search/:query" component={(match) => <SearchResults match={match} />} />
+          <Route path="/account/:username" component={() => <UserAccount />}/>
         </Switch>
 
         <Footer />

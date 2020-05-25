@@ -58,7 +58,7 @@ function MovieDetails(props) {
         <Col lg="6">
           <Fade right cascade>
             <div>
-              <h4>Plot</h4>
+              <h4 className="text-warning">Plot</h4>
               <p>{movie.Plot}</p>
               <h4>Rated: </h4>
               <p>
@@ -68,7 +68,7 @@ function MovieDetails(props) {
                   movie.Rated
                 )}
               </p>
-              <h4>Writer(s): </h4>
+              <h4 className="text-warning">Writer(s): </h4>
               <p>
                 {movie.Writer === "N/A" ? (
                   <span style={{ color: "orange" }}>Data unavailable in the database.</span>
@@ -76,7 +76,7 @@ function MovieDetails(props) {
                   movie.Writer
                 )}
               </p>
-              <h4>Director: </h4>
+              <h4 className="text-warning">Director: </h4>
               <p>
                 {movie.Director === "N/A" ? (
                   <span style={{ color: "orange" }}>Data unavailable in the database.</span>
@@ -84,7 +84,7 @@ function MovieDetails(props) {
                   movie.Director
                 )}
               </p>
-              <h4>Year: </h4>
+              <h4 className="text-warning">Year: </h4>
               <p>
                 {movie.Year === "N/A" ? (
                   <span style={{ color: "orange" }}>Data unavailable in the database.</span>
@@ -92,7 +92,7 @@ function MovieDetails(props) {
                   movie.Year
                 )}
               </p>
-              <h4>Actors: </h4>
+              <h4 className="text-warning">Actors: </h4>
               <p>
                 {movie.Actors === "N/A" ? (
                   <span style={{ color: "orange" }}>Data unavailable in the database.</span>
@@ -100,7 +100,7 @@ function MovieDetails(props) {
                   movie.Actors
                 )}
               </p>
-              <h4>Runtime: </h4>
+              <h4 className="text-warning">Runtime: </h4>
               <p>
                 {movie.Runtime === "N/A" ? (
                   <span style={{ color: "orange" }}>Data unavailable in the database.</span>
@@ -108,7 +108,7 @@ function MovieDetails(props) {
                   movie.Runtime
                 )}
               </p>
-              <h4>IMDB Rating: </h4>
+              <h4 className="text-warning">IMDB Rating: </h4>
               <p>
                 {movie.imdbRating === "N/A" ? (
                   <span style={{ color: "orange" }}>Data unavailable in the database.</span>
@@ -116,7 +116,7 @@ function MovieDetails(props) {
                   movie.imdbRating
                 )}
               </p>
-              <h4>IMDB Votes: </h4>
+              <h4 className="text-warning">IMDB Votes: </h4>
               <p>
                 {movie.imdbVotes === "N/A" ? (
                   <span style={{ color: "orange" }}>Data unavailable in the database.</span>
