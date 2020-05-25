@@ -1,6 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import Fade from "react-reveal/Fade";
 
 import FeaturedMovies from "./FeaturedMovies";
 import News from "./News";
@@ -37,20 +38,31 @@ class Main extends React.Component {
           toggleMovieModal={this.toggleMovieModal}
         />
         <Container fluid className="mb-5">
-          <Row>
-            <Col className="m-0 p-0">
-              <CustomCarousel movies={this.props.topMovies}/>
-            </Col>
-          </Row>
-          <Row className="no-gutters justify-content-center align-content-center m-4">
-            <FeaturedMovies movies={this.props.topMovies} toggleMovieModal={this.toggleMovieModal} />
-          </Row>
+          <Fade>
+            <Row>
+              <Col className="m-0 p-0">
+                <CustomCarousel movies={this.props.topMovies} />
+              </Col>
+            </Row>
+          </Fade>
+
+          <Fade right cascade>
+            <Row className="no-gutters justify-content-center align-content-center m-4">
+              <FeaturedMovies
+                movies={this.props.topMovies}
+                toggleMovieModal={this.toggleMovieModal}
+              />
+            </Row>
+          </Fade>
+
           <Row>
             <Col lg={8}>
               <LatestMovies movies={this.props.latestMovies} />
             </Col>
             <Col lg={4}>
-              <News />
+              <Fade bottom cascade>
+                <News />
+              </Fade>
               <div>
                 News data retrieved from <a href="https://newsapi.org/">NewsAPI.org</a>
               </div>

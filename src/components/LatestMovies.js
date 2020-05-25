@@ -1,12 +1,12 @@
 import React from "react";
 import { Col, Row, Modal, Button, ListGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
+import Fade from "react-reveal/Fade";
 const MovieListItem = (props) => {
   return (
     <>
       <Link to={`/movies/${props.movie.imdbID}`}>
-        <ListGroup.Item className={props.color}>
+        <ListGroup.Item className={`${props.color} mb-3`}>
           <Row>
             <Col xs={2}>
               <img src={props.movie.Poster} alt={props.movie.Title} style={{ height: "5rem" }} />
@@ -31,15 +31,23 @@ class LatestMovies extends React.Component {
     let latest = this.props.movies.map((movie, index) => {
       return (
         <ListGroup key={`${movie.id}-${index}`}>
-          <MovieListItem movie={movie} color={index % 2 == 0 ? "dark-list" : "light-list"} />
+          
+            <MovieListItem movie={movie} color={index % 2 == 0 ? "dark-list" : "light-list"} />
+          
         </ListGroup>
       );
     });
 
     return (
       <Col>
-        <h1 className="display-4 text-center m-4 heading">Latest Movies</h1>
-        <div>{latest}</div>
+        <Fade bottom cascade>
+          <div>
+            <h1 className="display-4 text-center m-4 heading">Latest Movies</h1>
+
+          {latest}
+          </div>
+          
+        </Fade>
       </Col>
     );
   }

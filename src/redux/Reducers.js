@@ -13,6 +13,23 @@ const loginReducer = (prevState = {isLoggedIn: false}, action) => {
   }
 }
 
+const loadingReducer = (prevState = {isLoading: true}, action) => {
+  switch(action.type){
+    case ActionTypes.LOADING_COMPLETE:
+      return {...prevState, isLoading: false};
+    default:
+      return prevState;
+  }
+}
+
+const validateReducer = (prevState = {}, action) => {
+  switch(action.type){
+    case ActionTypes.VERIFIED:
+      return prevState;
+    default:
+      return prevState;
+  }
+}
 // const logoutReducer = (prevState = {user: {isLoggedIn: false}}, action) => {
 //   switch(action.type){
 //     case ActionTypes.LOGOUT_USER:
@@ -24,5 +41,6 @@ const loginReducer = (prevState = {isLoggedIn: false}, action) => {
 
 export default combineReducers({
   loginStatus: loginReducer,
-  // session: sessionReducer
+  loadingStatus: loadingReducer,
+  validateStatus: validateReducer
 })

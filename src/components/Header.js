@@ -26,6 +26,12 @@ class Header extends React.Component {
     // console.log("HANDLE CHANGE: ", event.target.value);
     this.setState({ query: event.target.value });
   }
+
+  componentDidMount(){
+    if(!this.props.user.firstname){
+      this.props.validateUser();
+    }
+  }
   render() {
     // console.log("PROPS INSIDE Header: ", this.props);
     return (

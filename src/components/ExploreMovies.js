@@ -1,6 +1,7 @@
 import React from "react";
 import { Col, Row, Container, CardColumns, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import Slide from "react-reveal/Slide";
 
 class ExploreMovies extends React.Component {
   constructor(props) {
@@ -26,7 +27,6 @@ class ExploreMovies extends React.Component {
               <Card.Text className="custom-card-item">{movie.Plot}</Card.Text>
             </Card.Body>
           </Link>
-          
         </Card>
       );
     });
@@ -34,7 +34,9 @@ class ExploreMovies extends React.Component {
     return (
       <Container>
         <Row className="mt-5">
-          <CardColumns>{movieCards}</CardColumns>
+          
+            <CardColumns><Slide bottom cascade><div>{movieCards}</div></Slide></CardColumns>
+          
         </Row>
       </Container>
     );

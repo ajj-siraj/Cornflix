@@ -4,6 +4,11 @@ import { Form as FinalForm, Field } from "react-final-form";
 import ReCAPTCHA from "react-google-recaptcha";
 import { apiServerBaseUrl, recaptchaSiteKey } from "../config";
 import axios from "axios";
+
+//React-reveal components
+import Fade from "react-reveal/Fade";
+import LightSpeed from "react-reveal/LightSpeed";
+import Bounce from "react-reveal/Bounce";
 // const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 //validators
@@ -14,7 +19,9 @@ const Captcha = (props) => {
     <Form.Group>
       <ReCAPTCHA sitekey={recaptchaSiteKey} onChange={props.input.onChange} />
       {props.meta.error && props.meta.touched && (
-        <div className="form-validation-feedback validation-error">{props.meta.error}</div>
+        <Fade bottom collapse>
+          <div className="form-validation-feedback validation-error">{props.meta.error}</div>
+        </Fade>
       )}
     </Form.Group>
   );
@@ -24,25 +31,24 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: { isLoggedIn: false },
       loginFailed: false,
     };
     this.onSubmit = this.onSubmit.bind(this);
   }
 
   onSubmit = async (values) => {
-
-    //I was here: client still doesn't set cookie even after using axios
     axios
-      .post(apiServerBaseUrl + "/users/login", values, {withCredentials: true})
+      .post(apiServerBaseUrl + "/users/login", values, { withCredentials: true })
       .then((response) => {
+        
         if (response.data.success) {
-          this.props.loginUser({ isLoggedIn: true });
-        } else {
-          this.setState((prevState) => ({ ...prevState, loginFailed: true }));
+          this.props.loginUser(response.data.user);
         }
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        this.setState((prevState) => ({ ...prevState, loginFailed: true }));
+        console.error(err);
+      });
   };
 
   render() {
@@ -69,88 +75,97 @@ class Login extends React.Component {
     }
 
     return (
-      <Container>
-        <Row className="mt-5 mb-5 justify-content-center">
-          <Col xs="12" className="text-center">
-            {this.state.loginFailed ? (
-              <Alert variant="danger">Incorrect credentials, please try again!</Alert>
-            ) : null}
-          </Col>
-          <Col lg="6" style={{ backgroundColor: "#5a5a5a", borderRadius: "20px", padding: "5%" }}>
-            <FinalForm
-              onSubmit={this.onSubmit}
-              validate={(values) => {
-                const errors = {};
-                return errors;
-              }}
-              render={({ handleSubmit, form, submitting, pristine, values }) => (
-                <Form onSubmit={handleSubmit}>
-                  <Form.Row>
-                    <Col>
-                      <Field name="userName" validate={required}>
-                        {({ input, meta }) => (
-                          <Form.Group>
-                            <label>Username</label>
-                            <input
-                              {...input}
-                              type="text"
-                              placeholder="Username"
-                              className="form-control"
-                            />
-                            {meta.error && meta.touched && (
-                              <div className="form-validation-feedback validation-error">
-                                {meta.error}
-                              </div>
-                            )}
-                          </Form.Group>
-                        )}
-                      </Field>
-                    </Col>
-                  </Form.Row>
+      <Bounce>
+        <Container>
+          <Row className="mt-5 mb-5 justify-content-center">
+            <Col xs="12" className="text-center">
+              {this.state.loginFailed ? (
+                <LightSpeed left>
+                  <Alert variant="danger">Incorrect credentials, please try again!</Alert>
+                </LightSpeed>
+              ) : null}
+            </Col>
 
-                  <Form.Row>
-                    <Col>
-                      <Field name="password" validate={required}>
-                        {({ input, meta }) => (
-                          <Form.Group>
-                            <label>Password</label>
-                            <input
-                              {...input}
-                              type="password"
-                              placeholder="Password"
-                              className="form-control"
-                            />
-                            {meta.error && meta.touched && (
-                              <div className="form-validation-feedback validation-error">
-                                {meta.error}
-                              </div>
-                            )}
-                          </Form.Group>
-                        )}
-                      </Field>
-                    </Col>
-                  </Form.Row>
+            <Col lg="6" style={{ backgroundColor: "#5a5a5a", borderRadius: "20px", padding: "5%" }}>
+              <FinalForm
+                onSubmit={this.onSubmit}
+                validate={(values) => {
+                  const errors = {};
+                  return errors;
+                }}
+                render={({ handleSubmit, form, submitting, pristine, values }) => (
+                  <Form onSubmit={handleSubmit}>
+                    <Form.Row>
+                      <Col>
+                        <Field name="userName" validate={required}>
+                          {({ input, meta }) => (
+                            <Form.Group>
+                              <label>Username</label>
+                              <input
+                                {...input}
+                                type="text"
+                                placeholder="Username"
+                                className="form-control"
+                              />
+                              {meta.error && meta.touched && (
+                                <Fade bottom collapse>
+                                  <div className="form-validation-feedback validation-error">
+                                    {meta.error}
+                                  </div>
+                                </Fade>
+                              )}
+                            </Form.Group>
+                          )}
+                        </Field>
+                      </Col>
+                    </Form.Row>
 
-                  {/* <Form.Row>
+                    <Form.Row>
+                      <Col>
+                        <Field name="password" validate={required}>
+                          {({ input, meta }) => (
+                            <Form.Group>
+                              <label>Password</label>
+                              <input
+                                {...input}
+                                type="password"
+                                placeholder="Password"
+                                className="form-control"
+                              />
+                              {meta.error && meta.touched && (
+                                <Fade bottom collapse>
+                                  <div className="form-validation-feedback validation-error">
+                                    {meta.error}
+                                  </div>
+                                </Fade>
+                              )}
+                            </Form.Group>
+                          )}
+                        </Field>
+                      </Col>
+                    </Form.Row>
+
+                    {/* <Form.Row>
                     <Col>
                       <Field name="recaptcha" component={Captcha} validate={required} />
                     </Col>
                   </Form.Row> */}
 
-                  <Form.Row>
-                    <Col>
-                      <Button block type="submit" disabled={submitting}>
-                        Login
-                      </Button>
-                    </Col>
-                  </Form.Row>
-                  {/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
-                </Form>
-              )}
-            />
-          </Col>
-        </Row>
-      </Container>
+                    <Form.Row>
+                      <Col>
+                        <Button block type="submit" disabled={submitting}>
+                          Login
+                        </Button>
+                      </Col>
+                    </Form.Row>
+                    {/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
+                  </Form>
+                )}
+              />
+            </Col>
+          </Row>
+        </Container>
+      </Bounce>
     );
   }
 }

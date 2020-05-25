@@ -2,7 +2,8 @@
 import React from "react";
 import { Switch, Route, withRouter, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import axios from 'axios';
+import axios from "axios";
+import Fade from "react-reveal/Fade";
 
 //App components
 import Header from "./components/Header";
@@ -15,12 +16,15 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Logout from "./components/Logout";
 import SearchResults from "./components/SearchResults";
+import Loading from "./components/Loading";
 
 //config
 import { apiServerBaseUrl } from "./config";
 import * as Actions from "./redux/Actions";
 
 //other
+
+// import "../node_modules/animate.css/animate.min.css";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "../node_modules/font-awesome/css/font-awesome.min.css";
 import "../node_modules/slick-carousel/slick/slick.css";
@@ -35,8 +39,8 @@ import "./css/Login.css";
 
 const mapStateToProps = (state) => {
   return {
-    user: state.loginStatus,
-    session: state.session
+    user: state.loginStatus || state.validateStatus,
+    isLoading: state.loadingStatus.isLoading,
   };
 };
 
@@ -44,6 +48,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     loginUser: (user) => dispatch(Actions.loginUser(user)),
     logoutUser: () => dispatch(Actions.logoutUser()),
+    loadingComplete: () => dispatch(Actions.loadingComplete()),
+    validateUser: () => dispatch(Actions.validateUser()),
   };
 };
 
@@ -57,24 +63,30 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    
     //Used imdb-api to retrieve top movies list
     // const imdbAPI = "https://imdb-api.com/en/API/Top250Movies/k_39DL92RX";
     // const apiServer = "http://localhost:4000/movies?_limit=10";
     // const apiServer = "http://localhost:4000/movies";
 
-    axios.get(`${apiServerBaseUrl}/users/validatesession`, {withCredentials: true})
-      .then(res => {
-        if(!res.data.success){
-          return;
-        }
-        console.log(res.data.user);
-        this.props.loginUser(res.data.user);
-      })
+    // axios
+    //   .get(`${apiServerBaseUrl}/users/validatesession`, { withCredentials: true })
+    //   .then((res) => {
+    //     if (!res.data.success) {
+    //       return;
+    //     }
+    //     console.log(res.data.user);
+    //     this.props.loginUser(res.data.user);
+    //   });
+    this.props.validateUser(this.props.loginUser);
+
     // fetch(`${apiServerBaseUrl}/users/validatesession?s=${localStorage.getItem('session-id')}`)
     if (this.state.topMovies.length === 0) {
-      axios.get(`${apiServerBaseUrl}/movies/top`, {withCredentials: true})
-        .then((res) => this.setState({ topMovies: res.data, latestMovies: res.data }))
+      axios
+        .get(`${apiServerBaseUrl}/movies/top`, { withCredentials: true })
+        .then((res) => {
+          this.setState({ topMovies: res.data, latestMovies: res.data });
+          this.props.loadingComplete();
+        })
         .catch((err) => console.error(err));
       // fetch(`${apiServerBaseUrl}/movies/top`)
       //   .then((response) => response.json())
@@ -92,12 +104,21 @@ class App extends React.Component {
 
   render() {
     console.log("App.js props: ", this.props);
+    if (this.props.isLoading) {
+      return <Loading />;
+    }
     return (
       <div className="App">
         {this.props.user.isLoggedIn ? <Redirect to="/" /> : null}
         <Route
           path="/"
-          component={(history) => <Header user={this.props.user} history={history} />}
+          component={(history) => (
+            <Header
+              user={this.props.user}
+              history={history}
+              validateUser={this.props.validateUser}
+            />
+          )}
         />
         <Switch>
           <Route
@@ -156,6 +177,7 @@ class App extends React.Component {
           <Route exact path="/search" component={() => <SearchResults />} />
           <Route path="/search/:query" component={(match) => <SearchResults match={match} />} />
         </Switch>
+
         <Footer />
       </div>
     );

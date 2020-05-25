@@ -3,6 +3,7 @@ import { Col, Row, Container, Table, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import SearchBox from "./SearchBox";
 import { apiServerBaseUrl } from "../config";
+import Fade from "react-reveal/Fade";
 
 class Movies extends React.Component {
   constructor(props) {
@@ -41,7 +42,6 @@ class Movies extends React.Component {
   }
 
   render() {
-
     let movies = this.state.allMovies;
     let searchTerm = this.state.searchTerm.trim().toLowerCase();
     if (searchTerm.length > 0) {
@@ -50,9 +50,7 @@ class Movies extends React.Component {
 
     let movieList = movies.map((movie, index) => {
       return (
-        
         <tr key={`movie-list-table-${movie.imdbID}`}>
-          
           <td>
             <img
               className="img-fluid"
@@ -61,7 +59,7 @@ class Movies extends React.Component {
               style={{ maxHeight: "4rem" }}
             />
           </td>
-          
+
           <td>{movie.Year}</td>
           <td>{movie.Title}</td>
           <td>{movie.imdbRating}</td>
@@ -71,7 +69,6 @@ class Movies extends React.Component {
           <td>{movie.Runtime}</td>
           <td>{movie.Rated}</td>
         </tr>
-        
       );
     });
     return (
@@ -108,7 +105,9 @@ class Movies extends React.Component {
                   <th>Rated</th>
                 </tr>
               </thead>
-              <tbody>{movieList}</tbody>
+              <Fade bottom big cascade>
+                <tbody>{movieList}</tbody>
+              </Fade>
             </Table>
           </Col>
         </Row>
