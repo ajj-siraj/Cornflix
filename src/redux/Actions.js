@@ -22,7 +22,7 @@ export const loadingComplete = () => ({
   type: LOADING_COMPLETE,
 });
 
-export const validateUser = (loginUser) => {
+export const validateUser = () => (dispatch) => {
   axios
     .get(`${apiServerBaseUrl}/users/validatesession`, { withCredentials: true })
     .then((res) => {

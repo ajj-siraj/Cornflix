@@ -4,15 +4,18 @@ import "./css/index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
-import { Provider } from "react-redux";
-import { createStore} from "redux";
-import Reducers from "./redux/Reducers.js";
 import { BrowserRouter as Router } from "react-router-dom";
+import { createStore, applyMiddleware} from "redux";
+import { Provider } from "react-redux";
+import thunk from "redux-thunk";
+
+import Reducers from "./redux/Reducers.js";
+
 
 
 import ScrollToTop from "./components/ScrollToTop";
 
-const store = createStore(Reducers);
+const store = createStore(Reducers, applyMiddleware(thunk));
 
 ReactDOM.render(
   // <React.StrictMode>{/* </React.StrictMode>, */}

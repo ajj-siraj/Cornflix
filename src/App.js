@@ -77,7 +77,7 @@ class App extends React.Component {
     //     console.log(res.data.user);
     //     this.props.loginUser(res.data.user);
     //   });
-    this.props.validateUser(this.props.loginUser);
+    this.props.validateUser();
 
     // fetch(`${apiServerBaseUrl}/users/validatesession?s=${localStorage.getItem('session-id')}`)
     if (this.state.topMovies.length === 0) {
