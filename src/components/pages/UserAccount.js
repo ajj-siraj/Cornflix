@@ -113,8 +113,13 @@ class UserAccount extends React.Component {
     this.setState((prevState) => ({ ...prevState, selectedKey: "account" }));
     axios
       .post(`${apiServerBaseUrl}/users/account/update`, values, { withCredentials: true })
-      .then((res) => alert(res.data))
-      .catch((err) => console.error(err));
+      .then((res) => {
+        if(res.data.success){
+          alert("Your info has been updated successfully.");
+          this.props.validateUser();
+        }
+      })
+      .catch((err) => alert(err));
   }
 
   // enable/disable editing on switch toggle
