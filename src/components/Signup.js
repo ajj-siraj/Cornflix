@@ -28,11 +28,11 @@ let countriesList = countries.map((country, index) => {
   );
 });
 
-const Captcha = (props) => {
+export const Captcha = (props) => {
   return (
     <Form.Group>
       <ReCAPTCHA
-        sitekey="6LcjovQUAAAAAFKvx0SeE-fSQYY4-KwrbwSLAlUk"
+        sitekey={config.recaptchaSiteKey}
         onChange={props.input.onChange}
       />
       {props.meta.error && props.meta.touched && (
