@@ -1,5 +1,8 @@
 import React from "react";
-import { Container, Col, Row, Tabs, Tab, Button } from "react-bootstrap";
+import { Container, Col, Row, Tabs, Tab, Alert, Form, Button } from "react-bootstrap";
+import { defaultPics } from "../../data";
+import { apiServerBaseUrl } from "../../config";
+import axios from "axios";
 
 class UserAccount extends React.Component {
   constructor(props) {
@@ -8,24 +11,118 @@ class UserAccount extends React.Component {
     this.state = {};
 
     this.setKey = this.setKey.bind(this);
+    this.readFile = this.readFile.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
   }
 
   setKey(k) {
-    this.setState({selectedKey: k})
+    this.setState({ selectedKey: k });
+  }
+
+  readFile(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    const file = e.target.files[0];
+    if (!file.type.includes("image")) {
+      alert("Invalid file type. Please upload a PNG or JPEG image format.");
+    } else if (
+      !file.type.includes("png") &&
+      !file.type.includes("jpg") &&
+      !file.type.includes("jpeg")
+    ) {
+      alert("Invalid file type. Please upload a PNG or JPEG image format.");
+    }
+    console.log(file);
+    this.setState((prevState) => ({ ...prevState, file: file }));
+  }
+
+  handleUpload(e) {
+    const form = new FormData();
+    form.append("image", this.state.file);
+
+    axios
+      .post(`${apiServerBaseUrl}/file/upload`, form, {withCredentials: true})
+      .then((res) => {
+        if(!res.data.success){
+          alert("Upload failed.");
+        }
+        this.props.validateUser();
+      })
+      .catch((err) => console.error(err));
   }
   render() {
     return (
       <Container fluid>
-        <Row>
-          <Col>
-            <Tabs id="controlled-tab-example" activeKey={this.state.selectedKey} onSelect={(k) => this.setKey(k)}>
-              <Tab eventKey="home" title="Home">
-                CONTENT1
-              </Tab>
+        <Row className="justify-content-center text-center">
+          <Col className="text-center">
+            <Tabs
+              fill
+              className="text-center"
+              id="controlled-tab-example"
+              activeKey={this.state.selectedKey}
+              onSelect={(k) => this.setKey(k)}
+            >
               <Tab eventKey="profile" title="Profile">
+                <Row className="justify-content-center mt-5 mb-5">
+                  <Col xs="6" md="4">
+                    <img
+                      className="rounded-circle"
+                      src={`${apiServerBaseUrl}/file/image/${this.props.user.profilePic || 'caaed6a8ba225476b2137d33d6bc53aa.png'}`}
+                      style={{ width: "250px", height: "250px", margin: "30px" }}
+                    />
+                    {/* <form
+                      method="POST"
+                      action={`${apiServerBaseUrl}/file/upload`}
+                      
+                    >
+                      <input
+                        type="file"
+                        className="form-control"
+                        name="image"
+                        id="file"
+                        onChange={this.readFile}
+                      />
+                      <label htmlFor="file" id="file-label">
+                        Choose file
+                      </label>
+                    </form> */}
+                    <Form>
+                      <Form.File
+                        
+                        id="image"
+                        label={
+                          this.state.file === undefined
+                            ? "Upload your avatar"
+                            : this.state.file.name
+                        }
+                        custom
+                        onChange={this.readFile}
+                      />
+                      <Button onClick={this.handleUpload}>Upload</Button>
+                    </Form>
+                  </Col>
+                  <Col xs="6" md="4">
+                    <Alert variant="info">
+                      Your publicly available info is on this tab. If you do not wish your info to
+                      be public please check the button below.
+                    </Alert>
+                    <div className="user-info">
+                      <div>Username: {this.props.user.username}</div>
+                      <div>First Name: {this.props.user.firstname}</div>
+                      <div>Last Name: {this.props.user.lastname}</div>
+                    </div>
+                  </Col>
+                </Row>
+                {/* <Row>
+                  <Col>
+
+                  </Col>
+                </Row> */}
+              </Tab>
+              <Tab eventKey="account" title="Account">
                 CONTENT2
               </Tab>
-              <Tab eventKey="contact" title="Contact">
+              <Tab eventKey="my-lists" title="My Lists">
                 CONTENT3
               </Tab>
             </Tabs>

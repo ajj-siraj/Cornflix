@@ -60,7 +60,7 @@ function MovieDetails(props) {
             <div>
               <h4 className="text-warning">Plot</h4>
               <p>{movie.Plot}</p>
-              <h4>Rated: </h4>
+              <h4 className="text-warning">Rated: </h4>
               <p>
                 {movie.Rated === "N/A" ? (
                   <span style={{ color: "orange" }}>Data unavailable in the database.</span>

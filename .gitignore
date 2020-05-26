@@ -29,6 +29,7 @@ imdb_data_formatted.json
 imdb_data.json
 newDB_formatted.json
 newDBForTesting.json
+/src/assets/img/user
 
 # config file containing API keys and URLs
 config.js

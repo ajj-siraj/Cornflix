@@ -36,7 +36,7 @@ import "./css/FeaturedMovies.css";
 import "./css/LatestMovies.css";
 import "./css/ExploreMovies.css";
 import "./css/Login.css";
-
+import "./css/UserAccount.css";
 
 const mapStateToProps = (state) => {
   return {
@@ -64,7 +64,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-
     this.props.validateUser();
 
     if (this.state.topMovies.length === 0) {
@@ -163,7 +162,16 @@ class App extends React.Component {
 
           <Route exact path="/search" component={() => <SearchResults />} />
           <Route path="/search/:query" component={(match) => <SearchResults match={match} />} />
-          <Route path="/account/:username" component={() => <UserAccount />}/>
+          <Route
+            path="/account/:username"
+            component={() => (
+              <UserAccount
+                user={this.props.user}
+                movie={this.state.topMovies[0]}
+                validateUser={this.props.validateUser}
+              />
+            )}
+          />
         </Switch>
 
         <Footer />
