@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Col, Row, Tabs, Tab, Alert, Form, Button, Nav } from "react-bootstrap";
+import { Container, Col, Row, Tabs, Tab, Alert, Form, Button, Nav, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { defaultPics } from "../../data";
 import { apiServerBaseUrl } from "../../config";
 import axios from "axios";
@@ -35,15 +35,21 @@ let countriesList = countries.map((country, index) => {
 });
 
 // Tedious form data/code ends here.
+
+//TODO: clean up this page and separate the components. This will be a headache to edit in the future.
+
 class UserAccount extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      switch: false,
+    };
 
     this.setKey = this.setKey.bind(this);
     this.readFile = this.readFile.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
+    this.toggleEditing = this.toggleEditing.bind(this);
   }
 
   setKey(k) {
@@ -87,7 +93,14 @@ class UserAccount extends React.Component {
       .catch((err) => console.error(err));
   }
 
-  handleAccountSubmit() {}
+  handleAccountSubmit(values) {
+    console.log(values);
+  }
+
+  // enable/disable editing on switch toggle
+  toggleEditing(e) {
+    this.setState((prevState) => ({ ...prevState, switch: !prevState.switch }));
+  }
 
   render() {
     if (!this.props.user.isLoggedIn) {
@@ -111,6 +124,7 @@ class UserAccount extends React.Component {
         </Container>
       );
     }
+    console.log(this.state);
     return (
       <Fade>
         <Container fluid>
@@ -119,7 +133,7 @@ class UserAccount extends React.Component {
               <Tabs
                 fill
                 className="text-center"
-                activeKey={this.state.selectedKey}
+                activeKey={this.state.selectedKey || "account"}
                 onSelect={(k) => this.setKey(k)}
               >
                 <Tab eventKey="profile" title="Profile">
@@ -193,9 +207,11 @@ class UserAccount extends React.Component {
                         <Tab.Content>
                           <Tab.Pane eventKey="first">
                             <Fade>
-                              <Container>
+                              <Container fluid className="mt-5">
                                 <Flash>
-                                  <Alert variant="info">You can change your personal info here, except your username.</Alert>
+                                  <Alert variant="info">
+                                    You can change your personal info here, except your username.
+                                  </Alert>
                                 </Flash>
                                 <Row className=" mb-5 justify-content-left text-left">
                                   <Col
@@ -204,6 +220,13 @@ class UserAccount extends React.Component {
                                       padding: "5%",
                                     }}
                                   >
+                                    <Form.Check
+                                    className="mb-3"
+                                      type="switch"
+                                      id="custom-switch"
+                                      label="Enable editing. (Your new data will only be submitted when you click the update button)"
+                                      onChange={this.toggleEditing}
+                                    />
                                     <FinalForm
                                       onSubmit={this.handleAccountSubmit}
                                       validate={(values) => {
@@ -232,15 +255,22 @@ class UserAccount extends React.Component {
                                                         type="text"
                                                         placeholder="First Name"
                                                         className="form-control"
-                                                        value={input.value || this.props.user.firstname}
+                                                        disabled={!this.state.switch}
+                                                        value={
+                                                          this.state.switch
+                                                            ? input.value
+                                                            : this.props.user.firstname
+                                                        }
                                                       />
-                                                      {meta.error && meta.touched && (
-                                                        <Fade bottom>
-                                                          <div className="form-validation-feedback validation-error">
-                                                            {meta.error}
-                                                          </div>
-                                                        </Fade>
-                                                      )}
+                                                      {meta.error &&
+                                                        meta.touched &&
+                                                        this.state.switch && (
+                                                          <Fade bottom>
+                                                            <div className="form-validation-feedback validation-error">
+                                                              {meta.error}
+                                                            </div>
+                                                          </Fade>
+                                                        )}
                                                     </Col>
                                                   </Form.Group>
                                                 )}
@@ -253,25 +283,33 @@ class UserAccount extends React.Component {
                                               <Field name="lastName" validate={required}>
                                                 {({ input, meta }) => (
                                                   <Form.Group as={Row}>
-                                                    <Form.Label column sm="3">Last Name</Form.Label>
+                                                    <Form.Label column sm="3">
+                                                      Last Name
+                                                    </Form.Label>
                                                     <Col sm="9">
                                                       <input
-                                                      {...input}
-                                                      type="text"
-                                                      placeholder="Last Name"
-                                                      className="form-control"
-                                                      value={input.value || this.props.user.lastname}
-                                                    />
-                                                    {/* I was here figuring out how to display registered user data on the form correctly */}
-                                                    {meta.error && (
-                                                      <Fade bottom>
-                                                        <div className="form-validation-feedback validation-error">
-                                                          {meta.error}
-                                                        </div>
-                                                      </Fade>
-                                                    )}
+                                                        {...input}
+                                                        type="text"
+                                                        placeholder="Last Name"
+                                                        className="form-control"
+                                                        disabled={!this.state.switch}
+                                                        value={
+                                                          this.state.switch
+                                                            ? input.value
+                                                            : this.props.user.lastname
+                                                        }
+                                                      />
+                                                      {/* I was here figuring out how to display registered user data on the form correctly */}
+                                                      {meta.error &&
+                                                        meta.touched &&
+                                                        this.state.switch && (
+                                                          <Fade bottom>
+                                                            <div className="form-validation-feedback validation-error">
+                                                              {meta.error}
+                                                            </div>
+                                                          </Fade>
+                                                        )}
                                                     </Col>
-                                                    
                                                   </Form.Group>
                                                 )}
                                               </Field>
@@ -283,23 +321,33 @@ class UserAccount extends React.Component {
                                               <Field name="userName">
                                                 {({ input, meta }) => (
                                                   <Form.Group as={Row}>
-                                                    <Form.Label column sm="3">Username</Form.Label>
+                                                    <Form.Label column sm="3">
+                                                      Username
+                                                    </Form.Label>
                                                     <Col sm="9">
-                                                    <input
-                                                      {...input}
-                                                      type="text"
-                                                      placeholder="Username"
-                                                      className="form-control"
-                                                      value={this.props.user.username}
-                                                      disabled
-                                                    />
-                                                    
+                                                      <OverlayTrigger
+                                                        key="tooltip-username"
+                                                        placement="left"
+                                                        overlay={
+                                                          <Tooltip id={`tooltip-username`}>
+                                                            You cannot change your username.
+                                                          </Tooltip>
+                                                        }
+                                                      >
+                                                        <input
+                                                          {...input}
+                                                          type="text"
+                                                          placeholder="Username"
+                                                          className="form-control"
+                                                          value={this.props.user.username}
+                                                          disabled
+                                                        />
+                                                      </OverlayTrigger>{" "}
                                                     </Col>
                                                   </Form.Group>
                                                 )}
                                               </Field>
                                             </Col>
-                                            
                                           </Form.Row>
 
                                           <Form.Row>
@@ -307,34 +355,38 @@ class UserAccount extends React.Component {
                                               <Field name="password-current" validate={required}>
                                                 {({ input, meta }) => (
                                                   <Form.Group as={Row}>
-                                                    <Form.Label column sm="3">Current Password</Form.Label>
+                                                    <Form.Label column sm="3">
+                                                      Current Password
+                                                    </Form.Label>
                                                     <Col sm="9">
-                                                    <input
-                                                      {...input}
-                                                      type="password"
-                                                      placeholder="Type in your current password"
-                                                      className="form-control"
-                                                    />
-                                                    {meta.error && meta.touched && (
-                                                      <Fade bottom>
-                                                        <div className="form-validation-feedback validation-error">
-                                                          {meta.error}
-                                                        </div>
-                                                      </Fade>
-                                                    )}
-                                                    {!meta.error && meta.touched && (
-                                                      <Fade bottom>
-                                                        <div className="form-validation-feedback validation-ok">
-                                                          {"Strong password"}
-                                                        </div>
-                                                      </Fade>
-                                                    )}
+                                                      <input
+                                                        {...input}
+                                                        type="password"
+                                                        placeholder="Type in your current password"
+                                                        className="form-control"
+                                                        disabled={!this.state.switch}
+                                                        value={this.state.switch ? input.value : "Don't worry this is not your real password."}
+                                                      />
+                                                      {meta.error && meta.touched && this.state.switch && (
+                                                        <Fade bottom>
+                                                          <div className="form-validation-feedback validation-error">
+                                                            {meta.error}
+                                                          </div>
+                                                        </Fade>
+                                                      )}
+                                                      {!meta.error && meta.touched && (
+                                                        <Fade bottom>
+                                                          <div className="form-validation-feedback validation-ok">
+                                                            {"Strong password"}
+                                                          </div>
+                                                        </Fade>
+                                                      )}
                                                     </Col>
                                                   </Form.Group>
                                                 )}
                                               </Field>
                                             </Col>
-                                            </Form.Row>
+                                          </Form.Row>
 
                                           {/* New password change tbd on a separate tab */}
                                           <Form.Row>
@@ -371,8 +423,7 @@ class UserAccount extends React.Component {
                                             </Col> */}
                                           </Form.Row>
 
-
-                                          <Form.Row>
+                                          {/* <Form.Row>
                                             <Col>
                                               <Field
                                                 name="recaptcha"
@@ -380,16 +431,15 @@ class UserAccount extends React.Component {
                                                 validate={required}
                                               />
                                             </Col>
-                                          </Form.Row>
+                                          </Form.Row> */}
 
                                           <Form.Row>
                                             <Col>
                                               <Slide bottom>
-                                                <Button block type="submit" disabled={submitting}>
-                                                  Submit
+                                                <Button variant="success" block type="submit" disabled={submitting || !this.state.switch}>
+                                                  Update
                                                 </Button>
                                               </Slide>
-                                              
                                             </Col>
                                           </Form.Row>
                                           {/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
