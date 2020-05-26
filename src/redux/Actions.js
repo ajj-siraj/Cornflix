@@ -7,6 +7,7 @@ export const LOGOUT_USER = "LOGOUT_USER";
 export const LOADING_COMPLETE = "LOADING_COMPLETE";
 export const VERIFIED = "VERIFIED";
 export const NO_USER = "NO_USER";
+export const UPDATE_TAB = "UPDATE_TAB";
 
 //action creators
 export const loginUser = (user) => ({
@@ -20,6 +21,11 @@ export const logoutUser = () => ({
 
 export const loadingComplete = () => ({
   type: LOADING_COMPLETE,
+});
+
+export const trackTab = (tab) => ({
+  type: UPDATE_TAB,
+  tab
 });
 
 export const validateUser = () => (dispatch) => {

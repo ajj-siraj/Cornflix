@@ -22,6 +22,14 @@ const loadingReducer = (prevState = {isLoading: true}, action) => {
   }
 }
 
+const tabReducer = (prevState = {tab: "profile"}, action) => {
+  switch(action.type){
+    case ActionTypes.UPDATE_TAB:
+      return {...prevState, tab: action.tab};
+    default:
+      return prevState;
+  }
+}
 const validateReducer = (prevState = {}, action) => {
   switch(action.type){
     case ActionTypes.VERIFIED:
@@ -42,5 +50,6 @@ const validateReducer = (prevState = {}, action) => {
 export default combineReducers({
   loginStatus: loginReducer,
   loadingStatus: loadingReducer,
-  validateStatus: validateReducer
+  validateStatus: validateReducer,
+  tab: tabReducer
 })

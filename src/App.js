@@ -42,6 +42,7 @@ const mapStateToProps = (state) => {
   return {
     user: state.loginStatus || state.validateStatus,
     isLoading: state.loadingStatus.isLoading,
+    tab: state.tab
   };
 };
 
@@ -51,6 +52,7 @@ const mapDispatchToProps = (dispatch) => {
     logoutUser: () => dispatch(Actions.logoutUser()),
     loadingComplete: () => dispatch(Actions.loadingComplete()),
     validateUser: () => dispatch(Actions.validateUser()),
+    trackTab: (tab) => dispatch(Actions.trackTab(tab)),
   };
 };
 
@@ -167,8 +169,9 @@ class App extends React.Component {
             component={() => (
               <UserAccount
                 user={this.props.user}
-                movie={this.state.topMovies[0]}
                 validateUser={this.props.validateUser}
+                trackTab={this.props.trackTab}
+                tab={this.props.tab}
               />
             )}
           />

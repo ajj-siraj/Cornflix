@@ -54,7 +54,6 @@ class UserAccount extends React.Component {
 
     this.state = {
       switch: false,
-      selectedKey: "profile",
     };
 
     this.setKey = this.setKey.bind(this);
@@ -102,7 +101,10 @@ class UserAccount extends React.Component {
       .post(`${apiServerBaseUrl}/file/upload`, form, { withCredentials: true })
       .then((res) => {
         if (!res.data.success) alert("Upload failed.");
-        if (res.data.success) this.props.validateUser();
+        if (res.data.success) {
+          this.props.trackTab("profile");
+          this.props.validateUser();
+        }
       })
       .catch((err) => console.error(err));
     this.setState((prevState) => ({ ...prevState, selectedKey: "profile" }));
@@ -115,6 +117,7 @@ class UserAccount extends React.Component {
       .post(`${apiServerBaseUrl}/users/account/update`, values, { withCredentials: true })
       .then((res) => {
         if(res.data.success){
+          this.props.trackTab("account");
           alert("Your info has been updated successfully.");
           this.props.validateUser();
         }
@@ -158,7 +161,7 @@ class UserAccount extends React.Component {
               <Tabs
                 fill
                 className="text-center"
-                activeKey={this.state.selectedKey || "account"}
+                activeKey={this.state.selectedKey || this.props.tab.tab}
                 onSelect={(k) => this.setKey(k)}
               >
                 <Tab eventKey="profile" title="Profile">
