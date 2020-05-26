@@ -1,12 +1,22 @@
 import React from "react";
-import { Container, Col, Row, Tabs, Tab, Alert, Form, Button, Nav, OverlayTrigger, Tooltip } from "react-bootstrap";
+import {
+  Container,
+  Col,
+  Row,
+  Tabs,
+  Tab,
+  Alert,
+  Form,
+  Button,
+  Nav,
+  OverlayTrigger,
+  Tooltip,
+} from "react-bootstrap";
 import { defaultPics } from "../../data";
 import { apiServerBaseUrl } from "../../config";
 import axios from "axios";
 
-import { Captcha } from "../Signup";
 import { Form as FinalForm, Field } from "react-final-form";
-import ReCAPTCHA from "react-google-recaptcha";
 import * as config from "../../config";
 import * as data from "../../data";
 
@@ -79,6 +89,10 @@ class UserAccount extends React.Component {
 
   //upload file
   handleUpload() {
+    if(!this.state.file){
+      alert("No file was selected.");
+      return;
+    }
     const form = new FormData();
     form.append("image", this.state.file);
 
@@ -151,6 +165,7 @@ class UserAccount extends React.Component {
                       <Slide left>
                         <Form>
                           <Form.File
+                            style={{width:'50%'}}
                             id="image"
                             label={
                               this.state.file === undefined
@@ -160,7 +175,7 @@ class UserAccount extends React.Component {
                             custom
                             onChange={this.readFile}
                           />
-                          <Button onClick={this.handleUpload}>Upload</Button>
+                          <Button style={{ marginLeft: '5px', marginBottom: '0'}} onClick={this.handleUpload}>Upload</Button>
                         </Form>
                       </Slide>
                     </Col>
@@ -221,7 +236,7 @@ class UserAccount extends React.Component {
                                     }}
                                   >
                                     <Form.Check
-                                    className="mb-3"
+                                      className="mb-3"
                                       type="switch"
                                       id="custom-switch"
                                       label="Enable editing. (Your new data will only be submitted when you click the update button)"
@@ -365,22 +380,30 @@ class UserAccount extends React.Component {
                                                         placeholder="Type in your current password"
                                                         className="form-control"
                                                         disabled={!this.state.switch}
-                                                        value={this.state.switch ? input.value : "Don't worry this is not your real password."}
+                                                        value={
+                                                          this.state.switch
+                                                            ? input.value
+                                                            : "Don't worry this is not your real password."
+                                                        }
                                                       />
-                                                      {meta.error && meta.touched && this.state.switch && (
-                                                        <Fade bottom>
-                                                          <div className="form-validation-feedback validation-error">
-                                                            {meta.error}
-                                                          </div>
-                                                        </Fade>
-                                                      )}
-                                                      {!meta.error && meta.touched && (
-                                                        <Fade bottom>
-                                                          <div className="form-validation-feedback validation-ok">
-                                                            {"Strong password"}
-                                                          </div>
-                                                        </Fade>
-                                                      )}
+                                                      {meta.error &&
+                                                        meta.touched &&
+                                                        this.state.switch && (
+                                                          <Fade bottom>
+                                                            <div className="form-validation-feedback validation-error">
+                                                              {meta.error}
+                                                            </div>
+                                                          </Fade>
+                                                        )}
+                                                      {!meta.error &&
+                                                        meta.touched &&
+                                                        this.state.switch && (
+                                                          <Fade bottom>
+                                                            <div className="form-validation-feedback validation-ok">
+                                                              {"Strong password"}
+                                                            </div>
+                                                          </Fade>
+                                                        )}
                                                     </Col>
                                                   </Form.Group>
                                                 )}
@@ -423,21 +446,16 @@ class UserAccount extends React.Component {
                                             </Col> */}
                                           </Form.Row>
 
-                                          {/* <Form.Row>
-                                            <Col>
-                                              <Field
-                                                name="recaptcha"
-                                                component={Captcha}
-                                                validate={required}
-                                              />
-                                            </Col>
-                                          </Form.Row> */}
-
                                           <Form.Row>
                                             <Col>
                                               <Slide bottom>
-                                                <Button variant="success" block type="submit" disabled={submitting || !this.state.switch}>
-                                                  Update
+                                                <Button
+                                                  variant="success"
+                                                  block
+                                                  type="submit"
+                                                  disabled={submitting || !this.state.switch}
+                                                >
+                                                  Update My Information
                                                 </Button>
                                               </Slide>
                                             </Col>

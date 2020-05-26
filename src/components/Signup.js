@@ -28,7 +28,7 @@ let countriesList = countries.map((country, index) => {
   );
 });
 
-export const Captcha = (props) => {
+const Captcha = (props) => {
   return (
     <Form.Group>
       <ReCAPTCHA
