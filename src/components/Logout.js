@@ -15,6 +15,7 @@ const Logout = (props) => {
     alert(data);
     props.logoutUser();
     props.match.history.push("/");
+    window.location.reload();
   };
 
   const handleReturn = () => {
