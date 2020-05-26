@@ -54,11 +54,13 @@ class UserAccount extends React.Component {
 
     this.state = {
       switch: false,
+      selectedKey: "profile",
     };
 
     this.setKey = this.setKey.bind(this);
     this.readFile = this.readFile.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
+    this.handleAccountSubmit = this.handleAccountSubmit.bind(this);
     this.toggleEditing = this.toggleEditing.bind(this);
   }
 
@@ -89,7 +91,7 @@ class UserAccount extends React.Component {
 
   //upload file
   handleUpload() {
-    if(!this.state.file){
+    if (!this.state.file) {
       alert("No file was selected.");
       return;
     }
@@ -99,16 +101,20 @@ class UserAccount extends React.Component {
     axios
       .post(`${apiServerBaseUrl}/file/upload`, form, { withCredentials: true })
       .then((res) => {
-        if (!res.data.success) {
-          alert("Upload failed.");
-        }
-        this.props.validateUser();
+        if (!res.data.success) alert("Upload failed.");
+        if (res.data.success) this.props.validateUser();
       })
       .catch((err) => console.error(err));
+    this.setState((prevState) => ({ ...prevState, selectedKey: "profile" }));
   }
 
   handleAccountSubmit(values) {
     console.log(values);
+    this.setState((prevState) => ({ ...prevState, selectedKey: "account" }));
+    axios
+      .post(`${apiServerBaseUrl}/users/account/update`, values, { withCredentials: true })
+      .then((res) => alert(res.data))
+      .catch((err) => console.error(err));
   }
 
   // enable/disable editing on switch toggle
@@ -155,17 +161,16 @@ class UserAccount extends React.Component {
                     <Col xs="12" md="6">
                       <Flip bottom>
                         <img
-                          className="rounded-circle"
+                          className="rounded-circle user-profile-photo"
                           src={`${apiServerBaseUrl}/file/image/${
                             this.props.user.profilePic || "caaed6a8ba225476b2137d33d6bc53aa.png"
                           }`}
-                          style={{ width: "250px", height: "250px", margin: "30px" }}
                         />
                       </Flip>
                       <Slide left>
                         <Form>
                           <Form.File
-                            style={{width:'50%'}}
+                            style={{ width: "50%" }}
                             id="image"
                             label={
                               this.state.file === undefined
@@ -175,7 +180,12 @@ class UserAccount extends React.Component {
                             custom
                             onChange={this.readFile}
                           />
-                          <Button style={{ marginLeft: '5px', marginBottom: '0'}} onClick={this.handleUpload}>Upload</Button>
+                          <Button
+                            style={{ marginLeft: "5px", marginBottom: "0" }}
+                            onClick={this.handleUpload}
+                          >
+                            Upload
+                          </Button>
                         </Form>
                       </Slide>
                     </Col>
@@ -246,6 +256,9 @@ class UserAccount extends React.Component {
                                       onSubmit={this.handleAccountSubmit}
                                       validate={(values) => {
                                         const errors = {};
+                                        if(values.userName !== this.props.user.username){
+                                          errors.userName = "Please enter the same username you registered with."
+                                        }
                                         return errors;
                                       }}
                                       render={({
@@ -354,10 +367,20 @@ class UserAccount extends React.Component {
                                                           type="text"
                                                           placeholder="Username"
                                                           className="form-control"
-                                                          value={this.props.user.username}
-                                                          disabled
+                                                          value={this.state.switch ? input.value : this.props.user.username}
+                                                          disabled={!this.state.switch}
                                                         />
+                                                        
                                                       </OverlayTrigger>{" "}
+                                                      {meta.error &&
+                                                        meta.touched &&
+                                                        this.state.switch && (
+                                                          <Fade bottom>
+                                                            <div className="form-validation-feedback validation-error">
+                                                              {meta.error}
+                                                            </div>
+                                                          </Fade>
+                                                        )}
                                                     </Col>
                                                   </Form.Group>
                                                 )}
@@ -367,7 +390,7 @@ class UserAccount extends React.Component {
 
                                           <Form.Row>
                                             <Col>
-                                              <Field name="password-current" validate={required}>
+                                              <Field name="password" validate={required}>
                                                 {({ input, meta }) => (
                                                   <Form.Group as={Row}>
                                                     <Form.Label column sm="3">
@@ -395,15 +418,7 @@ class UserAccount extends React.Component {
                                                             </div>
                                                           </Fade>
                                                         )}
-                                                      {!meta.error &&
-                                                        meta.touched &&
-                                                        this.state.switch && (
-                                                          <Fade bottom>
-                                                            <div className="form-validation-feedback validation-ok">
-                                                              {"Strong password"}
-                                                            </div>
-                                                          </Fade>
-                                                        )}
+                                                      
                                                     </Col>
                                                   </Form.Group>
                                                 )}

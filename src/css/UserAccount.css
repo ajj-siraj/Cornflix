@@ -1,4 +1,4 @@
-.user-info{
+.user-info {
   border-radius: 20px;
   border-color: #0d87ac;
   background-color: #2e2e2e;
@@ -7,6 +7,15 @@
   text-align: left;
 }
 
-.user-info-data{
+.user-info-data {
   color: #ddd;
+}
+
+.user-profile-photo {
+  width: 250px;
+  height: 250px;
+  margin: 30px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #ddd;
 }
