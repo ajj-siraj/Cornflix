@@ -19,31 +19,36 @@ class UserAccount extends React.Component {
     this.setState({ selectedKey: k });
   }
 
+  //read file data and add to state & display errors if invalid type.
   readFile(e) {
     e.stopPropagation();
     e.preventDefault();
     const file = e.target.files[0];
-    if (!file.type.includes("image")) {
-      alert("Invalid file type. Please upload a PNG or JPEG image format.");
-    } else if (
-      !file.type.includes("png") &&
-      !file.type.includes("jpg") &&
-      !file.type.includes("jpeg")
-    ) {
-      alert("Invalid file type. Please upload a PNG or JPEG image format.");
+    if (file) {
+      if (!file.type.includes("image")) {
+        alert("Invalid file type. Please upload a PNG or JPEG image format.");
+      } else if (
+        !file.type.includes("png") &&
+        !file.type.includes("jpg") &&
+        !file.type.includes("jpeg")
+      ) {
+        alert("Invalid file type. Please upload a PNG or JPEG image format.");
+      } else {
+        console.log(file);
+        this.setState((prevState) => ({ ...prevState, file: file }));
+      }
     }
-    console.log(file);
-    this.setState((prevState) => ({ ...prevState, file: file }));
   }
 
-  handleUpload(e) {
+  //upload file
+  handleUpload() {
     const form = new FormData();
     form.append("image", this.state.file);
 
     axios
-      .post(`${apiServerBaseUrl}/file/upload`, form, {withCredentials: true})
+      .post(`${apiServerBaseUrl}/file/upload`, form, { withCredentials: true })
       .then((res) => {
-        if(!res.data.success){
+        if (!res.data.success) {
           alert("Upload failed.");
         }
         this.props.validateUser();
@@ -67,28 +72,14 @@ class UserAccount extends React.Component {
                   <Col xs="6" md="4">
                     <img
                       className="rounded-circle"
-                      src={`${apiServerBaseUrl}/file/image/${this.props.user.profilePic || 'caaed6a8ba225476b2137d33d6bc53aa.png'}`}
+                      src={`${apiServerBaseUrl}/file/image/${
+                        this.props.user.profilePic || "caaed6a8ba225476b2137d33d6bc53aa.png"
+                      }`}
                       style={{ width: "250px", height: "250px", margin: "30px" }}
                     />
-                    {/* <form
-                      method="POST"
-                      action={`${apiServerBaseUrl}/file/upload`}
-                      
-                    >
-                      <input
-                        type="file"
-                        className="form-control"
-                        name="image"
-                        id="file"
-                        onChange={this.readFile}
-                      />
-                      <label htmlFor="file" id="file-label">
-                        Choose file
-                      </label>
-                    </form> */}
+
                     <Form>
                       <Form.File
-                        
                         id="image"
                         label={
                           this.state.file === undefined
