@@ -11,6 +11,7 @@ import {
   Nav,
   OverlayTrigger,
   Tooltip,
+  Toast
 } from "react-bootstrap";
 import { defaultPics } from "../../data";
 import { apiServerBaseUrl } from "../../config";
@@ -54,10 +55,10 @@ class UserAccount extends React.Component {
 
     this.state = {
       switch: false,
-      checked: true,
       checkdisabled: false,
       success: false,
       error: false,
+      show:false
     };
 
     this.setKey = this.setKey.bind(this);
@@ -67,6 +68,7 @@ class UserAccount extends React.Component {
     this.handleCheckBox = this.handleCheckBox.bind(this);
     this.toggleEditing = this.toggleEditing.bind(this);
 
+    this.toggleToast = this.toggleToast.bind(this);
     this.handlePasswordSubmit = this.handlePasswordSubmit.bind(this);
   }
 
@@ -135,10 +137,10 @@ class UserAccount extends React.Component {
 
   //make user data private/public
   handleCheckBox(e) {
-    const data = { public: !this.state.checked };
+    const data = { public: !this.props.user.public };
     this.setState((prevState) => ({
       ...prevState,
-      checked: !prevState.checked,
+
       checkdisabled: true,
     }));
 
@@ -148,6 +150,7 @@ class UserAccount extends React.Component {
         this.setState((prevState) => ({ ...prevState, checkdisabled: false }));
         if (res.data.success) {
           this.setState((prevState) => ({ ...prevState, success: true, error: false }));
+          this.props.validateUser();
         }
       })
       .catch(() =>
@@ -161,6 +164,9 @@ class UserAccount extends React.Component {
     console.log("The form: ", data);
   }
 
+  toggleToast(){
+    this.setState(prevState => ({...prevState, show: !prevState.show}))
+  }
   // enable/disable editing on switch toggle
   toggleEditing(e) {
     this.setState((prevState) => ({ ...prevState, switch: !prevState.switch }));
@@ -267,7 +273,7 @@ class UserAccount extends React.Component {
                           type="checkbox"
                           label="Make my data private"
                           checked={
-                            this.props.user.public ? this.props.user.public : this.state.checked
+                            !this.props.user.public
                           }
                           disabled={this.state.checkdisabled}
                           onChange={this.handleCheckBox}
@@ -286,6 +292,7 @@ class UserAccount extends React.Component {
                           ) : null}
                         </div>
                       </Fade>
+                     
                     </Col>
                   </Row>
                 </Tab>
