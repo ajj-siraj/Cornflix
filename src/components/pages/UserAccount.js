@@ -54,12 +54,17 @@ class UserAccount extends React.Component {
 
     this.state = {
       switch: false,
+      checked: true,
+      checkdisabled: false,
+      success: false,
+      error: false,
     };
 
     this.setKey = this.setKey.bind(this);
     this.readFile = this.readFile.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
     this.handleAccountSubmit = this.handleAccountSubmit.bind(this);
+    this.handleCheckBox = this.handleCheckBox.bind(this);
     this.toggleEditing = this.toggleEditing.bind(this);
   }
 
@@ -110,19 +115,48 @@ class UserAccount extends React.Component {
     this.setState((prevState) => ({ ...prevState, selectedKey: "profile" }));
   }
 
+  //submit request to update user data
   handleAccountSubmit(values) {
     console.log(values);
     this.setState((prevState) => ({ ...prevState, selectedKey: "account" }));
     axios
       .post(`${apiServerBaseUrl}/users/account/update`, values, { withCredentials: true })
       .then((res) => {
-        if(res.data.success){
+        if (res.data.success) {
           this.props.trackTab("account");
           alert("Your info has been updated successfully.");
           this.props.validateUser();
         }
       })
       .catch((err) => alert(err));
+  }
+
+  //make user data private/public
+  handleCheckBox(e) {
+    const data = { public: !this.state.checked };
+    this.setState((prevState) => ({
+      ...prevState,
+      checked: !prevState.checked,
+      checkdisabled: true,
+    }));
+
+    axios
+      .post(`${apiServerBaseUrl}/users/profile/update`, data, { withCredentials: true })
+      .then((res) => {
+        this.setState((prevState) => ({ ...prevState, checkdisabled: false }));
+        if (res.data.success) {
+          this.setState((prevState) => ({ ...prevState, success: true, error: false }));
+        }
+      })
+      .catch(() =>
+        this.setState((prevState) => ({
+          ...prevState,
+          success: false,
+          error: true,
+          checkdisabled: false,
+        }))
+      );
+    console.log("The form: ", data);
   }
 
   // enable/disable editing on switch toggle
@@ -189,6 +223,7 @@ class UserAccount extends React.Component {
                             onChange={this.readFile}
                           />
                           <Button
+                          className="btn-green"
                             style={{ marginLeft: "5px", marginBottom: "0" }}
                             onClick={this.handleUpload}
                           >
@@ -200,8 +235,9 @@ class UserAccount extends React.Component {
                     <Col xs="6" md="4">
                       <Flash>
                         <Alert variant="info" className="mt-4">
-                          Your publicly available info is on this tab. If you do not wish your info
-                          to be public please check the button below.
+                          Your publicly available info is on this tab. If you do not wish for your
+                          info to be public please check the button below. (Username and profile
+                          photo are always public)
                         </Alert>
                       </Flash>
                       <Slide right>
@@ -220,19 +256,42 @@ class UserAccount extends React.Component {
                           </div>
                         </div>
                       </Slide>
+                      <Form>
+                        <Form.Check
+                          inline
+                          type="checkbox"
+                          label="Make my data private"
+                          checked={this.props.user.public ? this.props.user.public : this.state.checked}
+                          disabled={this.state.checkdisabled}
+                          onChange={this.handleCheckBox}
+                        />
+                      </Form>
+                      <Fade bottom>
+                        <div>
+                          {this.state.success && !this.state.error ? (
+                            <Alert variant="success">
+                              Your profile is now {!this.state.checked ? "public." : "private."}
+                            </Alert>
+                          ) : null}
+
+                          {!this.state.success && this.state.error ? (
+                            <Alert variant="danger">An error occurred. Please try again.</Alert>
+                          ) : null}
+                        </div>
+                      </Fade>
                     </Col>
                   </Row>
                 </Tab>
                 <Tab eventKey="account" title="Account">
-                  <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+                  <Tab.Container id="left-tabs" defaultActiveKey="first">
                     <Row>
                       <Col sm={3}>
-                        <Nav variant="pills" className="flex-column">
+                        <Nav variant="pills" className="flex-column nav-tab-pill">
                           <Nav.Item>
-                            <Nav.Link eventKey="first">Tab 1</Nav.Link>
+                            <Nav.Link eventKey="first">My account</Nav.Link>
                           </Nav.Item>
                           <Nav.Item>
-                            <Nav.Link eventKey="second">Tab 2</Nav.Link>
+                            <Nav.Link eventKey="second">Change password</Nav.Link>
                           </Nav.Item>
                         </Nav>
                       </Col>
@@ -264,8 +323,9 @@ class UserAccount extends React.Component {
                                       onSubmit={this.handleAccountSubmit}
                                       validate={(values) => {
                                         const errors = {};
-                                        if(values.userName !== this.props.user.username){
-                                          errors.userName = "Please enter the same username you registered with."
+                                        if (values.userName !== this.props.user.username) {
+                                          errors.userName =
+                                            "Please enter the same username you registered with.";
                                         }
                                         return errors;
                                       }}
@@ -375,10 +435,13 @@ class UserAccount extends React.Component {
                                                           type="text"
                                                           placeholder="Username"
                                                           className="form-control"
-                                                          value={this.state.switch ? input.value : this.props.user.username}
+                                                          value={
+                                                            this.state.switch
+                                                              ? input.value
+                                                              : this.props.user.username
+                                                          }
                                                           disabled={!this.state.switch}
                                                         />
-                                                        
                                                       </OverlayTrigger>{" "}
                                                       {meta.error &&
                                                         meta.touched &&
@@ -426,7 +489,6 @@ class UserAccount extends React.Component {
                                                             </div>
                                                           </Fade>
                                                         )}
-                                                      
                                                     </Col>
                                                   </Form.Group>
                                                 )}
@@ -434,9 +496,33 @@ class UserAccount extends React.Component {
                                             </Col>
                                           </Form.Row>
 
-                                          {/* New password change tbd on a separate tab */}
                                           <Form.Row>
-                                            {/* <Col>
+                                            <Col>
+                                              <Slide bottom>
+                                                <Button
+                                                  variant="success"
+                                                  block
+                                                  type="submit"
+                                                  disabled={submitting || !this.state.switch}
+                                                >
+                                                  Update My Information
+                                                </Button>
+                                              </Slide>
+                                            </Col>
+                                          </Form.Row>
+                                          {/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
+                                        </Form>
+                                      )}
+                                    />
+                                  </Col>
+                                </Row>
+                              </Container>
+                            </Fade>
+                          </Tab.Pane>
+                          <Tab.Pane eventKey="second">
+                            {/* New password change tbd on a separate tab */}
+                            <Form.Row>
+                              {/* <Col>
                                               <Field name="password-new" validate={required}>
                                                 {({ input, meta }) => (
                                                   <Form.Group as={Row}>
@@ -467,32 +553,8 @@ class UserAccount extends React.Component {
                                                 )}
                                               </Field>
                                             </Col> */}
-                                          </Form.Row>
-
-                                          <Form.Row>
-                                            <Col>
-                                              <Slide bottom>
-                                                <Button
-                                                  variant="success"
-                                                  block
-                                                  type="submit"
-                                                  disabled={submitting || !this.state.switch}
-                                                >
-                                                  Update My Information
-                                                </Button>
-                                              </Slide>
-                                            </Col>
-                                          </Form.Row>
-                                          {/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
-                                        </Form>
-                                      )}
-                                    />
-                                  </Col>
-                                </Row>
-                              </Container>
-                            </Fade>
+                            </Form.Row>
                           </Tab.Pane>
-                          <Tab.Pane eventKey="second">CONTENT2 </Tab.Pane>
                         </Tab.Content>
                       </Col>
                     </Row>

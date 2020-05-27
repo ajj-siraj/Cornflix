@@ -19,3 +19,9 @@
   border-style: solid;
   border-color: #ddd;
 }
+
+.nav-tab-pill:focus, .nav-tab-pill .active, .btn-green{
+  background-color: #3fbb05 !important;
+  border: none !important;
+  outline: none !important;
+}
