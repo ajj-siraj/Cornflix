@@ -4,6 +4,7 @@ import { Form as FinalForm, Field } from "react-final-form";
 import ReCAPTCHA from "react-google-recaptcha";
 import * as config from "../config";
 import * as data from "../data";
+import axios from 'axios';
 
 import Fade from "react-reveal/Fade";
 import Bounce from "react-reveal/Bounce";
@@ -31,10 +32,7 @@ let countriesList = countries.map((country, index) => {
 const Captcha = (props) => {
   return (
     <Form.Group>
-      <ReCAPTCHA
-        sitekey={config.recaptchaSiteKey}
-        onChange={props.input.onChange}
-      />
+      <ReCAPTCHA sitekey={config.recaptchaSiteKey} onChange={props.input.onChange} />
       {props.meta.error && props.meta.touched && (
         <Fade bottom>
           <div className="form-validation-feedback validation-error">{props.meta.error}</div>
@@ -46,17 +44,25 @@ const Captcha = (props) => {
 
 const Signup = (props) => {
   const onSubmit = async (values) => {
-    let response = await fetch(config.apiServerBaseUrl + "/users/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
-    });
-    let data = await response.json();
-
-    if (data.success === true) {
-      props.loginUser(data.user);
+    let response = await axios.post(`${config.apiServerBaseUrl}/users/signup`, values, {
+      withCredentials: true,
+    }).then(res => {
+      if(res.data.success){
+        props.loginUser(res.data.data.user);
       props.match.history.push("/");
-    }
+      }
+    })
+
+    // await fetch(config.apiServerBaseUrl + "/users/signup", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify(values),
+    // });
+    // let data = await response.json();
+
+    // if (data.success === true) {
+      
+    // }
   };
 
   if (props.user.isLoggedIn) {
@@ -196,9 +202,10 @@ const Signup = (props) => {
                             />
                             {meta.error && meta.touched && (
                               <Fade bottom>
-                              <div className="form-validation-feedback validation-error">
-                                {meta.error}
-                              </div></Fade>
+                                <div className="form-validation-feedback validation-error">
+                                  {meta.error}
+                                </div>
+                              </Fade>
                             )}
                           </Form.Group>
                         )}
