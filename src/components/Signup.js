@@ -44,7 +44,7 @@ const Captcha = (props) => {
 
 const Signup = (props) => {
   const onSubmit = async (values) => {
-    let response = await axios.post(`${config.apiServerBaseUrl}/users/signup`, values, {
+    axios.post(`${config.apiServerBaseUrl}/users/signup`, values, {
       withCredentials: true,
     }).then(res => {
       if(res.data.success){
@@ -52,17 +52,6 @@ const Signup = (props) => {
       props.match.history.push("/");
       }
     })
-
-    // await fetch(config.apiServerBaseUrl + "/users/signup", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(values),
-    // });
-    // let data = await response.json();
-
-    // if (data.success === true) {
-      
-    // }
   };
 
   if (props.user.isLoggedIn) {

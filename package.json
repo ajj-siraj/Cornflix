@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
+    "cogo-toast": "^4.2.3",
     "cra-template": "1.0.3",
     "final-form": "^4.19.1",
     "font-awesome": "^4.7.0",

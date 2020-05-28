@@ -11,11 +11,12 @@ import {
   Nav,
   OverlayTrigger,
   Tooltip,
-  Toast
+  Toast,
 } from "react-bootstrap";
 import { defaultPics } from "../../data";
 import { apiServerBaseUrl } from "../../config";
 import axios from "axios";
+import cogoToast from 'cogo-toast';
 
 import { Form as FinalForm, Field } from "react-final-form";
 import * as config from "../../config";
@@ -56,9 +57,7 @@ class UserAccount extends React.Component {
     this.state = {
       switch: false,
       checkdisabled: false,
-      success: false,
-      error: false,
-      show:false
+      show: false,
     };
 
     this.setKey = this.setKey.bind(this);
@@ -149,8 +148,8 @@ class UserAccount extends React.Component {
       .then((res) => {
         this.setState((prevState) => ({ ...prevState, checkdisabled: false }));
         if (res.data.success) {
-          this.setState((prevState) => ({ ...prevState, success: true, error: false }));
           this.props.validateUser();
+          cogoToast.success(`Updated! Your profile is now: ${res.data.data.public ? 'public' : 'private'}.`, {position: 'top-center'});
         }
       })
       .catch(() =>
@@ -164,15 +163,15 @@ class UserAccount extends React.Component {
     console.log("The form: ", data);
   }
 
-  toggleToast(){
-    this.setState(prevState => ({...prevState, show: !prevState.show}))
+  toggleToast() {
+    this.setState((prevState) => ({ ...prevState, show: !prevState.show }));
   }
   // enable/disable editing on switch toggle
   toggleEditing(e) {
     this.setState((prevState) => ({ ...prevState, switch: !prevState.switch }));
   }
 
-  handlePasswordSubmit(values){
+  handlePasswordSubmit(values) {
     console.log(values);
   }
   render() {
@@ -210,18 +209,20 @@ class UserAccount extends React.Component {
                 onSelect={(k) => this.setKey(k)}
               >
                 <Tab eventKey="profile" title="Profile">
-                  <Row className="justify-content-center mt-5 mb-5">
+                  <Row className="justify-content-center mt-5 mb-5 text-center">
                     <Col xs="12" md="6">
                       <Flip bottom>
-                        <img
-                          className="rounded-circle user-profile-photo"
-                          src={`${apiServerBaseUrl}/file/image/${
-                            this.props.user.profilePic || "caaed6a8ba225476b2137d33d6bc53aa.png"
-                          }`}
-                        />
+                        <div>
+                          <div
+                            className="rounded-circle user-profile-border "
+                            style={{
+                              backgroundImage: `url(${apiServerBaseUrl}/file/image/${this.props.user.profilePic})`,
+                            }}
+                          ></div>
+                        </div>
                       </Flip>
                       <Slide left>
-                        <Form>
+                        <Form className="mt-5">
                           <Form.File
                             style={{ width: "50%" }}
                             id="image"
@@ -272,27 +273,12 @@ class UserAccount extends React.Component {
                           inline
                           type="checkbox"
                           label="Make my data private"
-                          checked={
-                            !this.props.user.public
-                          }
+                          checked={!this.props.user.public}
                           disabled={this.state.checkdisabled}
                           onChange={this.handleCheckBox}
                         />
                       </Form>
-                      <Fade bottom>
-                        <div>
-                          {this.state.success && !this.state.error ? (
-                            <Alert variant="success">
-                              Your profile is now {!this.state.checked ? "public." : "private."}
-                            </Alert>
-                          ) : null}
-
-                          {!this.state.success && this.state.error ? (
-                            <Alert variant="danger">An error occurred. Please try again.</Alert>
-                          ) : null}
-                        </div>
-                      </Fade>
-                     
+                      
                     </Col>
                   </Row>
                 </Tab>
@@ -538,149 +524,154 @@ class UserAccount extends React.Component {
                             <Container>
                               <Row className="mt-5 mb-5 text-left">
                                 <Col md="8">
-                                <FinalForm
-                              onSubmit={this.handlePasswordSubmit}
-                              validate={(values) => {
-                                const errors = {};
+                                  <FinalForm
+                                    onSubmit={this.handlePasswordSubmit}
+                                    validate={(values) => {
+                                      const errors = {};
 
-                                if (values.passwordNew !== values.passwordConfirm) {
-                                  errors.passwordConfirm = "Must match";
-                                }
-                                if(values.passwordNew === values.passwordCurrent){
-                                  errors.passwordNew = "New password must not be the same as the current password."
-                                }
-                                return errors;
-                              }}
-                              render={({ handleSubmit, form, submitting, pristine, values }) => (
-                                <Form onSubmit={handleSubmit}>
-                                  <Form.Row>
-                                    <Col>
-                                      <Field name="passwordCurrent" validate={required}>
-                                        {({ input, meta }) => (
-                                          <Form.Group as={Row}>
-                                            <Form.Label column sm="3">
-                                              Current Password
-                                            </Form.Label>
-                                            <Col sm="9">
-                                              <input
-                                                {...input}
-                                                type="password"
-                                                placeholder="Enter your current password"
-                                                className="form-control"
-                                              />
-                                              {meta.error && meta.touched && (
-                                                <Fade bottom>
-                                                  <div className="form-validation-feedback validation-error">
-                                                    {meta.error}
-                                                  </div>
-                                                </Fade>
+                                      if (values.passwordNew !== values.passwordConfirm) {
+                                        errors.passwordConfirm = "Must match";
+                                      }
+                                      if (values.passwordNew === values.passwordCurrent) {
+                                        errors.passwordNew =
+                                          "New password must not be the same as the current password.";
+                                      }
+                                      return errors;
+                                    }}
+                                    render={({
+                                      handleSubmit,
+                                      form,
+                                      submitting,
+                                      pristine,
+                                      values,
+                                    }) => (
+                                      <Form onSubmit={handleSubmit}>
+                                        <Form.Row>
+                                          <Col>
+                                            <Field name="passwordCurrent" validate={required}>
+                                              {({ input, meta }) => (
+                                                <Form.Group as={Row}>
+                                                  <Form.Label column sm="3">
+                                                    Current Password
+                                                  </Form.Label>
+                                                  <Col sm="9">
+                                                    <input
+                                                      {...input}
+                                                      type="password"
+                                                      placeholder="Enter your current password"
+                                                      className="form-control"
+                                                    />
+                                                    {meta.error && meta.touched && (
+                                                      <Fade bottom>
+                                                        <div className="form-validation-feedback validation-error">
+                                                          {meta.error}
+                                                        </div>
+                                                      </Fade>
+                                                    )}
+                                                  </Col>
+                                                </Form.Group>
                                               )}
-                                              
-                                            </Col>
-                                          </Form.Group>
-                                        )}
-                                      </Field>
-                                    </Col>
-                                  </Form.Row>
-                                  
-                                  <Form.Row>
-                                    <Col>
-                                      <Field name="passwordNew" validate={required}>
-                                        {({ input, meta }) => (
-                                          <Form.Group as={Row}>
-                                            <Form.Label column sm="3">
-                                              New Password
-                                            </Form.Label>
-                                            <Col sm="9">
-                                              <input
-                                                {...input}
-                                                type="password"
-                                                placeholder="Enter your new password"
-                                                className="form-control"
-                                              />
-                                              {meta.error && meta.touched && (
-                                                <Fade bottom>
-                                                  <div className="form-validation-feedback validation-error">
-                                                    {meta.error}
-                                                  </div>
-                                                </Fade>
-                                              )}
-                                              {!meta.error && meta.touched && (
-                                                <Fade bottom>
-                                                  <div className="form-validation-feedback validation-ok">
-                                                    {"Valid password."}
-                                                  </div>
-                                                </Fade>
-                                              )}
-                                            </Col>
-                                          </Form.Group>
-                                        )}
-                                      </Field>
-                                    </Col>
-                                  </Form.Row>
+                                            </Field>
+                                          </Col>
+                                        </Form.Row>
 
-                                  <Form.Row>
-                                    <Col>
-                                      <Field name="passwordConfirm" validate={required}>
-                                        {({ input, meta }) => (
-                                          <Form.Group as={Row}>
-                                            <Form.Label column sm="3">
-                                              Confirm New Password
-                                            </Form.Label>
-                                            <Col sm="9">
-                                              <input
-                                                {...input}
-                                                type="password"
-                                                placeholder="Confirm your new password"
-                                                className="form-control"
-                                              />
-                                              {meta.error && meta.touched && (
-                                                <Fade bottom>
-                                                  <div className="form-validation-feedback validation-error">
-                                                    {meta.error}
-                                                  </div>
-                                                </Fade>
+                                        <Form.Row>
+                                          <Col>
+                                            <Field name="passwordNew" validate={required}>
+                                              {({ input, meta }) => (
+                                                <Form.Group as={Row}>
+                                                  <Form.Label column sm="3">
+                                                    New Password
+                                                  </Form.Label>
+                                                  <Col sm="9">
+                                                    <input
+                                                      {...input}
+                                                      type="password"
+                                                      placeholder="Enter your new password"
+                                                      className="form-control"
+                                                    />
+                                                    {meta.error && meta.touched && (
+                                                      <Fade bottom>
+                                                        <div className="form-validation-feedback validation-error">
+                                                          {meta.error}
+                                                        </div>
+                                                      </Fade>
+                                                    )}
+                                                    {!meta.error && meta.touched && (
+                                                      <Fade bottom>
+                                                        <div className="form-validation-feedback validation-ok">
+                                                          {"Valid password."}
+                                                        </div>
+                                                      </Fade>
+                                                    )}
+                                                  </Col>
+                                                </Form.Group>
                                               )}
-                                              {!meta.error && meta.touched && (
-                                                <Fade bottom>
-                                                  <div className="form-validation-feedback validation-ok">
-                                                    {"Passwords match."}
-                                                  </div>
-                                                </Fade>
+                                            </Field>
+                                          </Col>
+                                        </Form.Row>
+
+                                        <Form.Row>
+                                          <Col>
+                                            <Field name="passwordConfirm" validate={required}>
+                                              {({ input, meta }) => (
+                                                <Form.Group as={Row}>
+                                                  <Form.Label column sm="3">
+                                                    Confirm New Password
+                                                  </Form.Label>
+                                                  <Col sm="9">
+                                                    <input
+                                                      {...input}
+                                                      type="password"
+                                                      placeholder="Confirm your new password"
+                                                      className="form-control"
+                                                    />
+                                                    {meta.error && meta.touched && (
+                                                      <Fade bottom>
+                                                        <div className="form-validation-feedback validation-error">
+                                                          {meta.error}
+                                                        </div>
+                                                      </Fade>
+                                                    )}
+                                                    {!meta.error && meta.touched && (
+                                                      <Fade bottom>
+                                                        <div className="form-validation-feedback validation-ok">
+                                                          {"Passwords match."}
+                                                        </div>
+                                                      </Fade>
+                                                    )}
+                                                  </Col>
+                                                </Form.Group>
                                               )}
-                                            </Col>
-                                          </Form.Group>
-                                        )}
-                                      </Field>
-                                    </Col>
-                                  </Form.Row>
-                                  <Form.Row>
-                                    <Col>
-                                      <Slide right>
-                                        <Button block type="submit" disabled={submitting}>
-                                          Submit
-                                        </Button>
-                                      </Slide>
-                                      <Slide left>
-                                        <Button
-                                          block
-                                          type="button"
-                                          onClick={form.reset}
-                                          disabled={submitting || pristine}
-                                        >
-                                          Reset
-                                        </Button>
-                                      </Slide>
-                                    </Col>
-                                  </Form.Row>
-                                  {/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
-                                </Form>
-                              )}
-                            />
+                                            </Field>
+                                          </Col>
+                                        </Form.Row>
+                                        <Form.Row>
+                                          <Col>
+                                            <Slide right>
+                                              <Button block type="submit" disabled={submitting}>
+                                                Submit
+                                              </Button>
+                                            </Slide>
+                                            <Slide left>
+                                              <Button
+                                                block
+                                                type="button"
+                                                onClick={form.reset}
+                                                disabled={submitting || pristine}
+                                              >
+                                                Reset
+                                              </Button>
+                                            </Slide>
+                                          </Col>
+                                        </Form.Row>
+                                        {/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
+                                      </Form>
+                                    )}
+                                  />
                                 </Col>
                               </Row>
                             </Container>
-                            
                           </Tab.Pane>
                         </Tab.Content>
                       </Col>

@@ -11,17 +11,28 @@
   color: #ddd;
 }
 
-.user-profile-photo {
-  width: 250px;
-  height: 250px;
-  margin: 30px;
-  border-width: 2px;
+.user-profile-border{
+  margin: auto;
+    border-width: 2px;
   border-style: solid;
   border-color: #ddd;
+  height: 250px;
+  width: 250px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-clip: content-box;
 }
 
 .nav-tab-pill:focus, .nav-tab-pill .active, .btn-green{
   background-color: #3fbb05 !important;
   border: none !important;
   outline: none !important;
+}
+
+.ct-toast{
+  height:100px;
+  width:400px;
+  background-color: #363636;
+  color:#ddd;
 }
