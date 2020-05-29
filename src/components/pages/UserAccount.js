@@ -16,7 +16,7 @@ import {
 import { defaultPics } from "../../data";
 import { apiServerBaseUrl } from "../../config";
 import axios from "axios";
-import cogoToast from 'cogo-toast';
+import cogoToast from "cogo-toast";
 
 import { Form as FinalForm, Field } from "react-final-form";
 import * as config from "../../config";
@@ -48,7 +48,12 @@ let countriesList = countries.map((country, index) => {
 
 // Tedious form data/code ends here.
 
-//TODO: clean up this page and separate the components. This will be a headache to edit in the future. I'm getting nauseous just looking at it.
+//TODO: clean up this page and separate the components.
+//This will be a headache to edit in the future.
+//I'm getting nauseous just looking at it.
+
+//TODO: set a default profile picture if user has not uploaded one.
+//TODO: Password reset workflow with backend integration.
 
 class UserAccount extends React.Component {
   constructor(props) {
@@ -82,13 +87,13 @@ class UserAccount extends React.Component {
     const file = e.target.files[0];
     if (file) {
       if (!file.type.includes("image")) {
-        alert("Invalid file type. Please upload a PNG or JPEG image format.");
+        cogoToast.error("Invalid file type. Please upload a PNG or JPEG image format.");
       } else if (
         !file.type.includes("png") &&
         !file.type.includes("jpg") &&
         !file.type.includes("jpeg")
       ) {
-        alert("Invalid file type. Please upload a PNG or JPEG image format.");
+        cogoToast.error("Invalid file type. Please upload a PNG or JPEG image format.");
       } else {
         console.log(file);
         this.setState((prevState) => ({ ...prevState, file: file }));
@@ -99,7 +104,7 @@ class UserAccount extends React.Component {
   //upload file
   handleUpload() {
     if (!this.state.file) {
-      alert("No file was selected.");
+      cogoToast.error("No file was selected.");
       return;
     }
     const form = new FormData();
@@ -108,7 +113,7 @@ class UserAccount extends React.Component {
     axios
       .post(`${apiServerBaseUrl}/file/upload`, form, { withCredentials: true })
       .then((res) => {
-        if (!res.data.success) alert("Upload failed.");
+        if (!res.data.success) cogoToast.error("Upload failed.");
         if (res.data.success) {
           this.props.trackTab("profile");
           this.props.validateUser();
@@ -121,17 +126,22 @@ class UserAccount extends React.Component {
   //submit request to update user data
   handleAccountSubmit(values) {
     console.log(values);
-    this.setState((prevState) => ({ ...prevState, selectedKey: "account" }));
+    // this.setState((prevState) => ({ ...prevState, selectedKey: "account" }));
     axios
-      .post(`${apiServerBaseUrl}/users/account/update`, values, { withCredentials: true })
-      .then((res) => {
-        if (res.data.success) {
-          this.props.trackTab("account");
-          alert("Your info has been updated successfully.");
-          this.props.validateUser();
-        }
+      .post(`${apiServerBaseUrl}/users/account/update`, values, {
+        validateStatus: (status) => status < 500,
+        withCredentials: true,
       })
-      .catch((err) => alert(err));
+      .then((res) => {
+        if (!res.data.success) {
+          cogoToast.error(res.data.message);
+          return;
+        }
+        this.props.trackTab("account");
+        cogoToast.success("Your info has been updated successfully.");
+        this.props.validateUser();
+      })
+      .catch((err) => cogoToast.error(err.toString()));
   }
 
   //make user data private/public
@@ -149,17 +159,19 @@ class UserAccount extends React.Component {
         this.setState((prevState) => ({ ...prevState, checkdisabled: false }));
         if (res.data.success) {
           this.props.validateUser();
-          cogoToast.success(`Updated! Your profile is now: ${res.data.data.public ? 'public' : 'private'}.`, {position: 'top-center'});
+          cogoToast.success(
+            `Updated! Your profile is now: ${res.data.data.public ? "public" : "private"}.`,
+            { position: "top-center" }
+          );
         }
       })
-      .catch(() =>
+      .catch(() => {
         this.setState((prevState) => ({
           ...prevState,
-          success: false,
-          error: true,
           checkdisabled: false,
-        }))
-      );
+        }));
+        cogoToast.error("There was an error. Please try again.");
+      });
     console.log("The form: ", data);
   }
 
@@ -172,7 +184,24 @@ class UserAccount extends React.Component {
   }
 
   handlePasswordSubmit(values) {
-    console.log(values);
+    axios
+      .post(`${apiServerBaseUrl}/users/account/update-password`, values, {
+        validateStatus: (status) => status < 500,
+        withCredentials: true,
+      })
+      .then((res) => {
+        if (!res.data.success) {
+          cogoToast.error(res.data.message.message);
+          return;
+        }
+        cogoToast.success(res.data.message);
+        this.props.trackTab("account");
+        this.props.validateUser();
+      })
+      .catch((err) => {
+        console.log(err);
+        cogoToast.error(err.toString());
+      });
   }
   render() {
     if (!this.props.user.isLoggedIn) {
@@ -278,7 +307,6 @@ class UserAccount extends React.Component {
                           onChange={this.handleCheckBox}
                         />
                       </Form>
-                      
                     </Col>
                   </Row>
                 </Tab>
