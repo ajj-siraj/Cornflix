@@ -36,3 +36,16 @@
   background-color: #363636;
   color:#ddd;
 }
+
+.list-container{
+  border-radius: 20px;
+  background-color:#dbdd7c;
+  padding:5%;
+}
+
+.list-item{
+  border-radius: 20px;
+  background-color:#2e2e2e;
+  padding:5%;
+  margin:1%;
+}

@@ -57,17 +57,21 @@ let countriesList = countries.map((country, index) => {
 
 //Favorites component. TODO: move it with its parent component when you re-organize.
 const Favorites = (props) => {
+  if (!props.favorites) {
+    return <div className="list-container">
+      <div className="list-item">Testin1</div>
+      <div className="list-item">Testin2</div>
+    </div>;
+  }
   let favs = props.favorites.map((fav, idx) => {
-    return(<div key={`fav-list-${idx}-${fav.imdbID}`} className="fav-list-item">
-      <img src={fav.Poster}/>
-    </div>);
-  })
-  return (
-    <div className="fav-list">
-      {favs}
-    </div>
-  );
-}
+    return (
+      <div key={`fav-list-${idx}-${fav.imdbID}`} className="list-item">
+        <img src={fav.PosterThumb} />
+      </div>
+    );
+  });
+  return <div className="list-container">{favs}</div>;
+};
 class UserAccount extends React.Component {
   constructor(props) {
     super(props);
@@ -250,7 +254,6 @@ class UserAccount extends React.Component {
                 activeKey={this.state.selectedKey || this.props.tab.tab}
                 onSelect={(k) => this.setKey(k)}
               >
-                
                 <Tab eventKey="profile" title="Profile">
                   <Row className="justify-content-center mt-5 mb-5 text-center">
                     <Col xs="12" md="6">
@@ -324,8 +327,7 @@ class UserAccount extends React.Component {
                     </Col>
                   </Row>
                 </Tab>
-                
-                
+
                 <Tab eventKey="account" title="Account">
                   <Tab.Container id="left-tabs-account" defaultActiveKey="first-account">
                     <Row>
@@ -722,10 +724,9 @@ class UserAccount extends React.Component {
                     </Row>
                   </Tab.Container>
                 </Tab>
-                
-                
+
                 <Tab eventKey="my-lists" title="My Lists">
-                <Tab.Container id="left-tabs-lists" defaultActiveKey="first-list">
+                  <Tab.Container id="left-tabs-lists" defaultActiveKey="first-list">
                     <Row>
                       <Col sm={3}>
                         <Nav variant="pills" className="flex-column nav-tab-pill">
@@ -742,7 +743,6 @@ class UserAccount extends React.Component {
                           <Tab.Pane eventKey="first-list">
                             <Fade>
                               <Container fluid className="mt-5">
-                                
                                 <Row className=" mb-5 justify-content-left text-left">
                                   <Col
                                     lg="10"
@@ -750,7 +750,7 @@ class UserAccount extends React.Component {
                                       padding: "5%",
                                     }}
                                   >
-                                    <Favorites favorites={this.props.favorites}/>
+                                    <Favorites favorites={this.props.favorites} />
                                   </Col>
                                 </Row>
                               </Container>
@@ -760,9 +760,7 @@ class UserAccount extends React.Component {
                             {/* New password change tbd on a separate tab */}
                             <Container>
                               <Row className="mt-5 mb-5 text-left">
-                                <Col md="8">
-                                
-                                </Col>
+                                <Col md="8"></Col>
                               </Row>
                             </Container>
                           </Tab.Pane>
@@ -771,8 +769,6 @@ class UserAccount extends React.Component {
                     </Row>
                   </Tab.Container>
                 </Tab>
-              
-              
               </Tabs>
             </Col>
           </Row>

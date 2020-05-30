@@ -134,6 +134,8 @@ class App extends React.Component {
                 match={match}
                 topMovies={this.state.topMovies}
                 latestMovies={this.state.latestMovies}
+                user={this.props.user}
+                validateUser={this.props.validateUser}
               />
             )}
           />
