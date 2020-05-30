@@ -59,7 +59,7 @@ class SearchResults extends React.Component {
           <td>
             <img
               className="img-fluid"
-              src={movie.Poster}
+              src={movie.PosterThumb}
               alt={movie.Title}
               style={{ maxHeight: "4rem" }}
             />

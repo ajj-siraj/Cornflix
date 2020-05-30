@@ -53,8 +53,21 @@ let countriesList = countries.map((country, index) => {
 //I'm getting nauseous just looking at it.
 
 //TODO: set a default profile picture if user has not uploaded one.
-//TODO: Password reset workflow with backend integration.
+//TODO: Lost password recovery process (add optional email to user profile)
 
+//Favorites component. TODO: move it with its parent component when you re-organize.
+const Favorites = (props) => {
+  let favs = props.favorites.map((fav, idx) => {
+    return(<div key={`fav-list-${idx}-${fav.imdbID}`} className="fav-list-item">
+      <img src={fav.Poster}/>
+    </div>);
+  })
+  return (
+    <div className="fav-list">
+      {favs}
+    </div>
+  );
+}
 class UserAccount extends React.Component {
   constructor(props) {
     super(props);
@@ -237,6 +250,7 @@ class UserAccount extends React.Component {
                 activeKey={this.state.selectedKey || this.props.tab.tab}
                 onSelect={(k) => this.setKey(k)}
               >
+                
                 <Tab eventKey="profile" title="Profile">
                   <Row className="justify-content-center mt-5 mb-5 text-center">
                     <Col xs="12" md="6">
@@ -310,22 +324,24 @@ class UserAccount extends React.Component {
                     </Col>
                   </Row>
                 </Tab>
+                
+                
                 <Tab eventKey="account" title="Account">
-                  <Tab.Container id="left-tabs" defaultActiveKey="first">
+                  <Tab.Container id="left-tabs-account" defaultActiveKey="first-account">
                     <Row>
                       <Col sm={3}>
                         <Nav variant="pills" className="flex-column nav-tab-pill">
                           <Nav.Item>
-                            <Nav.Link eventKey="first">My account</Nav.Link>
+                            <Nav.Link eventKey="first-account">My account</Nav.Link>
                           </Nav.Item>
                           <Nav.Item>
-                            <Nav.Link eventKey="second">Change password</Nav.Link>
+                            <Nav.Link eventKey="second-account">Change password</Nav.Link>
                           </Nav.Item>
                         </Nav>
                       </Col>
                       <Col sm={9}>
                         <Tab.Content>
-                          <Tab.Pane eventKey="first">
+                          <Tab.Pane eventKey="first-account">
                             <Fade>
                               <Container fluid className="mt-5">
                                 <Flash>
@@ -547,7 +563,7 @@ class UserAccount extends React.Component {
                               </Container>
                             </Fade>
                           </Tab.Pane>
-                          <Tab.Pane eventKey="second">
+                          <Tab.Pane eventKey="second-account">
                             {/* New password change tbd on a separate tab */}
                             <Container>
                               <Row className="mt-5 mb-5 text-left">
@@ -706,9 +722,57 @@ class UserAccount extends React.Component {
                     </Row>
                   </Tab.Container>
                 </Tab>
+                
+                
                 <Tab eventKey="my-lists" title="My Lists">
-                  CONTENT3
+                <Tab.Container id="left-tabs-lists" defaultActiveKey="first-list">
+                    <Row>
+                      <Col sm={3}>
+                        <Nav variant="pills" className="flex-column nav-tab-pill">
+                          <Nav.Item>
+                            <Nav.Link eventKey="first-list">My Favorites</Nav.Link>
+                          </Nav.Item>
+                          <Nav.Item>
+                            <Nav.Link eventKey="second-list">History</Nav.Link>
+                          </Nav.Item>
+                        </Nav>
+                      </Col>
+                      <Col sm={9}>
+                        <Tab.Content>
+                          <Tab.Pane eventKey="first-list">
+                            <Fade>
+                              <Container fluid className="mt-5">
+                                
+                                <Row className=" mb-5 justify-content-left text-left">
+                                  <Col
+                                    lg="10"
+                                    style={{
+                                      padding: "5%",
+                                    }}
+                                  >
+                                    <Favorites favorites={this.props.favorites}/>
+                                  </Col>
+                                </Row>
+                              </Container>
+                            </Fade>
+                          </Tab.Pane>
+                          <Tab.Pane eventKey="second-list">
+                            {/* New password change tbd on a separate tab */}
+                            <Container>
+                              <Row className="mt-5 mb-5 text-left">
+                                <Col md="8">
+                                
+                                </Col>
+                              </Row>
+                            </Container>
+                          </Tab.Pane>
+                        </Tab.Content>
+                      </Col>
+                    </Row>
+                  </Tab.Container>
                 </Tab>
+              
+              
               </Tabs>
             </Col>
           </Row>

@@ -13,7 +13,7 @@ class ExploreMovies extends React.Component {
       return (
         <Card key={`explore-movie-${movie.imdbID}`} className="custom-card">
           <Link to={`/movies/${movie.imdbID}`}>
-            <Card.Img variant="top" src={movie.Poster} className="img-fluid p-0" />
+            <Card.Img variant="top" src={movie.PosterFeat} className="img-fluid p-0" />
             <Card.Body>
               <Card.Title className="custom-card-item">{movie.Title}</Card.Title>
               <Card.Text

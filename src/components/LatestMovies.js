@@ -9,7 +9,7 @@ const MovieListItem = (props) => {
         <ListGroup.Item className={`${props.color} mb-3`}>
           <Row>
             <Col xs={2}>
-              <img src={props.movie.Poster} alt={props.movie.Title} style={{ height: "5rem" }} />
+              <img src={props.movie.PosterThumb} alt={props.movie.Title} style={{ height: "5rem" }} />
             </Col>
             <Col xs={10}>
               <h4 className="latest-movie-title">{props.movie.Title}</h4>
@@ -30,7 +30,7 @@ class LatestMovies extends React.Component {
   render() {
     let latest = this.props.movies.map((movie, index) => {
       return (
-        <ListGroup key={`${movie.id}-${index}`}>
+        <ListGroup key={`${movie.imdbID}-${index}`}>
           
             <MovieListItem movie={movie} color={index % 2 == 0 ? "dark-list" : "light-list"} />
           

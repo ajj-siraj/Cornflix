@@ -172,6 +172,7 @@ class App extends React.Component {
                 validateUser={this.props.validateUser}
                 trackTab={this.props.trackTab}
                 tab={this.props.tab}
+                favorites={this.props.topMovies}
               />
             )}
           />

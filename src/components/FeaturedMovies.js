@@ -11,7 +11,7 @@ const MovieCard = (props) => {
       <img
         onClick={() => props.toggleModal(props.movie)}
         className="slider-movie-img"
-        src={props.movie.Poster}
+        src={props.movie.PosterFeat}
         alt={props.movie.Title}
         style={{margin: 'auto'}}
       />
@@ -106,7 +106,7 @@ class FeaturedMovies extends React.Component {
     let topTen = this.props.movies.map((movie, index) => {
       return (
         
-          <MovieCard key={`featured-${movie.id}`} movie={movie} toggleModal={this.props.toggleMovieModal} />
+          <MovieCard key={`featured-${movie.imdbID}`} movie={movie} toggleModal={this.props.toggleMovieModal} />
         
       );
     });

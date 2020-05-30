@@ -51,7 +51,7 @@ function MovieDetails(props) {
       <Row>
         <Col lg="6">
           <Pulse>
-            <img src={movie.Poster} alt={movie.Title} className="img-fluid" />
+            <img src={movie.PosterFeat} alt={movie.Title} className="img-fluid" />
           </Pulse>
         </Col>
 

@@ -34,7 +34,7 @@ class MovieModal extends React.Component {
               <Col lg={6}>
                 <img
                   className="movie-modal-img img-fluid"
-                  src={this.props.movie.Poster}
+                  src={this.props.movie.PosterFeat}
                   alt={this.props.movie.Title}
                   style={{ margin: 'auto' }}
                 />
