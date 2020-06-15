@@ -52,26 +52,55 @@ let countriesList = countries.map((country, index) => {
 //This will be a headache to edit in the future.
 //I'm getting nauseous just looking at it.
 
-//TODO: set a default profile picture if user has not uploaded one.
 //TODO: Lost password recovery process (add optional email to user profile)
 
 //Favorites component. TODO: move it with its parent component when you re-organize.
 const Favorites = (props) => {
-  if (!props.favorites) {
-    return <div className="list-container">
-      <div className="list-item">Testin1</div>
-      <div className="list-item">Testin2</div>
-    </div>;
+  const removeFav = (id) => {
+    console.log(id);
+    const form = { imdbID: id };
+
+    axios
+      .delete(`${apiServerBaseUrl}/favorites`, { withCredentials: true, data: form })
+      .then((res) => {
+        if (!res.data.success) cogoToast.error("Something went wrong.");
+        if (res.data.success) {
+          cogoToast.success("Removed successfully.")
+          props.trackTab("my-lists");
+          props.validateUser();
+        }
+      })
+      .catch(() => cogoToast.error("Something went wrong."));
+  };
+
+  if (!props.favorites || props.favorites.length === 0) {
+    return (
+      <div className="list-container">
+        <div className="list-item">Your list is empty.</div>
+      </div>
+    );
   }
   let favs = props.favorites.map((fav, idx) => {
     return (
-      <div key={`fav-list-${idx}-${fav.imdbID}`} className="list-item">
-        <img src={fav.PosterThumb} />
-      </div>
+      <Row key={`fav-list-${idx}-${fav.imdbID}`} className="list-item">
+        <Col md={3}>
+          <img src={fav.PosterThumb} />
+        </Col>
+        <Col>
+          <div>{fav.Title}</div>
+          <div>Rating: {fav.imdbRating}</div>
+        </Col>
+        <Col md={2}>
+          <Button block variant="danger" onClick={() => removeFav(fav.imdbID)}>
+            X
+          </Button>
+        </Col>
+      </Row>
     );
   });
   return <div className="list-container">{favs}</div>;
 };
+
 class UserAccount extends React.Component {
   constructor(props) {
     super(props);
@@ -79,7 +108,6 @@ class UserAccount extends React.Component {
     this.state = {
       switch: false,
       checkdisabled: false,
-      show: false,
     };
 
     this.setKey = this.setKey.bind(this);
@@ -88,8 +116,6 @@ class UserAccount extends React.Component {
     this.handleAccountSubmit = this.handleAccountSubmit.bind(this);
     this.handleCheckBox = this.handleCheckBox.bind(this);
     this.toggleEditing = this.toggleEditing.bind(this);
-
-    this.toggleToast = this.toggleToast.bind(this);
     this.handlePasswordSubmit = this.handlePasswordSubmit.bind(this);
   }
 
@@ -192,9 +218,6 @@ class UserAccount extends React.Component {
     console.log("The form: ", data);
   }
 
-  toggleToast() {
-    this.setState((prevState) => ({ ...prevState, show: !prevState.show }));
-  }
   // enable/disable editing on switch toggle
   toggleEditing(e) {
     this.setState((prevState) => ({ ...prevState, switch: !prevState.switch }));
@@ -741,20 +764,22 @@ class UserAccount extends React.Component {
                       <Col sm={9}>
                         <Tab.Content>
                           <Tab.Pane eventKey="first-list">
-                            <Fade>
-                              <Container fluid className="mt-5">
-                                <Row className=" mb-5 justify-content-left text-left">
-                                  <Col
-                                    lg="10"
-                                    style={{
-                                      padding: "5%",
-                                    }}
-                                  >
-                                    <Favorites favorites={this.props.favorites} />
-                                  </Col>
-                                </Row>
-                              </Container>
-                            </Fade>
+                            <Container fluid className="mt-2">
+                              <Row className=" mb-5 justify-content-left text-left">
+                                <Col
+                                  lg="10"
+                                  style={{
+                                    padding: "5%",
+                                  }}
+                                >
+                                  <Favorites
+                                    favorites={this.props.user.favorites}
+                                    trackTab={this.props.trackTab}
+                                    validateUser={this.props.validateUser}
+                                  />
+                                </Col>
+                              </Row>
+                            </Container>
                           </Tab.Pane>
                           <Tab.Pane eventKey="second-list">
                             {/* New password change tbd on a separate tab */}
