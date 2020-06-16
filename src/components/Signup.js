@@ -14,6 +14,7 @@ import Slide from "react-reveal/Slide";
 
 //validators
 const required = (value) => (value ? undefined : "Required");
+const validateEmail = (value) => (config.emailRegex.test(value) ? undefined : "Invalid email.");
 const mustBeNumber = (value) => (isNaN(value) ? "Must be a number" : undefined);
 const minValue = (min) => (value) =>
   isNaN(value) || value >= min ? undefined : `Should be greater than ${min}`;
@@ -189,6 +190,32 @@ const Signup = (props) => {
                               placeholder="Age"
                               className="form-control"
                             />
+                            {meta.error && meta.touched && (
+                              <Fade bottom>
+                                <div className="form-validation-feedback validation-error">
+                                  {meta.error}
+                                </div>
+                              </Fade>
+                            )}
+                          </Form.Group>
+                        )}
+                      </Field>
+                    </Col>
+                  </Form.Row>
+                  
+                  <Form.Row>
+                    <Col>
+                      <Field name="email" validate={composeValidators(required, validateEmail)}>
+                        {({ input, meta }) => (
+                          <Form.Group>
+                            <label>Email</label>
+                            <input
+                              {...input}
+                              type="email"
+                              placeholder="Enter your email"
+                              className="form-control"
+                            />
+                            <div>*Your email address will only be used for password reset.</div>
                             {meta.error && meta.touched && (
                               <Fade bottom>
                                 <div className="form-validation-feedback validation-error">

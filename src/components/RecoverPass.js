@@ -4,7 +4,8 @@ import { Form as FinalForm, Field } from "react-final-form";
 import ReCAPTCHA from "react-google-recaptcha";
 import { apiServerBaseUrl, recaptchaSiteKey } from "../config";
 import axios from "axios";
-import {Link} from 'react-router-dom';
+import { Link } from "react-router-dom";
+import * as config from "../config";
 
 //React-reveal components
 import Fade from "react-reveal/Fade";
@@ -14,6 +15,9 @@ import Bounce from "react-reveal/Bounce";
 
 //validators
 const required = (value) => (value ? undefined : "Required");
+const validateEmail = (value) => (config.emailRegex.test(value) ? undefined : "Invalid email.");
+const composeValidators = (...validators) => (value) =>
+  validators.reduce((error, validator) => error || validator(value), undefined);
 
 const Captcha = (props) => {
   return (
@@ -28,28 +32,19 @@ const Captcha = (props) => {
   );
 };
 
-class Login extends React.Component {
+class RecoverPass extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      loginFailed: false,
-    };
+    this.state = {};
     this.onSubmit = this.onSubmit.bind(this);
   }
 
   onSubmit = async (values) => {
-    axios
-      .post(apiServerBaseUrl + "/users/login", values, { withCredentials: true })
-      .then((response) => {
-        
-        if (response.data.success) {
-          this.props.loginUser(response.data.user);
-        }
+    axios.post(`${apiServerBaseUrl}/users/account/reset-password`, values, {withCredentials: true})
+      .then(result => {
+        alert(JSON.stringify(result.data))
       })
-      .catch((err) => {
-        this.setState((prevState) => ({ ...prevState, loginFailed: true }));
-        console.error(err);
-      });
+      .catch(err => console.error(err));
   };
 
   render() {
@@ -79,14 +74,6 @@ class Login extends React.Component {
       <Bounce>
         <Container>
           <Row className="mt-5 mb-5 justify-content-center">
-            <Col xs="12" className="text-center">
-              {this.state.loginFailed ? (
-                <LightSpeed left>
-                  <Alert variant="danger">Incorrect credentials, please try again!</Alert>
-                </LightSpeed>
-              ) : null}
-            </Col>
-
             <Col lg="6" style={{ backgroundColor: "#5a5a5a", borderRadius: "20px", padding: "5%" }}>
               <FinalForm
                 onSubmit={this.onSubmit}
@@ -98,18 +85,18 @@ class Login extends React.Component {
                   <Form onSubmit={handleSubmit}>
                     <Form.Row>
                       <Col>
-                        <Field name="userName" validate={required}>
+                        <Field name="email" validate={composeValidators(required, validateEmail)}>
                           {({ input, meta }) => (
                             <Form.Group>
-                              <label>Username</label>
+                              <label>Email</label>
                               <input
                                 {...input}
-                                type="text"
-                                placeholder="Username"
+                                type="email"
+                                placeholder="Enter your email"
                                 className="form-control"
                               />
                               {meta.error && meta.touched && (
-                                <Fade bottom collapse>
+                                <Fade bottom>
                                   <div className="form-validation-feedback validation-error">
                                     {meta.error}
                                   </div>
@@ -121,34 +108,6 @@ class Login extends React.Component {
                       </Col>
                     </Form.Row>
 
-                    <Form.Row>
-                      <Col>
-                        <Field name="password" validate={required}>
-                          {({ input, meta }) => (
-                            <Form.Group>
-                              <label>Password</label>
-                              <input
-                                {...input}
-                                type="password"
-                                placeholder="Password"
-                                className="form-control"
-                              />
-                              {meta.error && meta.touched && (
-                                <Fade bottom collapse>
-                                  <div className="form-validation-feedback validation-error">
-                                    {meta.error}
-                                  </div>
-                                </Fade>
-                              )}
-                            </Form.Group>
-                          )}
-                        </Field>
-                      </Col>
-                    </Form.Row>
-                    <div className="mb-3">
-                      <Link to="recoverpw">Forgot your password?</Link>
-                    </div>
-                    
                     {/* <Form.Row>
                     <Col>
                       <Field name="recaptcha" component={Captcha} validate={required} />
@@ -158,7 +117,7 @@ class Login extends React.Component {
                     <Form.Row>
                       <Col>
                         <Button block type="submit" disabled={submitting}>
-                          Login
+                          Recover Password
                         </Button>
                       </Col>
                     </Form.Row>
@@ -174,4 +133,4 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+export default RecoverPass;

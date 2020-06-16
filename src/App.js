@@ -18,6 +18,7 @@ import Logout from "./components/Logout";
 import SearchResults from "./components/SearchResults";
 import Loading from "./components/Loading";
 import UserAccount from "./components/pages/UserAccount";
+import RecoverPass from "./components/RecoverPass";
 //config
 import { apiServerBaseUrl } from "./config";
 import * as Actions from "./redux/Actions";
@@ -42,7 +43,7 @@ const mapStateToProps = (state) => {
   return {
     user: state.loginStatus || state.validateStatus,
     isLoading: state.loadingStatus.isLoading,
-    tab: state.tab
+    tab: state.tab,
   };
 };
 
@@ -150,6 +151,8 @@ class App extends React.Component {
             component={() => <Login user={this.props.user} loginUser={this.props.loginUser} />}
           />
 
+          <Route path="/recoverpw" component={() => <RecoverPass user={this.props.user} />} />
+
           <Route
             path="/signup"
             component={(match) => (
@@ -174,7 +177,6 @@ class App extends React.Component {
                 validateUser={this.props.validateUser}
                 trackTab={this.props.trackTab}
                 tab={this.props.tab}
-                
               />
             )}
           />
