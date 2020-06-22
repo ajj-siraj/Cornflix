@@ -5,7 +5,8 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { apiServerBaseUrl, recaptchaSiteKey } from "../config";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import * as config from "../config";
+import * as data from "../data";
+import cogoToast from "cogo-toast";
 
 //React-reveal components
 import Fade from "react-reveal/Fade";
@@ -15,7 +16,7 @@ import Bounce from "react-reveal/Bounce";
 
 //validators
 const required = (value) => (value ? undefined : "Required");
-const validateEmail = (value) => (config.emailRegex.test(value) ? undefined : "Invalid email.");
+const validateEmail = (value) => (data.emailRegex.test(value) ? undefined : "Invalid email.");
 const composeValidators = (...validators) => (value) =>
   validators.reduce((error, validator) => error || validator(value), undefined);
 
@@ -42,7 +43,10 @@ class RecoverPass extends React.Component {
   onSubmit = async (values) => {
     axios.post(`${apiServerBaseUrl}/users/account/reset-password`, values, {withCredentials: true})
       .then(result => {
-        alert(JSON.stringify(result.data))
+        if(result.data.success){
+          cogoToast.success("Recovery email has been sent. Please check your email.");
+          this.props.match.history.push("/");
+        }
       })
       .catch(err => console.error(err));
   };

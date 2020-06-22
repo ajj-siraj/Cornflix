@@ -4,7 +4,7 @@ import {SocialIcon} from 'react-social-icons';
 
 const Footer = () => {
   return (
-    <Container fluid className="footer">
+    <Container fluid className="footer" style={{zIndex: "1"}}>
       <Row className="p-5 justify-content-center">
         <Col className="text-center" lg={4}>
           <h4>Social networks</h4>

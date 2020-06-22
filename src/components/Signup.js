@@ -14,7 +14,7 @@ import Slide from "react-reveal/Slide";
 
 //validators
 const required = (value) => (value ? undefined : "Required");
-const validateEmail = (value) => (config.emailRegex.test(value) ? undefined : "Invalid email.");
+const validateEmail = (value) => (data.emailRegex.test(value) ? undefined : "Invalid email.");
 const mustBeNumber = (value) => (isNaN(value) ? "Must be a number" : undefined);
 const minValue = (min) => (value) =>
   isNaN(value) || value >= min ? undefined : `Should be greater than ${min}`;

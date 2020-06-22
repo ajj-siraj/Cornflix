@@ -1,7 +1,8 @@
 import React from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
+import {newsApiKey} from "../config";
 
-import "../css/News.css";
+
 
 class News extends React.Component {
   constructor() {
@@ -13,26 +14,27 @@ class News extends React.Component {
     this._isMounted = false;
   }
 
-  componentDidMount() {
-    this._isMounted = true;
-    if (false && this.state.news.length === 0) {
-      const newsAPI =
-        "https://newsapi.org/v2/everything?q=boxoffice&apiKey=0a95e66f29f94a6b8e72cb581d05d184&language=en";
-      this._isMounted &&
-        fetch(newsAPI)
-          .then((res) => res.json())
-          .then((res) => res.articles.slice(0, 5))
-          .then((res) => {
-            this._isMounted && this.setState((prevState) => ({ ...prevState, news: res }));
-          })
-          .catch((err) => console.error(err));
-    }
-  }
+  // componentDidMount() {
+  //   this._isMounted = true;
+  //   if (this.state.news.length === 0) {
+  //     this.props.fetchNews();
+  //     const newsAPI =
+  //       `https://newsapi.org/v2/everything?q=boxoffice&apiKey=${newsApiKey}&language=en`;
+  //     this._isMounted &&
+  //       fetch(newsAPI)
+  //         .then((res) => res.json())
+  //         .then((res) => res.articles.slice(0, 5))
+  //         .then((res) => {
+  //           this._isMounted && this.setState((prevState) => ({ ...prevState, news: res }));
+  //         })
+  //         .catch((err) => console.error(err));
+  //   }
+  // }
 
-  componentWillUnmount() {
-    //fix memory leak warning
-    this._isMounted = false;
-  }
+  // componentWillUnmount() {
+  //   //fix memory leak warning
+  //   this._isMounted = false;
+  // }
 
   render() {
     // console.log("NEWS articles: ", this.state.news);

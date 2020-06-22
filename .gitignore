@@ -33,4 +33,4 @@ newDBForTesting.json
 /src/assets/img/user
 
 # config file containing API keys and URLs
-config.js
+/src/config.js

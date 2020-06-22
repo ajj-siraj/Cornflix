@@ -30,6 +30,21 @@ const tabReducer = (prevState = {tab: "profile"}, action) => {
       return prevState;
   }
 }
+
+const fetchReducer = (prevState = {news: [], topMovies: [], latestMovies: []}, action) => {
+  switch(action.type){
+
+    case ActionTypes.FETCH_NEWS_DONE:
+      return {...prevState, news: action.news};
+    case ActionTypes.FETCH_TOP_DONE:
+      return {...prevState, topMovies: action.topMovies};
+    case ActionTypes.FETCH_LATEST_DONE:
+      return {...prevState, latestMovies: action.latestMovies};
+    default:
+      return prevState;
+  }
+}
+
 const validateReducer = (prevState = {}, action) => {
   switch(action.type){
     case ActionTypes.VERIFIED:
@@ -51,5 +66,6 @@ export default combineReducers({
   loginStatus: loginReducer,
   loadingStatus: loadingReducer,
   validateStatus: validateReducer,
-  tab: tabReducer
+  tab: tabReducer,
+  data: fetchReducer
 })

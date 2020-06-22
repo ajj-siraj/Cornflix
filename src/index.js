@@ -8,6 +8,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { createStore, applyMiddleware} from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
+import logger from "redux-logger";
 
 import Reducers from "./redux/Reducers.js";
 
@@ -15,7 +16,7 @@ import Reducers from "./redux/Reducers.js";
 
 import ScrollToTop from "./components/ScrollToTop";
 
-const store = createStore(Reducers, applyMiddleware(thunk));
+const store = createStore(Reducers, applyMiddleware(thunk, logger));
 
 ReactDOM.render(
   // <React.StrictMode>{/* </React.StrictMode>, */}

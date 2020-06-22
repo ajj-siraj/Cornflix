@@ -4,6 +4,7 @@ import { Switch, Route, withRouter, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import axios from "axios";
 import Fade from "react-reveal/Fade";
+import ScrollLock, { TouchScrollable } from 'react-scrolllock';
 
 //App components
 import Header from "./components/Header";
@@ -38,12 +39,14 @@ import "./css/LatestMovies.css";
 import "./css/ExploreMovies.css";
 import "./css/Login.css";
 import "./css/UserAccount.css";
+import "./css/News.css";
 
 const mapStateToProps = (state) => {
   return {
     user: state.loginStatus || state.validateStatus,
     isLoading: state.loadingStatus.isLoading,
     tab: state.tab,
+    data: { ...state.data },
   };
 };
 
@@ -54,6 +57,9 @@ const mapDispatchToProps = (dispatch) => {
     loadingComplete: () => dispatch(Actions.loadingComplete()),
     validateUser: () => dispatch(Actions.validateUser()),
     trackTab: (tab) => dispatch(Actions.trackTab(tab)),
+    fetchNews: () => dispatch(Actions.fetchNews()),
+    fetchTop: () => dispatch(Actions.fetchTop()),
+    fetchLatest: () => dispatch(Actions.fetchLatest()),
   };
 };
 
@@ -69,35 +75,44 @@ class App extends React.Component {
   componentDidMount() {
     this.props.validateUser();
 
-    if (this.state.topMovies.length === 0) {
-      axios
-        .get(`${apiServerBaseUrl}/movies/top`, { withCredentials: true })
-        .then((res) => {
-          this.setState({ topMovies: res.data, latestMovies: res.data });
-          this.props.loadingComplete();
-        })
-        .catch((err) => console.error(err));
-      // fetch(`${apiServerBaseUrl}/movies/top`)
-      //   .then((response) => response.json())
-      //   .then((res) => this.setState({ topMovies: res }))
-      //   .catch((err) => console.error(err));
-    }
+    this.props.fetchNews();
+    this.props.fetchTop();
+    this.props.fetchLatest();
+
+    this.setState((prevState) => ({ ...prevState }));
+    let { news, topMovies, latestMovies } = this.props.data;
+
+    
+
+    // if (this.state.topMovies.length === 0) {
+    //   axios
+    //     .get(`${apiServerBaseUrl}/movies/top`, { withCredentials: true })
+    //     .then((res) => {
+    //       this.setState({ topMovies: res.data});
+    //       this.props.loadingComplete();
+    //     })
+    //     .catch((err) => console.error(err));
+    // }
 
     // if (this.state.latestMovies.length === 0) {
-    //   fetch(`${apiServerBaseUrl}/movies/top`)
-    //     .then((response) => response.json())
-    //     .then((res) => this.setState({ latestMovies: res }))
+    //   axios
+    //     .get(`${apiServerBaseUrl}/movies/latest`, { withCredentials: true })
+    //     .then((res) => {
+    //       this.setState({ latestMovies: res.data});
+    //       this.props.loadingComplete();
+    //     })
     //     .catch((err) => console.error(err));
     // }
   }
 
   render() {
     console.log("App.js props: ", this.props);
-    if (this.props.isLoading) {
-      return <Loading />;
-    }
+    console.log("App.js state: ", this.state);
+
     return (
       <div className="App">
+        <ScrollLock isActive={this.props.isLoading} />
+        {this.props.isLoading ? <Loading /> : null}
         {this.props.user.isLoggedIn ? <Redirect to="/" /> : null}
         <Route
           path="/"
@@ -116,8 +131,8 @@ class App extends React.Component {
             component={() => (
               <Main
                 user={this.props.user}
-                topMovies={this.state.topMovies}
-                latestMovies={this.state.latestMovies}
+                topMovies={this.props.data.topMovies}
+                latestMovies={this.props.data.latestMovies}
               />
             )}
           />
@@ -125,7 +140,7 @@ class App extends React.Component {
           <Route
             exact
             path="/movies"
-            component={() => <Movies topMovies={this.state.topMovies} />}
+            component={() => <Movies topMovies={this.props.data.topMovies} />}
           />
 
           <Route
@@ -133,8 +148,8 @@ class App extends React.Component {
             render={(match) => (
               <MovieDetails
                 match={match}
-                topMovies={this.state.topMovies}
-                latestMovies={this.state.latestMovies}
+                topMovies={this.props.data.topMovies}
+                latestMovies={this.props.data.latestMovies}
                 user={this.props.user}
                 validateUser={this.props.validateUser}
               />
@@ -143,7 +158,7 @@ class App extends React.Component {
 
           <Route
             path="/explore"
-            component={() => <ExploreMovies movies={this.state.topMovies} />}
+            component={() => <ExploreMovies movies={this.props.data.topMovies} />}
           />
 
           <Route
@@ -151,7 +166,10 @@ class App extends React.Component {
             component={() => <Login user={this.props.user} loginUser={this.props.loginUser} />}
           />
 
-          <Route path="/recoverpw" component={() => <RecoverPass user={this.props.user} />} />
+          <Route
+            path="/recoverpw"
+            component={(match) => <RecoverPass match={match} user={this.props.user} />}
+          />
 
           <Route
             path="/signup"
@@ -182,7 +200,7 @@ class App extends React.Component {
           />
         </Switch>
 
-        <Footer />
+        <Route path="/" component={Footer} />
       </div>
     );
   }

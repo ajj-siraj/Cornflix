@@ -61,7 +61,7 @@ class Main extends React.Component {
             </Col>
             <Col lg={4}>
               <Fade bottom cascade>
-                <News />
+                <News news={this.props.news}/>
               </Fade>
               <div>
                 News data retrieved from <a href="https://newsapi.org/">NewsAPI.org</a>
