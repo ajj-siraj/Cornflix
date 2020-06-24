@@ -1,6 +1,5 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import Fade from "react-reveal/Fade";
 
 import FeaturedMovies from "./FeaturedMovies";

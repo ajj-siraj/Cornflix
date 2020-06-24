@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Row, Modal, Button } from "react-bootstrap";
+import { Col} from "react-bootstrap";
 import Slider from "react-slick";
 // import "../css/FeaturedMovies.css";
 import "../../node_modules/slick-carousel/slick/slick.css";
@@ -20,9 +20,6 @@ const MovieCard = (props) => {
 };
 
 class FeaturedMovies extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     let settings = {

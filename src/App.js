@@ -2,9 +2,7 @@
 import React from "react";
 import { Switch, Route, withRouter, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import axios from "axios";
-import Fade from "react-reveal/Fade";
-import ScrollLock, { TouchScrollable } from 'react-scrolllock';
+import ScrollLock, { TouchScrollable } from "react-scrolllock";
 
 //App components
 import Header from "./components/Header";
@@ -20,13 +18,11 @@ import SearchResults from "./components/SearchResults";
 import Loading from "./components/Loading";
 import UserAccount from "./components/pages/UserAccount";
 import RecoverPass from "./components/RecoverPass";
+
 //config
-import { apiServerBaseUrl } from "./config";
 import * as Actions from "./redux/Actions";
 
 //other
-
-// import "../node_modules/animate.css/animate.min.css";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "../node_modules/font-awesome/css/font-awesome.min.css";
 import "../node_modules/slick-carousel/slick/slick.css";
@@ -79,36 +75,10 @@ class App extends React.Component {
     this.props.fetchTop();
     this.props.fetchLatest();
 
-    this.setState((prevState) => ({ ...prevState }));
-    let { news, topMovies, latestMovies } = this.props.data;
-
-    
-
-    // if (this.state.topMovies.length === 0) {
-    //   axios
-    //     .get(`${apiServerBaseUrl}/movies/top`, { withCredentials: true })
-    //     .then((res) => {
-    //       this.setState({ topMovies: res.data});
-    //       this.props.loadingComplete();
-    //     })
-    //     .catch((err) => console.error(err));
-    // }
-
-    // if (this.state.latestMovies.length === 0) {
-    //   axios
-    //     .get(`${apiServerBaseUrl}/movies/latest`, { withCredentials: true })
-    //     .then((res) => {
-    //       this.setState({ latestMovies: res.data});
-    //       this.props.loadingComplete();
-    //     })
-    //     .catch((err) => console.error(err));
-    // }
+    // this.setState((prevState) => ({ ...prevState }));
   }
 
   render() {
-    console.log("App.js props: ", this.props);
-    console.log("App.js state: ", this.state);
-
     return (
       <div className="App">
         <ScrollLock isActive={this.props.isLoading} />
@@ -133,6 +103,7 @@ class App extends React.Component {
                 user={this.props.user}
                 topMovies={this.props.data.topMovies}
                 latestMovies={this.props.data.latestMovies}
+                news={this.props.data.news}
               />
             )}
           />

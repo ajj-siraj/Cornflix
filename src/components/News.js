@@ -1,44 +1,10 @@
 import React from "react";
-import { Container, Row, Col, Card } from "react-bootstrap";
-import {newsApiKey} from "../config";
-
-
+import { Row, Col, Card } from "react-bootstrap";
 
 class News extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      news: [],
-    };
-
-    this._isMounted = false;
-  }
-
-  // componentDidMount() {
-  //   this._isMounted = true;
-  //   if (this.state.news.length === 0) {
-  //     this.props.fetchNews();
-  //     const newsAPI =
-  //       `https://newsapi.org/v2/everything?q=boxoffice&apiKey=${newsApiKey}&language=en`;
-  //     this._isMounted &&
-  //       fetch(newsAPI)
-  //         .then((res) => res.json())
-  //         .then((res) => res.articles.slice(0, 5))
-  //         .then((res) => {
-  //           this._isMounted && this.setState((prevState) => ({ ...prevState, news: res }));
-  //         })
-  //         .catch((err) => console.error(err));
-  //   }
-  // }
-
-  // componentWillUnmount() {
-  //   //fix memory leak warning
-  //   this._isMounted = false;
-  // }
 
   render() {
-    // console.log("NEWS articles: ", this.state.news);
-    let articles = this.state.news.map((article, index) => {
+    let articles = this.props.news.map((article, index) => {
       return (
         <Card key={`${article.source.id}/${index}`} className="bg-dark text-white">
           <Card.Body>

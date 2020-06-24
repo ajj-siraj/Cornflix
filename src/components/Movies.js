@@ -1,7 +1,5 @@
 import React from "react";
 import { Col, Row, Container, Table, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import SearchBox from "./SearchBox";
 import { apiServerBaseUrl } from "../config";
 import Fade from "react-reveal/Fade";
 
@@ -84,7 +82,7 @@ class Movies extends React.Component {
                   onChange={(value) => this.handleChange(value)}
                   value={this.state.searchTerm}
                 />
-                <a className="btn fa fa-search search-button"></a>
+                <a className="btn fa fa-search search-button">{" "}</a>
               </div>
             </div>
           </Col>

@@ -1,12 +1,9 @@
 import React from "react";
-import { Col, Row, Container, CardColumns, Card } from "react-bootstrap";
+import { Row, Container, CardColumns, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Slide from "react-reveal/Slide";
 
 class ExploreMovies extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     let movieCards = this.props.movies.map((movie, index) => {

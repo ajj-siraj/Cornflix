@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Row, Modal, Button, ListGroup } from "react-bootstrap";
+import { Col, Row, ListGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Fade from "react-reveal/Fade";
 const MovieListItem = (props) => {
@@ -23,16 +23,14 @@ const MovieListItem = (props) => {
 };
 
 class LatestMovies extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+
 
   render() {
     let latest = this.props.movies.map((movie, index) => {
       return (
         <ListGroup key={`${movie.imdbID}-${index}`}>
           
-            <MovieListItem movie={movie} color={index % 2 == 0 ? "dark-list" : "light-list"} />
+            <MovieListItem movie={movie} color={index % 2 === 0 ? "dark-list" : "light-list"} />
           
         </ListGroup>
       );

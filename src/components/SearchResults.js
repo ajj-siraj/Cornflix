@@ -1,7 +1,5 @@
 import React from "react";
 import { Col, Row, Container, Table } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import SearchBox from "./SearchBox";
 import { apiServerBaseUrl } from "../config";
 
 class SearchResults extends React.Component {
@@ -17,18 +15,15 @@ class SearchResults extends React.Component {
 
   handleChange(event) {
     let { value } = event.target;
-    // fetch(`${apiServerBaseUrl}/search?q=${value}`)
-    // .then((res) => res.json())
-    // .then((res) => alert(JSON.stringify(res)));
 
     this.setState((prevState) => ({ ...prevState, searchTerm: value }));
   }
 
   componentDidMount() {
     this._isMounted = true;
-    console.log("QUERY IN SEARCHRESULTS: ", this.props.match.match.params);
+
     let query = this.props.match.match.params.query;
-    console.log("QUERY: ", `${apiServerBaseUrl}/search?q=${query}`);
+
     fetch(`${apiServerBaseUrl}/search?q=${query}`)
       .then((res) => res.json())
       // .then((res) => alert(JSON.stringify(res)));
@@ -36,7 +31,7 @@ class SearchResults extends React.Component {
       .then(
         (res) =>
           this._isMounted &&
-          res.status == 200 &&
+          res.status === 200 &&
           this.setState((prevState) => ({ ...prevState, searchResults: res.data }))
       )
       .catch((err) => console.error(err));
@@ -48,8 +43,6 @@ class SearchResults extends React.Component {
   }
 
   render() {
-    console.log("Search Results: ", this.state.searchResults);
-
     let movies = this.state.searchResults;
 
     let movieList = movies.map((movie, index) => {
@@ -78,7 +71,6 @@ class SearchResults extends React.Component {
     });
     return (
       <Container>
-        
         <Row>
           <Col>
             <Table striped bordered variant="light">
@@ -95,7 +87,17 @@ class SearchResults extends React.Component {
                   <th>Rated</th>
                 </tr>
               </thead>
-              <tbody>{movieList.length == 0 ? <tr><td colSpan="9" style={{textAlign: 'center'}}>No Results.</td></tr> : movieList}</tbody>
+              <tbody>
+                {movieList.length === 0 ? (
+                  <tr>
+                    <td colSpan="9" style={{ textAlign: "center" }}>
+                      No Results.
+                    </td>
+                  </tr>
+                ) : (
+                  movieList
+                )}
+              </tbody>
             </Table>
           </Col>
         </Row>

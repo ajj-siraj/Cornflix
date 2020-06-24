@@ -40,23 +40,26 @@ export const trackTab = (tab) => ({
 
 export const fetchNewsDone = (news) => ({
   type: FETCH_NEWS_DONE,
-  news: news
-})
+  news: news,
+});
 
 export const fetchTopDone = (top) => ({
   type: FETCH_TOP_DONE,
-  topMovies: top
-})
+  topMovies: top,
+});
 
 export const fetchLatestDone = (latest) => ({
   type: FETCH_LATEST_DONE,
-  latestMovies: latest
-})
+  latestMovies: latest,
+});
 
-//I was here, fetching works but data is not stored in redux Store for some reason.
+//Remember to add a timeout feature and re-initiate requests in case of a weak connection (like mine)
+//Also dispatch loadingComplete only when:
+//1 - All requests are finished loading with either success or failure.
+//2 - Or specified timeout exceeded with some requests, no response received.
 export const fetchNews = () => (dispatch) => {
   const newsAPI = `https://newsapi.org/v2/everything?q=boxoffice&apiKey=${newsApiKey}&language=en`;
-  console.log("INSIDE THE FETCHNEWS DISPATCH");
+
   fetch(newsAPI)
     .then((res) => res.json())
     .then((res) => res.articles.slice(0, 5))
@@ -73,7 +76,10 @@ export const fetchTop = () => (dispatch) => {
   axios
     .get(`${apiServerBaseUrl}/movies/top`, { withCredentials: true })
     .then((res) => {
-      dispatch(fetchTopDone(res.data))
+      dispatch(fetchTopDone(res.data));
+    })
+    .then(() => {
+      dispatch(loadingComplete());
     })
     .catch((err) => console.error(err));
 };
@@ -82,7 +88,10 @@ export const fetchLatest = () => (dispatch) => {
   axios
     .get(`${apiServerBaseUrl}/movies/latest`, { withCredentials: true })
     .then((res) => {
-      dispatch(fetchLatestDone(res.data))
+      dispatch(fetchLatestDone(res.data));
+    })
+    .then(() => {
+      dispatch(loadingComplete());
     })
     .catch((err) => console.error(err));
 };

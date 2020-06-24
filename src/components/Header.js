@@ -1,10 +1,8 @@
 import React from "react";
-import { NavLink, Link } from "react-router-dom";
-import { Nav, Navbar, Form, FormControl, Button, Jumbotron } from "react-bootstrap";
-
-import SearchBox from "./SearchBox";
-
-import logo from "../assets/img/logo.png";
+import { Link } from "react-router-dom";
+import { Nav, Navbar, Form, Button } from "react-bootstrap";
+import { apiServerBaseUrl } from "../config";
+import { logo } from "../data";
 
 class Header extends React.Component {
   constructor(props) {
@@ -23,7 +21,6 @@ class Header extends React.Component {
   }
 
   handleChange(event) {
-    // console.log("HANDLE CHANGE: ", event.target.value);
     this.setState({ query: event.target.value });
   }
 
@@ -33,14 +30,13 @@ class Header extends React.Component {
     }
   }
   render() {
-    // console.log("PROPS INSIDE Header: ", this.props);
     return (
       <>
         <Navbar variant="dark" expand="lg" className="navbar-custom">
           <Link to="/">
             <Navbar.Brand className="align-middle ml-5">
               <img
-                src={logo}
+                src={`${apiServerBaseUrl}/file/image/${logo}`}
                 width="50"
                 height="50"
                 className="d-inline-block align-middle"

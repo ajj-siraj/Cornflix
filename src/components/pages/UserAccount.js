@@ -11,53 +11,29 @@ import {
   Nav,
   OverlayTrigger,
   Tooltip,
-  Toast,
 } from "react-bootstrap";
-import { defaultPics } from "../../data";
 import { apiServerBaseUrl } from "../../config";
 import axios from "axios";
 import cogoToast from "cogo-toast";
 
 import { Form as FinalForm, Field } from "react-final-form";
-import * as config from "../../config";
 import * as data from "../../data";
 
 import Fade from "react-reveal/Fade";
 import Flip from "react-reveal/Flip";
 import Flash from "react-reveal/Flash";
 import Slide from "react-reveal/Slide";
-import Bounce from "react-reveal/Bounce";
 
-// Tedious form data/code begins here:
 //validators
 const required = (value) => (value ? undefined : "Required");
-const mustBeNumber = (value) => (isNaN(value) ? "Must be a number" : undefined);
-const minValue = (min) => (value) =>
-  isNaN(value) || value >= min ? undefined : `Should be greater than ${min}`;
-const composeValidators = (...validators) => (value) =>
-  validators.reduce((error, validator) => error || validator(value), undefined);
-
-let countries = data.countryList;
-let countriesList = countries.map((country, index) => {
-  return (
-    <option value={data.countryCodes[index]} key={`${country}-${index}`}>
-      {country}
-    </option>
-  );
-});
-
-// Tedious form data/code ends here.
 
 //TODO: clean up this page and separate the components.
 //This will be a headache to edit in the future.
 //I'm getting nauseous just looking at it.
 
-//TODO: Lost password recovery process (add optional email to user profile)
-
 //Favorites component. TODO: move it with its parent component when you re-organize.
 const Favorites = (props) => {
   const removeFav = (id) => {
-    console.log(id);
     const form = { imdbID: id };
 
     axios
@@ -65,7 +41,7 @@ const Favorites = (props) => {
       .then((res) => {
         if (!res.data.success) cogoToast.error("Something went wrong.");
         if (res.data.success) {
-          cogoToast.success("Removed successfully.")
+          cogoToast.success("Removed successfully.");
           props.trackTab("my-lists");
           props.validateUser();
         }
@@ -84,7 +60,7 @@ const Favorites = (props) => {
     return (
       <Row key={`fav-list-${idx}-${fav.imdbID}`} className="list-item">
         <Col md={3}>
-          <img src={fav.PosterThumb} />
+          <img src={fav.PosterThumb} alt={fav.Title} />
         </Col>
         <Col>
           <div>{fav.Title}</div>
@@ -138,7 +114,6 @@ class UserAccount extends React.Component {
       ) {
         cogoToast.error("Invalid file type. Please upload a PNG or JPEG image format.");
       } else {
-        console.log(file);
         this.setState((prevState) => ({ ...prevState, file: file }));
       }
     }
@@ -168,7 +143,6 @@ class UserAccount extends React.Component {
 
   //submit request to update user data
   handleAccountSubmit(values) {
-    console.log(values);
     // this.setState((prevState) => ({ ...prevState, selectedKey: "account" }));
     axios
       .post(`${apiServerBaseUrl}/users/account/update`, values, {
@@ -215,7 +189,6 @@ class UserAccount extends React.Component {
         }));
         cogoToast.error("There was an error. Please try again.");
       });
-    console.log("The form: ", data);
   }
 
   // enable/disable editing on switch toggle
@@ -239,7 +212,6 @@ class UserAccount extends React.Component {
         this.props.validateUser();
       })
       .catch((err) => {
-        console.log(err);
         cogoToast.error(err.toString());
       });
   }
@@ -265,7 +237,6 @@ class UserAccount extends React.Component {
         </Container>
       );
     }
-    console.log(this.state);
     return (
       <Fade>
         <Container fluid>

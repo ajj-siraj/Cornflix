@@ -116,3 +116,11 @@ a:hover{
   height:5rem !important;
   width:5rem !important;
 }
+
+
+.ct-toast{
+  height:100px !important;
+  width:400px !important;
+  background-color: #363636!important; 
+  color:#ddd !important;
+}

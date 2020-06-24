@@ -1,16 +1,14 @@
 import React from "react";
-import { Col, Row, Container, Form, Button, Alert } from "react-bootstrap";
+import { Col, Row, Container, Form, Button} from "react-bootstrap";
 import { Form as FinalForm, Field } from "react-final-form";
 import ReCAPTCHA from "react-google-recaptcha";
 import { apiServerBaseUrl, recaptchaSiteKey } from "../config";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import * as data from "../data";
 import cogoToast from "cogo-toast";
 
 //React-reveal components
 import Fade from "react-reveal/Fade";
-import LightSpeed from "react-reveal/LightSpeed";
 import Bounce from "react-reveal/Bounce";
 // const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 

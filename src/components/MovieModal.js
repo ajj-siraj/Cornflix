@@ -11,7 +11,6 @@ class MovieModal extends React.Component {
   }
 
   render() {
-    // console.log(this.props.poster);
     return (
       <Modal
         size="lg"
@@ -20,14 +19,12 @@ class MovieModal extends React.Component {
         show={this.props.isOpen}
         onHide={() => this.props.toggleMovieModal(this.props.movie)}
         dialogClassName="modal-90w"
-        
       >
-        
-          <Modal.Body className="bg-dark">
+        <Modal.Body className="bg-dark">
           <Container>
             <Row className="justify-content-center text-center">
               <Col>
-                <h4 style={{padding:'1%', border: 'solid 1px'}}>{this.props.movie.Title}</h4>
+                <h4 style={{ padding: "1%", border: "solid 1px" }}>{this.props.movie.Title}</h4>
               </Col>
             </Row>
             <Row className="justify-content-center text-center">
@@ -36,27 +33,23 @@ class MovieModal extends React.Component {
                   className="movie-modal-img img-fluid"
                   src={this.props.movie.PosterFeat}
                   alt={this.props.movie.Title}
-                  style={{ margin: 'auto' }}
+                  style={{ margin: "auto" }}
                 />
               </Col>
               <Col lg={6}>
-                <p className="mt-4">
-                  {this.props.movie.Plot}
-                </p>
+                <p className="mt-4">{this.props.movie.Plot}</p>
               </Col>
             </Row>
             <Row>
-              <Col>
-
-              </Col>
+              <Col></Col>
             </Row>
           </Container>
         </Modal.Body>
         <Modal.Footer className="bg-dark">
-          <Button className="btn-success" onClick={this.props.toggleMovieModal}>Close</Button>
+          <Button className="btn-success" onClick={this.props.toggleMovieModal}>
+            Close
+          </Button>
         </Modal.Footer>
-        
-        
       </Modal>
     );
   }

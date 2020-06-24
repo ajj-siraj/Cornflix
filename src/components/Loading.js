@@ -1,6 +1,5 @@
 import React from "react";
 import { Container, Row, Col, Spinner } from "react-bootstrap";
-import Fade from "react-reveal/Fade";
 
 const Loading = (props) => {
   return (

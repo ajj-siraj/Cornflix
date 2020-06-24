@@ -5,21 +5,23 @@ import axios from "axios";
 
 import Bounce from "react-reveal/Bounce";
 import Fade from "react-reveal/Fade";
+import cogoToast from "cogo-toast";
 
 const Logout = (props) => {
   const handleLogout = async () => {
-    // console.log("PROPS in Logout: ", props);
-
     let res = await axios.get(`${apiServerBaseUrl}/users/logout`, { withCredentials: true });
-    let data = JSON.stringify(res);
-    alert(data);
+
+    if (!res.data.success) {
+      cogoToast.error("Something went wrong.");
+      return;
+    }
+    cogoToast.success("You have been logged out successfully.");
     props.logoutUser();
     props.match.history.push("/");
     window.location.reload();
   };
 
   const handleReturn = () => {
-    // console.log("PROPS in Logout: ", props);
     props.match.history.push("/");
   };
 

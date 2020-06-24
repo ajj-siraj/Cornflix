@@ -1,6 +1,5 @@
 import React from "react";
-import { Container, Col, Row, Modal, Button, ListGroup } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Container, Col, Row } from "react-bootstrap";
 import axios from "axios";
 
 import { apiServerBaseUrl } from "../config";
@@ -47,7 +46,6 @@ class MovieDetails extends React.Component {
       .catch(() => cogoToast.error("An error occurred."));
   }
 
-  //I was here finishing up favorites. last thing to do is add delete functionality + view favorites
   decideBtnTxt() {
     let paramID = this.props.match.match.params.movieid;
     if (this.props.user.isLoggedIn) {
@@ -74,19 +72,19 @@ class MovieDetails extends React.Component {
     }));
   }
   render() {
-    console.log("this.props INSIDE MovieDetails: ", this.props);
-
     let movie =
-      this.props.topMovies.find((movie) => movie.imdbID == this.props.match.match.params.movieid) ||
+      this.props.topMovies.find(
+        (movie) => movie.imdbID === this.props.match.match.params.movieid
+      ) ||
       this.props.latestMovies.find(
-        (movie) => movie.imdbID == this.props.match.match.params.movieid
+        (movie) => movie.imdbID === this.props.match.match.params.movieid
       );
 
     let btnText = this.decideBtnTxt();
     if (btnText === "Already in Favorites.") {
       this.setState((prevState) => ({ ...prevState, btnDisabled: true }));
     }
-    console.log("Movie is: ", movie);
+
     return (
       <Container>
         <Row className="no-gutters">

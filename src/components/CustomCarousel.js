@@ -18,22 +18,19 @@ class CustomCarousel extends React.Component {
   }
 
   render() {
-
-
     let jumboImgs = [jumboImg1, jumboImg2, jumboImg3];
-    let topThree = this.props.movies.slice(0,3);
-    console.log("Top three: ", topThree);
+    let topThree = this.props.movies.slice(0, 3);
+
     let carouselItems = topThree.map((movie, index) => {
       return (
         <Carousel.Item key={`carousel-movie-${movie.imdbID}`}>
           <img className="d-block w-100" src={jumboImgs[index]} alt={`img-${index}`} />
-          
+
           <h1 className="display-1 mycustom-carousel-title">{movie.Title}</h1>
           <p className="mycustom-carousel-caption">{movie.Plot}</p>
           <Link to={`/movies/${movie.imdbID}`}>
             <div className="btn jumbo-button">
-              Watch Now{" "}
-              <span className="fa fa-play-circle"></span>
+              Watch Now <span className="fa fa-play-circle"></span>
             </div>
           </Link>
           {/* </Carousel.Caption> */}
