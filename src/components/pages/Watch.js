@@ -2,14 +2,14 @@ import React from "react";
 import { Container, Col, Row } from "react-bootstrap";
 import axios from "axios";
 
-import { apiServerBaseUrl } from "../config";
+import { apiServerBaseUrl } from "../../config";
 
 import Fade from "react-reveal/Fade";
 import Tada from "react-reveal/Tada";
 import Pulse from "react-reveal/Pulse";
 import cogoToast from "cogo-toast";
 
-class MovieDetails extends React.Component {
+class Watch extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -73,10 +73,10 @@ class MovieDetails extends React.Component {
   }
   render() {
     let movie =
-      this.props.topMovies.find(
+      this.props.data.topMovies.find(
         (movie) => movie.imdbID === this.props.match.match.params.movieid
       ) ||
-      this.props.latestMovies.find(
+      this.props.data.latestMovies.find(
         (movie) => movie.imdbID === this.props.match.match.params.movieid
       );
 
@@ -120,13 +120,21 @@ class MovieDetails extends React.Component {
             </Fade>
           </Col>
         </Row>
-        <Row>
-          <Col lg="6">
-            <Pulse>
-              <img src={movie.PosterFeat} alt={movie.Title} className="img-fluid" />
-            </Pulse>
+        <Row className="justify-content-center">
+          <Col xs="12" className="align-items-center text-center">
+            <div>
+              <iframe
+                width="560"
+                height="315"
+                src="https://www.youtube.com/embed/sY1S34973zA"
+                frameborder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+              ></iframe>
+            </div>
           </Col>
-
+        </Row>
+        <Row>
           <Col lg="6">
             <Fade right cascade>
               <div>
@@ -212,4 +220,4 @@ class MovieDetails extends React.Component {
   }
 }
 
-export default MovieDetails;
+export default Watch;

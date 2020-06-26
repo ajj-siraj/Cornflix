@@ -28,7 +28,7 @@ class CustomCarousel extends React.Component {
 
           <h1 className="display-1 mycustom-carousel-title">{movie.Title}</h1>
           <p className="mycustom-carousel-caption">{movie.Plot}</p>
-          <Link to={`/movies/${movie.imdbID}`}>
+          <Link to={`/watch/${movie.imdbID}`}>
             <div className="btn jumbo-button">
               Watch Now <span className="fa fa-play-circle"></span>
             </div>

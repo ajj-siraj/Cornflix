@@ -18,6 +18,7 @@ import SearchResults from "./components/SearchResults";
 import Loading from "./components/Loading";
 import UserAccount from "./components/pages/UserAccount";
 import RecoverPass from "./components/RecoverPass";
+import Watch from "./components/pages/Watch";
 
 //config
 import * as Actions from "./redux/Actions";
@@ -114,6 +115,12 @@ class App extends React.Component {
             component={() => <Movies topMovies={this.props.data.topMovies} />}
           />
 
+          <Route
+            path="/watch/:movieid"
+            component={(match) => (
+              <Watch user={this.props.user} match={match} data={this.props.data} />
+            )}
+          />
           <Route
             path="/movies/:movieid"
             render={(match) => (
