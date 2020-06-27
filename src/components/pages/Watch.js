@@ -1,13 +1,38 @@
 import React from "react";
-import { Container, Col, Row } from "react-bootstrap";
+import { Container, Col, Row, Button } from "react-bootstrap";
 import axios from "axios";
-
+import Rating from "react-rating";
 import { apiServerBaseUrl } from "../../config";
 
 import Fade from "react-reveal/Fade";
 import Tada from "react-reveal/Tada";
-import Pulse from "react-reveal/Pulse";
 import cogoToast from "cogo-toast";
+
+const emptySymbols = [
+  "fa fa-star-o fa-2x rating-low",
+  "fa fa-star-o fa-2x rating-low",
+  "fa fa-star-o fa-2x rating-low",
+  "fa fa-star-o fa-2x rating-medium",
+  "fa fa-star-o fa-2x rating-medium",
+  "fa fa-star-o fa-2x rating-medium",
+  "fa fa-star-o fa-2x rating-high",
+  "fa fa-star-o fa-2x rating-high",
+  "fa fa-star-o fa-2x rating-high",
+  "fa fa-star-o fa-2x rating-high",
+];
+
+const fullSymbols = [
+  "fa fa-star fa-2x rating-low",
+  "fa fa-star fa-2x rating-low",
+  "fa fa-star fa-2x rating-low",
+  "fa fa-star fa-2x rating-medium",
+  "fa fa-star fa-2x rating-medium",
+  "fa fa-star fa-2x rating-medium",
+  "fa fa-star fa-2x rating-high",
+  "fa fa-star fa-2x rating-high",
+  "fa fa-star fa-2x rating-high",
+  "fa fa-star fa-2x rating-high",
+];
 
 class Watch extends React.Component {
   constructor(props) {
@@ -62,15 +87,15 @@ class Watch extends React.Component {
     return "Please Login to Add Favorites";
   }
 
-  componentDidMount() {
-    const result = this.decideBtnTxt();
+  // componentDidMount() {
+  //   const result = this.decideBtnTxt();
 
-    this.setState((prevState) => ({
-      ...prevState,
-      btnText: result,
-      btnDisabled: result === "Already in Favorites",
-    }));
-  }
+  //   this.setState((prevState) => ({
+  //     ...prevState,
+  //     btnText: result,
+  //     btnDisabled: result === "Already in Favorites",
+  //   }));
+  // }
   render() {
     let movie =
       this.props.data.topMovies.find(
@@ -124,94 +149,30 @@ class Watch extends React.Component {
           <Col xs="12" className="align-items-center text-center">
             <div>
               <iframe
-                width="560"
-                height="315"
+                width="720"
+                height="405"
                 src="https://www.youtube.com/embed/sY1S34973zA"
-                frameborder="0"
+                frameBorder="0"
                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
+                allowFullscreen
               ></iframe>
             </div>
           </Col>
         </Row>
-        <Row>
-          <Col lg="6">
+        <Row className="justify-content-center text-center mt-5">
+          <Col xs="12" className="text-center">
+            <span>Your rating: </span>
+            <Rating stop={10} emptySymbol={emptySymbols} fullSymbol={fullSymbols} />
+          </Col>
+          <Col xs="12" className="text-center">
             <Fade right cascade>
-              <div>
-                <h4 className="text-warning">Plot</h4>
-                <p>{movie.Plot}</p>
-                <h4 className="text-warning">Rated: </h4>
-                <p>
-                  {movie.Rated === "N/A" ? (
-                    <span style={{ color: "orange" }}>Data unavailable in the database.</span>
-                  ) : (
-                    movie.Rated
-                  )}
-                </p>
-                <h4 className="text-warning">Writer(s): </h4>
-                <p>
-                  {movie.Writer === "N/A" ? (
-                    <span style={{ color: "orange" }}>Data unavailable in the database.</span>
-                  ) : (
-                    movie.Writer
-                  )}
-                </p>
-                <h4 className="text-warning">Director: </h4>
-                <p>
-                  {movie.Director === "N/A" ? (
-                    <span style={{ color: "orange" }}>Data unavailable in the database.</span>
-                  ) : (
-                    movie.Director
-                  )}
-                </p>
-                <h4 className="text-warning">Year: </h4>
-                <p>
-                  {movie.Year === "N/A" ? (
-                    <span style={{ color: "orange" }}>Data unavailable in the database.</span>
-                  ) : (
-                    movie.Year
-                  )}
-                </p>
-                <h4 className="text-warning">Actors: </h4>
-                <p>
-                  {movie.Actors === "N/A" ? (
-                    <span style={{ color: "orange" }}>Data unavailable in the database.</span>
-                  ) : (
-                    movie.Actors
-                  )}
-                </p>
-                <h4 className="text-warning">Runtime: </h4>
-                <p>
-                  {movie.Runtime === "N/A" ? (
-                    <span style={{ color: "orange" }}>Data unavailable in the database.</span>
-                  ) : (
-                    movie.Runtime
-                  )}
-                </p>
-                <h4 className="text-warning">IMDB Rating: </h4>
-                <p>
-                  {movie.imdbRating === "N/A" ? (
-                    <span style={{ color: "orange" }}>Data unavailable in the database.</span>
-                  ) : (
-                    movie.imdbRating
-                  )}
-                </p>
-                <h4 className="text-warning">IMDB Votes: </h4>
-                <p>
-                  {movie.imdbVotes === "N/A" ? (
-                    <span style={{ color: "orange" }}>Data unavailable in the database.</span>
-                  ) : (
-                    movie.imdbVotes
-                  )}
-                </p>
-                <div
-                  className="btn btn-danger"
-                  onClick={this.addFavorite}
-                  disabled={this.state.btnDisabled}
-                >
-                  {btnText}
-                </div>
-              </div>
+              <Button
+                variant="danger"
+                onClick={this.addFavorite}
+                disabled={this.state.btnDisabled}
+              >
+                {btnText}
+              </Button>
             </Fade>
           </Col>
         </Row>

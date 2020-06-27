@@ -124,3 +124,13 @@ a:hover{
   background-color: #363636!important; 
   color:#ddd !important;
 }
+
+.rating-low{
+  color: #ff0000;
+}
+.rating-medium{
+  color: #ffd000;
+}
+.rating-high{
+  color: #12d600;
+}

@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Col, Row } from "react-bootstrap";
+import { Container, Col, Row, Button } from "react-bootstrap";
 import axios from "axios";
 
 import { apiServerBaseUrl } from "../config";
@@ -62,15 +62,7 @@ class MovieDetails extends React.Component {
     return "Please Login to Add Favorites";
   }
 
-  componentDidMount() {
-    const result = this.decideBtnTxt();
-
-    this.setState((prevState) => ({
-      ...prevState,
-      btnText: result,
-      btnDisabled: result === "Already in Favorites",
-    }));
-  }
+  
   render() {
     let movie =
       this.props.topMovies.find(
@@ -196,13 +188,13 @@ class MovieDetails extends React.Component {
                     movie.imdbVotes
                   )}
                 </p>
-                <div
-                  className="btn btn-danger"
+                <Button
+                  variant="danger"
                   onClick={this.addFavorite}
-                  disabled={this.state.btnDisabled}
+                  disabled={!this.state.btnDisabled}
                 >
                   {btnText}
-                </div>
+                </Button>
               </div>
             </Fade>
           </Col>

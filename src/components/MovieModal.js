@@ -1,5 +1,7 @@
 import React from "react";
 import { Modal, Button, Container, Row, Col } from "react-bootstrap";
+import {Link} from 'react-router-dom';
+
 // import css from "../css/FeaturedMovies.css";
 
 class MovieModal extends React.Component {
@@ -40,12 +42,11 @@ class MovieModal extends React.Component {
                 <p className="mt-4">{this.props.movie.Plot}</p>
               </Col>
             </Row>
-            <Row>
-              <Col></Col>
-            </Row>
+            
           </Container>
         </Modal.Body>
         <Modal.Footer className="bg-dark">
+          <Link className="btn btn-warning" to={`/movies/${this.props.movie.imdbID}`}>See more</Link>
           <Button className="btn-success" onClick={this.props.toggleMovieModal}>
             Close
           </Button>
