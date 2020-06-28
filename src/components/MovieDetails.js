@@ -12,9 +12,6 @@ import cogoToast from "cogo-toast";
 class MovieDetails extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      btnDisabled: false,
-    };
 
     this.addFavorite = this.addFavorite.bind(this);
     this.decideBtnTxt = this.decideBtnTxt.bind(this);
@@ -73,9 +70,6 @@ class MovieDetails extends React.Component {
       );
 
     let btnText = this.decideBtnTxt();
-    if (btnText === "Already in Favorites.") {
-      this.setState((prevState) => ({ ...prevState, btnDisabled: true }));
-    }
 
     return (
       <Container>
@@ -191,7 +185,6 @@ class MovieDetails extends React.Component {
                 <Button
                   variant="danger"
                   onClick={this.addFavorite}
-                  disabled={!this.state.btnDisabled}
                 >
                   {btnText}
                 </Button>
