@@ -1,5 +1,6 @@
 import axios from "axios";
 import { apiServerBaseUrl, newsApiKey } from "../config";
+import {store} from "../index";
 
 //action types
 export const LOGIN_USER = "LOGIN_USER";
@@ -16,10 +17,25 @@ export const FETCH_NEWS_DONE = "FETCH_NEWS_DONE";
 export const FETCH_TOP_DONE = "FETCH_TOP_DONE";
 export const FETCH_LATEST_DONE = "FETCH_LATEST_DONE";
 
+export const CONTENT_LOADED = "CONTENT_LOADED";
+
 // export const FAVORITE_ADD_ERROR = "FAVORITE_ADD_ERROR";
 // export const FAVORITE_ADD_SUCCESS = "FAVORITE_ADD_SUCCESS";
 
 //action creators
+
+export const contentLoadedDispatch = () => (dispatch) => {
+  console.log("LOADED COUNT: ", store.getState().loadedCount);
+  dispatch(contentLoaded());
+  if(store.getState().loadedCount >= 4) dispatch(loadingComplete());
+  return;
+}
+
+export const contentLoaded = () =>  {
+  console.log("STORE: ", store.getState());
+  return {type: CONTENT_LOADED};
+};
+
 export const loginUser = (user) => ({
   type: LOGIN_USER,
   user,
@@ -55,8 +71,8 @@ export const fetchLatestDone = (latest) => ({
 
 //Remember to add a timeout feature and re-initiate requests in case of a weak connection (like mine)
 //Also dispatch loadingComplete only when:
-//1 - All requests are finished loading with either success or failure.
-//2 - Or specified timeout exceeded with some requests, no response received.
+//1 - All requests have finished loading with either success or failure.
+//2 - Or specified timeout exceeded with some requests (no response received).
 export const fetchNews = () => (dispatch) => {
   const newsAPI = `https://newsapi.org/v2/everything?q=boxoffice&apiKey=${newsApiKey}&language=en`;
 
@@ -67,7 +83,7 @@ export const fetchNews = () => (dispatch) => {
       dispatch(fetchNewsDone(res));
     })
     .then(() => {
-      dispatch(loadingComplete());
+      dispatch(contentLoadedDispatch());
     })
     .catch((err) => console.error(err));
 };
@@ -79,7 +95,7 @@ export const fetchTop = () => (dispatch) => {
       dispatch(fetchTopDone(res.data));
     })
     .then(() => {
-      dispatch(loadingComplete());
+      dispatch(contentLoadedDispatch());
     })
     .catch((err) => console.error(err));
 };
@@ -91,7 +107,7 @@ export const fetchLatest = () => (dispatch) => {
       dispatch(fetchLatestDone(res.data));
     })
     .then(() => {
-      dispatch(loadingComplete());
+      dispatch(contentLoadedDispatch());
     })
     .catch((err) => console.error(err));
 };

@@ -40,7 +40,7 @@ class Main extends React.Component {
           <Fade>
             <Row>
               <Col className="m-0 p-0">
-                <CustomCarousel movies={this.props.topMovies} />
+                <CustomCarousel movies={this.props.topMovies} contentLoadedDispatch={this.props.contentLoadedDispatch}/>
               </Col>
             </Row>
           </Fade>

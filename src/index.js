@@ -16,7 +16,7 @@ import Reducers from "./redux/Reducers.js";
 
 import ScrollToTop from "./components/ScrollToTop";
 
-const store = createStore(Reducers, applyMiddleware(thunk, logger));
+export const store = createStore(Reducers, applyMiddleware(thunk, logger));
 
 ReactDOM.render(
   // <React.StrictMode>{/* </React.StrictMode>, */}

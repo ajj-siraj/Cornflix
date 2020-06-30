@@ -44,6 +44,7 @@ const mapStateToProps = (state) => {
     isLoading: state.loadingStatus.isLoading,
     tab: state.tab,
     data: { ...state.data },
+    loadedCount: state.loadedCount.loadedCount,
   };
 };
 
@@ -57,6 +58,7 @@ const mapDispatchToProps = (dispatch) => {
     fetchNews: () => dispatch(Actions.fetchNews()),
     fetchTop: () => dispatch(Actions.fetchTop()),
     fetchLatest: () => dispatch(Actions.fetchLatest()),
+    contentLoadedDispatch: () => dispatch(Actions.contentLoadedDispatch())
   };
 };
 
@@ -70,6 +72,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+
     this.props.validateUser();
 
     this.props.fetchNews();
@@ -83,6 +86,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <ScrollLock isActive={this.props.isLoading} />
+        
         {this.props.isLoading ? <Loading /> : null}
         {this.props.user.isLoggedIn ? <Redirect to="/" /> : null}
         <Route
@@ -105,6 +109,7 @@ class App extends React.Component {
                 topMovies={this.props.data.topMovies}
                 latestMovies={this.props.data.latestMovies}
                 news={this.props.data.news}
+                contentLoadedDispatch={this.props.contentLoadedDispatch}
               />
             )}
           />

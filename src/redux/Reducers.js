@@ -2,6 +2,16 @@ import * as ActionTypes from './Actions';
 import {combineReducers} from 'redux';
 // import { sessionReducer } from 'redux-react-session';
 
+const contentLoadReducer = (prevState = {loadedCount: 0}, action) => {
+  switch(action.type){
+    case ActionTypes.CONTENT_LOADED:
+      let newState = prevState.loadedCount >= 4 ? prevState : {...prevState, loadedCount: prevState.loadedCount+1};
+      return newState
+    default:
+      return prevState;
+  }
+}
+
 const loginReducer = (prevState = {isLoggedIn: false}, action) => {
   switch(action.type){
     case ActionTypes.LOGIN_USER:
@@ -67,5 +77,6 @@ export default combineReducers({
   loadingStatus: loadingReducer,
   validateStatus: validateReducer,
   tab: tabReducer,
-  data: fetchReducer
+  data: fetchReducer,
+  loadedCount: contentLoadReducer
 })

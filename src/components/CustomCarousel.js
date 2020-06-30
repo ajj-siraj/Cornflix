@@ -14,9 +14,20 @@ class CustomCarousel extends React.Component {
         isOpen: false,
       },
       movie: [],
+      loadedCount: 0,
     };
+
+    this.contentLoaded = this.contentLoaded.bind(this);
   }
 
+  contentLoaded(){
+    if(this.state.loadedCount === 3){
+      this.props.contentLoadedDispatch();
+      return;
+    }
+    this.state.loadedCount < 3 && this.setState(prev => ({...prev, loadedCount: prev.loadedCount+1}));
+    
+  }
   render() {
     let jumboImgs = [jumboImg1, jumboImg2, jumboImg3];
     let topThree = this.props.movies.slice(0, 3);
@@ -24,7 +35,7 @@ class CustomCarousel extends React.Component {
     let carouselItems = topThree.map((movie, index) => {
       return (
         <Carousel.Item key={`carousel-movie-${movie.imdbID}`}>
-          <img className="d-block w-100" src={jumboImgs[index]} alt={`img-${index}`} />
+          <img className="d-block w-100" src={jumboImgs[index]} alt={`img-${index}`} onLoad={() => this.props.contentLoadedDispatch()}/>
 
           <h1 className="display-1 mycustom-carousel-title">{movie.Title}</h1>
           <p className="mycustom-carousel-caption">{movie.Plot}</p>
