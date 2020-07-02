@@ -74,13 +74,12 @@ export const fetchLatestDone = (latest) => ({
 //1 - All requests have finished loading with either success or failure.
 //2 - Or specified timeout exceeded with some requests (no response received).
 export const fetchNews = () => (dispatch) => {
-  const newsAPI = `https://newsapi.org/v2/everything?q=boxoffice&apiKey=${newsApiKey}&language=en`;
+  const newsAPI = `${apiServerBaseUrl}/news`;
 
   fetch(newsAPI)
     .then((res) => res.json())
-    .then((res) => res.articles.slice(0, 5))
     .then((res) => {
-      dispatch(fetchNewsDone(res));
+      dispatch(fetchNewsDone(res.data));
     })
     .then(() => {
       dispatch(contentLoadedDispatch());
