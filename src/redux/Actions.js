@@ -27,7 +27,7 @@ export const CONTENT_LOADED = "CONTENT_LOADED";
 export const contentLoadedDispatch = () => (dispatch) => {
   console.log("LOADED COUNT: ", store.getState().loadedCount);
   dispatch(contentLoaded());
-  if(store.getState().loadedCount >= 4) dispatch(loadingComplete());
+  store.getState().loadedCount.loadedCount === 3 && dispatch(loadingComplete());
   return;
 }
 
