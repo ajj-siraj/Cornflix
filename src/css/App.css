@@ -72,6 +72,9 @@ a:hover{
   background-color: #258a2a8e;
 }
 
+.mycustom-carousel-container{
+  visibility: hidden;
+}
 .mycustom-carousel-title{
   position: absolute;
   z-index: 10;
@@ -79,7 +82,7 @@ a:hover{
     top:40%;
     left:5%;
     text-shadow: 2px -2px 4px black;
-    font-size: 5rem;
+    font-size: 3.8rem;
     color: #14ac14;
     text-align:left;
     pointer-events: none;

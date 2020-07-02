@@ -50,16 +50,20 @@ class CustomCarousel extends React.Component {
     });
 
     return (
-      <Carousel
+      
+        <Carousel
         interval="2000"
         fade="true"
         controls={false}
         indicators={true}
         prevIcon={null}
         nextIcon={null}
+        
       >
         {carouselItems}
       </Carousel>
+      
+      
     );
   }
 }

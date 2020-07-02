@@ -38,7 +38,7 @@ class Main extends React.Component {
         />
         <Container fluid className="mb-5">
           <Fade>
-            <Row>
+            <Row className="d-none d-md-block">
               <Col className="m-0 p-0">
                 <CustomCarousel movies={this.props.topMovies} contentLoadedDispatch={this.props.contentLoadedDispatch}/>
               </Col>
@@ -55,10 +55,10 @@ class Main extends React.Component {
           </Fade>
 
           <Row>
-            <Col lg={8}>
+            <Col sm={8}>
               <LatestMovies movies={this.props.latestMovies} />
             </Col>
-            <Col lg={4}>
+            <Col sm={4}>
               <Fade bottom cascade>
                 <News news={this.props.news}/>
               </Fade>

@@ -8,10 +8,10 @@ const MovieListItem = (props) => {
       <Link to={`/movies/${props.movie.imdbID}`}>
         <ListGroup.Item className={`${props.color} mb-3`}>
           <Row>
-            <Col xs={2}>
+            <Col xs={3} md={2}>
               <img src={props.movie.PosterThumb} alt={props.movie.Title} style={{ height: "5rem" }} />
             </Col>
-            <Col xs={10}>
+            <Col xs={9} md={10}>
               <h4 className="latest-movie-title">{props.movie.Title}</h4>
               <div>Rating: {props.movie.imdbRating}</div>
             </Col>
