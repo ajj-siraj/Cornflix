@@ -149,12 +149,12 @@ class Watch extends React.Component {
           <Col xs="12" className="align-items-center text-center">
             <div>
               <iframe
-                width="720"
-                height="405"
-                src="https://www.youtube.com/embed/sY1S34973zA"
+                
+                src="https://www.youtube.com/embed/KAOdjqyG37A"
                 frameBorder="0"
                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowFullscreen
+                allowFullScreen
+                style={{width: "90%", height: "405px", maxWidth: "720px"}}
               ></iframe>
             </div>
           </Col>

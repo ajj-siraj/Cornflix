@@ -36,6 +36,17 @@ class FeaturedMovies extends React.Component {
           breakpoint: 1600,
           settings: {
             dots: true,
+            slidesToShow: 6,
+            draggable: true,
+            centerMode: true,
+            autoplay: true,
+            autoplaySpeed: 2000,
+          },
+        },
+        {
+          breakpoint: 1300,
+          settings: {
+            dots: true,
             slidesToShow: 5,
             draggable: true,
             centerMode: true,
@@ -44,7 +55,7 @@ class FeaturedMovies extends React.Component {
           },
         },
         {
-          breakpoint: 1200,
+          breakpoint: 1100,
           settings: {
             dots: true,
             slidesToShow: 4,
@@ -55,10 +66,10 @@ class FeaturedMovies extends React.Component {
           },
         },
         {
-          breakpoint: 992,
+          breakpoint: 890,
           settings: {
             dots: true,
-            slidesToShow: 3,
+            slidesToShow: 3.5,
             draggable: true,
             centerMode: true,
             autoplay: true,
@@ -69,7 +80,7 @@ class FeaturedMovies extends React.Component {
           breakpoint: 797,
           settings: {
             dots: true,
-            slidesToShow: 2.5,
+            slidesToShow: 3,
             draggable: true,
             centerMode: true,
             autoplay: true,
@@ -80,6 +91,17 @@ class FeaturedMovies extends React.Component {
           breakpoint: 680,
           settings: {
             dots: true,
+            slidesToShow: 2.5,
+            draggable: true,
+            centerMode: true,
+            autoplay: true,
+            autoplaySpeed: 2000,
+          },
+        },
+        {
+          breakpoint: 580,
+          settings: {
+            dots: true,
             slidesToShow: 2,
             draggable: true,
             centerMode: true,
@@ -88,10 +110,21 @@ class FeaturedMovies extends React.Component {
           },
         },
         {
-          breakpoint: 576,
+          breakpoint: 480,
+          settings: {
+            dots: true,
+            slidesToShow: 1.5,
+            draggable: true,
+            centerMode: true,
+            autoplay: true,
+            autoplaySpeed: 2000,
+          },
+        },
+        {
+          breakpoint: 385,
           settings: {
             dots: false,
-            slidesToShow: 1.5,
+            slidesToShow: 1,
             draggable: true,
             centerMode: true,
             autoplay: true,
