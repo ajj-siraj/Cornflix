@@ -1,5 +1,5 @@
 import axios from "axios";
-import { apiServerBaseUrl, newsApiKey } from "../config";
+import { apiServerBaseUrl} from "../config";
 import {store} from "../index";
 
 //action types

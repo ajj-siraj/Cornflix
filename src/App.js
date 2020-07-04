@@ -58,7 +58,7 @@ const mapDispatchToProps = (dispatch) => {
     fetchNews: () => dispatch(Actions.fetchNews()),
     fetchTop: () => dispatch(Actions.fetchTop()),
     fetchLatest: () => dispatch(Actions.fetchLatest()),
-    contentLoadedDispatch: () => dispatch(Actions.contentLoadedDispatch())
+    contentLoadedDispatch: () => dispatch(Actions.contentLoadedDispatch()),
   };
 };
 
@@ -72,7 +72,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-
     this.props.validateUser();
 
     this.props.fetchNews();
@@ -86,7 +85,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <ScrollLock isActive={this.props.isLoading} />
-        
+
         {this.props.isLoading ? <Loading /> : null}
         {this.props.user.isLoggedIn ? <Redirect to="/" /> : null}
         <Route
@@ -123,7 +122,12 @@ class App extends React.Component {
           <Route
             path="/watch/:movieid"
             component={(match) => (
-              <Watch user={this.props.user} match={match} data={this.props.data} validateUser={this.props.validateUser}/>
+              <Watch
+                user={this.props.user}
+                match={match}
+                data={this.props.data}
+                validateUser={this.props.validateUser}
+              />
             )}
           />
           <Route

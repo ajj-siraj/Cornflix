@@ -149,11 +149,11 @@ class Login extends React.Component {
                       <Link to="recoverpw">Forgot your password?</Link>
                     </div>
                     
-                    {/* <Form.Row>
+                    <Form.Row>
                     <Col>
                       <Field name="recaptcha" component={Captcha} validate={required} />
                     </Col>
-                  </Form.Row> */}
+                  </Form.Row>
 
                     <Form.Row>
                       <Col>

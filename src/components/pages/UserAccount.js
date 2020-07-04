@@ -1,43 +1,17 @@
 import React from "react";
-import {
-  Container,
-  Col,
-  Row,
-  Tabs,
-  Tab,
-  Alert,
-  Form,
-  Button,
-  Nav,
-  OverlayTrigger,
-  Tooltip,
-} from "react-bootstrap";
-import { apiServerBaseUrl } from "../../config";
-import axios from "axios";
-import cogoToast from "cogo-toast";
-
-import { Form as FinalForm, Field } from "react-final-form";
+import { Container, Col, Row, Tabs, Tab } from "react-bootstrap";
 
 import ProfileTab from "./ProfileTab";
 import AccountTab from "./AccountTab";
 import ListsTab from "./ListsTab";
 
 import Fade from "react-reveal/Fade";
-import Flip from "react-reveal/Flip";
-import Flash from "react-reveal/Flash";
-import Slide from "react-reveal/Slide";
 
 class UserAccount extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      switch: false,
-      checkdisabled: false,
-    };
-
     this.setKey = this.setKey.bind(this);
-
   }
 
   setKey(k) {
@@ -79,15 +53,15 @@ class UserAccount extends React.Component {
                 onSelect={(k) => this.setKey(k)}
               >
                 <Tab eventKey="profile" title="Profile">
-                  <ProfileTab {...this.props}/>
+                  <ProfileTab {...this.props} />
                 </Tab>
 
                 <Tab eventKey="account" title="Account">
-                  <AccountTab {...this.props}/>
+                  <AccountTab {...this.props} />
                 </Tab>
 
                 <Tab eventKey="my-lists" title="My Lists">
-                  <ListsTab {...this.props}/>
+                  <ListsTab {...this.props} />
                 </Tab>
               </Tabs>
             </Col>

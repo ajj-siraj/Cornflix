@@ -363,11 +363,11 @@ const Signup = (props) => {
                     </Col>
                   </Form.Row>
 
-                  {/* <Form.Row>
+                  <Form.Row>
                     <Col>
                       <Field name="recaptcha" component={Captcha} validate={required} />
                     </Col>
-                  </Form.Row> */}
+                  </Form.Row>
 
                   <Form.Row>
                     <Col>
