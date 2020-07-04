@@ -37,9 +37,6 @@ const fullSymbols = [
 class Watch extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      btnDisabled: false,
-    };
 
     this.addFavorite = this.addFavorite.bind(this);
     this.decideBtnTxt = this.decideBtnTxt.bind(this);
@@ -57,7 +54,7 @@ class Watch extends React.Component {
         { movieID: this.props.match.match.params.movieid },
         {
           withCredentials: true,
-          validateStatus: (status) => status < 500,
+          validateStatus: (status) => status < 600,
         }
       )
       .then((res) => {
@@ -87,15 +84,6 @@ class Watch extends React.Component {
     return "Please Login to Add Favorites";
   }
 
-  // componentDidMount() {
-  //   const result = this.decideBtnTxt();
-
-  //   this.setState((prevState) => ({
-  //     ...prevState,
-  //     btnText: result,
-  //     btnDisabled: result === "Already in Favorites",
-  //   }));
-  // }
   render() {
     let movie =
       this.props.data.topMovies.find(
@@ -106,9 +94,6 @@ class Watch extends React.Component {
       );
 
     let btnText = this.decideBtnTxt();
-    if (btnText === "Already in Favorites.") {
-      this.setState((prevState) => ({ ...prevState, btnDisabled: true }));
-    }
 
     return (
       <Container>
@@ -169,7 +154,6 @@ class Watch extends React.Component {
               <Button
                 variant="danger"
                 onClick={this.addFavorite}
-                disabled={this.state.btnDisabled}
               >
                 {btnText}
               </Button>

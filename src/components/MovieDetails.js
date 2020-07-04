@@ -13,10 +13,16 @@ class MovieDetails extends React.Component {
   constructor(props) {
     super(props);
 
+    this.navToWatch = this.navToWatch.bind(this);
     this.addFavorite = this.addFavorite.bind(this);
     this.decideBtnTxt = this.decideBtnTxt.bind(this);
   }
 
+  navToWatch(){
+    const {movieid} = this.props.match.match.params;
+    
+    this.props.match.history.push(`/watch/${movieid}`)
+  }
   addFavorite() {
     if (!this.props.user.isLoggedIn) {
       cogoToast.error("You are not logged in!");
@@ -187,6 +193,12 @@ class MovieDetails extends React.Component {
                   onClick={this.addFavorite}
                 >
                   {btnText}
+                </Button>
+                <Button
+                  variant="success"
+                  onClick={this.navToWatch}
+                >
+                  Watch
                 </Button>
               </div>
             </Fade>

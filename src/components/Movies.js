@@ -78,7 +78,7 @@ class Movies extends React.Component {
                 <input
                   className="search__input"
                   type="text"
-                  placeholder="Search"
+                  placeholder="Filter"
                   onChange={(value) => this.handleChange(value)}
                   value={this.state.searchTerm}
                 />

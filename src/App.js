@@ -123,7 +123,7 @@ class App extends React.Component {
           <Route
             path="/watch/:movieid"
             component={(match) => (
-              <Watch user={this.props.user} match={match} data={this.props.data} />
+              <Watch user={this.props.user} match={match} data={this.props.data} validateUser={this.props.validateUser}/>
             )}
           />
           <Route

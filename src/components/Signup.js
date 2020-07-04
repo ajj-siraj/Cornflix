@@ -1,10 +1,11 @@
 import React from "react";
-import { Col, Row, Container, Form, Button } from "react-bootstrap";
+import { Col, Row, Container, Form, Button, Alert } from "react-bootstrap";
 import { Form as FinalForm, Field } from "react-final-form";
 import ReCAPTCHA from "react-google-recaptcha";
 import * as config from "../config";
 import * as data from "../data";
-import axios from 'axios';
+import axios from "axios";
+import cogoToast from "cogo-toast";
 
 import Fade from "react-reveal/Fade";
 import Bounce from "react-reveal/Bounce";
@@ -45,14 +46,24 @@ const Captcha = (props) => {
 
 const Signup = (props) => {
   const onSubmit = async (values) => {
-    axios.post(`${config.apiServerBaseUrl}/users/signup`, values, {
-      withCredentials: true,
-    }).then(res => {
-      if(res.data.success){
-        props.loginUser(res.data.data.user);
-      props.match.history.push("/");
-      }
-    })
+    axios
+      .post(`${config.apiServerBaseUrl}/users/signup`, values, {
+        withCredentials: true,
+        validateStatus: (status) => status < 600
+      })
+      .then((res) => {
+        if(!res.data.success){
+          cogoToast.error(res.data.message);
+          return;
+        }
+        if (res.data.success) {
+          cogoToast.success(`Signed up and logged in successfully as: ${res.data.user.username}`)
+          props.loginUser(res.data.user);
+          props.match.history.push("/");
+          return;
+        }
+      })
+      .catch(err => cogoToast.error(err.toString()));
   };
 
   if (props.user.isLoggedIn) {
@@ -83,7 +94,13 @@ const Signup = (props) => {
     <Bounce>
       <Container>
         <Row className="mt-5 mb-5 justify-content-center">
-          <Col lg="6" style={{ backgroundColor: "#5a5a5a", borderRadius: "20px", padding: "5%" }}>
+          <Col xs="12">
+            <Alert variant="warning">
+              As this is a demo project, a secure HTTPS connection is not possible. It's recommended
+              that you do not enter your real information.
+            </Alert>
+          </Col>
+          <Col xs="12" lg="6" style={{ backgroundColor: "#5a5a5a", borderRadius: "20px", padding: "5%" }}>
             <FinalForm
               onSubmit={onSubmit}
               validate={(values) => {
@@ -202,7 +219,7 @@ const Signup = (props) => {
                       </Field>
                     </Col>
                   </Form.Row>
-                  
+
                   <Form.Row>
                     <Col>
                       <Field name="email" validate={composeValidators(required, validateEmail)}>
@@ -215,7 +232,7 @@ const Signup = (props) => {
                               placeholder="Enter your email"
                               className="form-control"
                             />
-                            <div>*Your email address will only be used for password reset.</div>
+                            <div>*Do not use a real email address (test@test.com is ok).</div>
                             {meta.error && meta.touched && (
                               <Fade bottom>
                                 <div className="form-validation-feedback validation-error">
@@ -346,11 +363,11 @@ const Signup = (props) => {
                     </Col>
                   </Form.Row>
 
-                  <Form.Row>
+                  {/* <Form.Row>
                     <Col>
                       <Field name="recaptcha" component={Captcha} validate={required} />
                     </Col>
-                  </Form.Row>
+                  </Form.Row> */}
 
                   <Form.Row>
                     <Col>
