@@ -11,6 +11,9 @@ class UserAccount extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      selectedKey: this.props.tab.tab || "profile"
+    }
     this.setKey = this.setKey.bind(this);
   }
 
@@ -41,6 +44,7 @@ class UserAccount extends React.Component {
       );
     }
 
+    console.log(this.props.tab);
     return (
       <Fade>
         <Container fluid>
