@@ -1,5 +1,5 @@
-### CornFlix, A Movie Database
-This project was supposed to be a Netflix-like clone at first, but slowly I started to realize the scale and resources limitations imposed on me by reality would not allow a project of that scale. Hence, a simple movie database with extra steps. This project also works with a NodeJS/Express API implemented in this repository.
+# CornFlix, A Movie Database
+This project was supposed to be a Netflix-like clone at first, but slowly I started to realize the scale and resources limitations imposed on me by reality would not allow a project of that scale. Hence, a simple movie database with extra steps. This project also works with a [NodeJS/Express API implemented in this repository](https://github.com/ajj-siraj/cornflix-server).
 
 ## Features
 
@@ -20,6 +20,7 @@ I grew tired of this project after a while but there are a few things I would li
   - A personal messaging system to allow users to contact and add each other as friends.
   - User ratings. The current ratings included are IMDB ratings. There are rating stars on each watch page but as of now clicking on them does not do anything or submit your ratings.
  - Record and display user watch history.
+ - Password reset workflow. There's a "reset password" page where you enter your email and submit it to the server, but as of now it does not actually send any emails.
  
  ## Working prototype
  You can try the app on this link: http://cornflix.herokuapp.com
