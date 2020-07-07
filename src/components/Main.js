@@ -59,9 +59,9 @@ class Main extends React.Component {
               <LatestMovies movies={this.props.latestMovies} />
             </Col>
             <Col sm={4}>
-              <Fade bottom cascade>
+              
                 <News news={this.props.news}/>
-              </Fade>
+              
               <div>
                 News data retrieved from <a href="https://newsapi.org/">NewsAPI.org</a>
               </div>
