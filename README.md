@@ -23,4 +23,4 @@ I grew tired of this project after a while but there are a few things I would li
  - Password reset workflow. There's a "reset password" page where you enter your email and submit it to the server, but as of now it does not actually send any emails.
  
  ## Working prototype
- You can try the app on this link: http://cornflix.herokuapp.com
+ You can try the app on this link: https://cornflix.herokuapp.com
